@@ -134,9 +134,47 @@ Authentication
 Encapsulating Security Payload
 ```
 
+  # Extension Header Order
+  When more than one extension header is used in the same packet, it is recommended that those headers appear in the following order:
+  ```
+  IPv6 header
+  Hop-by-Hop Options header
+  Destination Options header (note 1)
+  Routing header
+  Fragment header
+  Authentication header (note 2)
+  Encapsulating Security Payload header (note 2)
+  Destination Options header (note 3)
+  Upper-Layer header
+  ```
+  Each Extension header can appear AT THE MOST once, except Destination Options header which can appear at the most twice(once before
+  the Routing header and once after the Routing header.)
+  
+  # Options
+  ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-3.gif)
+  
+  Option Type
+  ```
+  8-bit identifier of the type of option.
+  
+  The Option Type identifiers are internally encoded such that their highest-order 2 bits specify the action that must be taken if the
+  processing IPv6 node does not recognize the Option Type:
+    00 - skip over this option and continue processing the header.
+    01 - discard the packet.
+    10 - discard the packet and, regardless of whether or not the packet's Destination Address was a multicast address, send an ICMP
+         Parameter Problem, Code 2, message to the packet's Source Address, pointing to the unrecognized Option Type.
+    11 - discard the packet and, only if the packet's Destination Address was not a multicast address, send an ICMP Parameter Problem,
+         Code 2, message to the packet's Source Address, pointing to the unrecognized Option Type.
+  
+  The third-highest-order bit of the Option Type specifies whether or not the Option Data of that option can change en route to the
+  packet's final destination.
+  ```
+
 Reference 
 ==============================
 * [Internet Protocol, Version 6 (IPv6) Specification RFC2460 December 1998](https://tools.ietf.org/html/rfc2460)
 * [Internet Protocol, Version 6 (IPv6) Specification RFC8200 July 2017](https://tools.ietf.org/html/rfc8200)
+* [IPv6 - Analysing the IPv6 Protocol Structure and IPv6 Header](http://www.firewall.cx/networking-topics/protocols/874-ipv6-analysis.html)
 
 * []()
+![alt tag]()
