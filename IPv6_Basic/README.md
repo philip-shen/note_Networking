@@ -94,6 +94,21 @@ path MTU
 ```
 the minimum link MTU of all the links in a path between a source node and a destination node.
 ```
+IPv6 Header Format 
+==============================
+![alt tag](https://sites.google.com/site/amitsciscozone/_/rsrc/1468881649334/home/important-tips/ipv6/ipv6-specifications/IPv6%20packet%20format.JPG)
+
+# Version- 4-bit IPv6 version 6
+# Traffic class- 8-bit traffic class field
+```
+The current use of the Traffic Class field for Differentiated Services and Explicit Congestion Notification is specified in
+[RFC2474](https://tools.ietf.org/html/rfc2474) and [RFC3168](https://tools.ietf.org/html/rfc3168).
+```
+# Flow Label- 20-bit flow label field
+# Payload Length- 16-bit length of the packet payload excluding the standard header. If Extension headers are present, they are included in the payload length.
+# Next Header- 8-bit selector identifying the type of header following the IPv6 header
+# Hop Limit- 8-bit unsigned integer decremented by 1 by each node that forwards the packet. If the Hop Limit reaches 0, the packet is discarded.
+# Source and Destination Addresses- 128-bit addresses of the sender and the receiver.
 
 Reference 
 ==============================
