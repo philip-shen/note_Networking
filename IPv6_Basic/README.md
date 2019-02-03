@@ -98,8 +98,7 @@ IPv6 Header Format
 ==============================
 ![alt tag](https://sites.google.com/site/amitsciscozone/_/rsrc/1468881649334/home/important-tips/ipv6/ipv6-specifications/IPv6%20packet%20format.JPG)
 
-Version- 
-4-bit IPv6 version 6
+Version- 4-bit IPv6 version 6
 
 Traffic class- 8-bit traffic class field
 
@@ -108,6 +107,9 @@ The current use of the Traffic Class field for Differentiated Services and Expli
 
 Flow Label- 20-bit flow label field
 
+Be used by a source to label sequences of packets to be treated in the network as a single flow.
+The current definition of the IPv6 Flow Label can be found in [RFC6437](https://tools.ietf.org/html/rfc6437).
+
 Payload Length- 16-bit length of the packet payload excluding the standard header. If Extension headers are present, they are included in the payload length.
 
 Next Header- 8-bit selector identifying the type of header following the IPv6 header
@@ -115,6 +117,12 @@ Next Header- 8-bit selector identifying the type of header following the IPv6 he
 Hop Limit- 8-bit unsigned integer decremented by 1 by each node that forwards the packet. If the Hop Limit reaches 0, the packet is discarded.
 
 Source and Destination Addresses- 128-bit addresses of the sender and the receiver.
+
+IPv6 Extension Headers
+==============================
+Extension headers are numbered from IANA IP Protocol Numbers [IANA-PN](https://tools.ietf.org/html/rfc8200#ref-IANA-PN), the same values used for IPv4 and IPv6.  When processing a sequence of Next Header values in a packet, the first one that is not an extension header [IANA-EH](https://tools.ietf.org/html/rfc8200#ref-IANA-EH) indicates that the next item in the packet is the corresponding upper-layer header.  A special "No Next Header" value is used if there is no upper-layer header.
+
+![alt tag](https://sites.google.com/site/amitsciscozone/home/important-tips/ipv6/ipv6-specifications/IPv6%20Extension%20Headers.JPG?attredirects=0)
 
 Reference 
 ==============================
