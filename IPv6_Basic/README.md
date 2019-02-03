@@ -180,7 +180,6 @@ Encapsulating Security Payload
   #Routing Header:
   
    ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-4.gif)
-    
     ```
     Next Header         8-bit selector.  Identifies the type of header immediately following the Routing header. Uses the same values as
                         the IPv4 Protocol field [IANA-PN](https://tools.ietf.org/html/rfc8200#ref-IANA-PN).
