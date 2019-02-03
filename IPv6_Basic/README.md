@@ -64,29 +64,36 @@ control protocols such as ICMP,
 routing protocols such as OSPF,
 internet-layer or lower-layer protocols being "tunneled" over (i.e., encapsulated in) IPv6 such as IPX, AppleTalk.
 ```
-
 link
 ```
-
+a communication facility or medium over which nodes can communicate at the link layer, i.e., the layer immediately below IPv6.
+Examples are Ethernets PPP links; X.25, Frame Relay, or ATM networks;
+and internet-layer or higher-layer "tunnels", such as tunnels over IPv4 or IPv6 itself.
 ```
-
 neighbors
-control protocols such as ICMP,
-routing protocols such as OSPF,
-internet-layer or lower-layer protocols being "tunneled" over (i.e., encapsulated in) IPv6 such as IPX, AppleTalk.
 ```
-
+nodes attached to the same link.
 ```
-
 interface
-
+```
+a node's attachment to a link.
+```
 address
-
+```
+an IPv6-layer identifier for an interface or a set of interfaces.
+```
 packet
-
-address
-
-packet
+```
+an IPv6 header plus payload.
+```
+link MTU
+```
+the maximum transmission unit, i.e., maximum packet size in octets, that can be conveyed over a link.
+```
+path MTU
+```
+the minimum link MTU of all the links in a path between a source node and a destination node.
+```
 
 Reference 
 ==============================
