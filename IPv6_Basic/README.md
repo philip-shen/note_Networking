@@ -98,7 +98,7 @@ IPv6 Header Format
 ==============================
 ![alt tag](https://sites.google.com/site/amitsciscozone/_/rsrc/1468881649334/home/important-tips/ipv6/ipv6-specifications/IPv6%20packet%20format.JPG)
 
-# Version- 
+Version- 
 4-bit IPv6 version 6
 
 Traffic class- 8-bit traffic class field
