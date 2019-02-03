@@ -17,25 +17,25 @@ o  Expanded Addressing Capabilities
 o  Header Format Simplification
 
 ``` 
-  Some IPv4 header fields have been dropped or made optional, to reduce the common-case processing cost of packet handling and
-  to limit the bandwidth cost of the IPv6 header.
+Some IPv4 header fields have been dropped or made optional, to reduce the common-case processing cost of packet handling and
+to limit the bandwidth cost of the IPv6 header.
 ```
 
 o  Improved Support for Extensions and Options
 
 ``` 
-  IP header options are encoded allows for more efficient forwarding, less stringent limits on the length
-  of options, and greater flexibility for introducing new options in the future.
+IP header options are encoded allows for more efficient forwarding, less stringent limits on the length of options,
+and greater flexibility for introducing new options in the future.
  ```
  
 o  Flow Labeling Capability
 ``` 
-  To enable the labeling of sequences of packets that the sender requests to be treated in the network as a single flow.
+To enable the labeling of sequences of packets that the sender requests to be treated in the network as a single flow.
 ```
 
 o  Authentication and Privacy Capabilities
 ``` 
-  Extensions to support authentication, data integrity, and (optional) data confidentiality are specified for IPv6.
+Extensions to support authentication, data integrity, and (optional) data confidentiality are specified for IPv6.
 ``` 
 
 The format and semantics of IPv6 addresses are specified separately in [RFC4291](https://tools.ietf.org/html/rfc4291).
@@ -44,7 +44,49 @@ The IPv6 version of ICMP, which all IPv6 implementations are required to include
 
 Terminology
 ==============================
+node
+```
+a device that implements IPv6.
+```
+router
+```
+a node that forwards IPv6 packets not explicitly addressed to itself.
+```
+host
+```
+any node that is not a router.
+```
+upper layer
+```
+a protocol layer immediately above IPv6.
+transport protocols such as TCP and UDP,
+control protocols such as ICMP,
+routing protocols such as OSPF,
+internet-layer or lower-layer protocols being "tunneled" over (i.e., encapsulated in) IPv6 such as IPX, AppleTalk.
+```
 
+link
+```
+
+```
+
+neighbors
+control protocols such as ICMP,
+routing protocols such as OSPF,
+internet-layer or lower-layer protocols being "tunneled" over (i.e., encapsulated in) IPv6 such as IPX, AppleTalk.
+```
+
+```
+
+interface
+
+address
+
+packet
+
+address
+
+packet
 
 Reference 
 ==============================
