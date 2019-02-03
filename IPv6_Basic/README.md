@@ -101,10 +101,9 @@ IPv6 Header Format
 Version- 4-bit IPv6 version 6
 
 Traffic class- 8-bit traffic class field
-```
+
 The current use of the Traffic Class field for Differentiated Services and Explicit Congestion Notification is specified in
-*[RFC2474](https://tools.ietf.org/html/rfc2474) and *[RFC3168](https://tools.ietf.org/html/rfc3168).
-```
+[RFC2474](https://tools.ietf.org/html/rfc2474) and [RFC3168](https://tools.ietf.org/html/rfc3168).
 
 Flow Label- 20-bit flow label field
 
