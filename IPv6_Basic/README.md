@@ -169,11 +169,14 @@ Encapsulating Security Payload
   The third-highest-order bit of the Option Type specifies whether or not the Option Data of that option can change en route to the
   packet's final destination.
   ```
-  # Hop-by-Hop Options Header
+  
+  #Hop-by-Hop Options Header:
     ![alt tag](http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/files/27fig07.gif)
+    
     The Hop-by-Hop Options header is used to carry optional information that may be examined and processed by every node along a
     packet's delivery path.  The Hop-by-Hop Options header is identified by a Next Header value of 0 in the IPv6 header.
-  # Routing Header
+  
+  #Routing Header:
     ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-4.gif)
     
     ```
@@ -185,12 +188,12 @@ Encapsulating Security Payload
                         header is an integer multiple of 8 octets long.
     ```
     
-  # Fragment Header
+  #Fragment Header:
     ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-6.gif)
   
-  # Destination Options Header
+  #Destination Options Header:
   
-  # No Next Header
+  #No Next Header:
     The value 59 in the Next Header field of an IPv6 header or any extension header indicates that there is nothing following that
     header. 
   
