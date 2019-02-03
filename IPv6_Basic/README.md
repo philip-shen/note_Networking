@@ -179,19 +179,42 @@ Encapsulating Security Payload
   
   #Routing Header:
   
-  ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-4.gif)
+   ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-4.gif)
     
     ```
-    Next Header
-    Hdr Ext Len
-    Routing Type
-    Segments Left
+    Next Header         8-bit selector.  Identifies the type of header immediately following the Routing header. Uses the same values as
+                        the IPv4 Protocol field [IANA-PN](https://tools.ietf.org/html/rfc8200#ref-IANA-PN).
+    
+    Hdr Ext Len         8-bit unsigned integer.  Length of the Routing header in 8-octet units, not including the first 8 octets.
+    
+    Routing Type        8-bit identifier of a particular Routing header variant.
+    
+    Segments Left       8-bit unsigned integer.  Number of route segments remaining, i.e., number of explicitly listed intermediate 
+                        nodes still to be visited before reaching the final destination.
+    
     type-specific data  Variable-length field, of format determined by the Routing Type, and of length such that the complete Routing
                         header is an integer multiple of 8 octets long.
     ```
     
   #Fragment Header:
-    ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-6.gif)
+  
+   ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-6.gif)
+   
+   ```
+   Next Hea der     8-bit selector.  Identifies the initial header type of the Fragmentable Part of the original packet (defined below).
+                    Uses the same values as the IPv4 Protocol field [IANA-PN](https://tools.ietf.org/html/rfc8200#ref-IANA-PN).
+   
+   Reserved         8-bit reserved field.  Initialized to zero for transmission; ignored on reception.
+   
+   Fragment Offset  13-bit unsigned integer.  The offset, in 8-octet units, of the data following this header, relative to the start of
+                    the Fragmentable Part of the original packet. 
+   
+   Res              2-bit reserved field.  Initialized to zero for transmission; ignored on reception.
+   
+   M flag           1 = more fragments; 0 = last fragment.
+   
+   Identification   32 bits.
+   ```
   
   #Destination Options Header:
   
