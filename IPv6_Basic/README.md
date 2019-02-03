@@ -170,13 +170,15 @@ Encapsulating Security Payload
   packet's final destination.
   ```
   
-  #Hop-by-Hop Options Header:/n
+  #Hop-by-Hop Options Header:
+  
   ![alt tag](http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/files/27fig07.gif)
     The Hop-by-Hop Options header is used to carry optional information that may be examined and processed by every node along a
     packet's delivery path.  The Hop-by-Hop Options header is identified by a Next Header value of 0 in the IPv6 header.
   
-  #Routing Header:\n
-  ![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-4.gif)
+  #Routing Header:
+  
+![alt tag](http://www.firewall.cx/images/stories/ipv6-analysis-4.gif)
     
     ```
     Next Header
