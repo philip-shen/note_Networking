@@ -124,6 +124,16 @@ Extension headers are numbered from IANA IP Protocol Numbers [IANA-PN](https://t
 
 ![alt tag](https://sites.google.com/site/amitsciscozone/home/important-tips/ipv6/ipv6-specifications/IPv6%20Extension%20Headers.JPG?attredirects=0)
 
+A full implementation of IPv6 includes implementation of the following extension headers:
+```
+Hop-by-Hop Options
+Fragment
+Destination Options
+Routing
+Authentication
+Encapsulating Security Payload
+```
+
 Reference 
 ==============================
 * [Internet Protocol, Version 6 (IPv6) Specification RFC2460 December 1998](https://tools.ietf.org/html/rfc2460)
