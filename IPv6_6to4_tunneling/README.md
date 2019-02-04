@@ -87,7 +87,7 @@ The mechanisms for address selection in general are under study at the time of w
 3. Encapsulation in IPv4
 ==============================
 IPv6 packets are transmitted in IPv4 packets [RFC 791] with an IPv4 protocol type of 41, the same as has been assigned [MECH] for IPv6  packets that are tunneled inside of IPv4 frames.
-
+``` 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -105,7 +105,7 @@ IPv6 packets are transmitted in IPv4 packets [RFC 791] with an IPv4 protocol typ
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |            IPv6 header and payload ...              /
      +-------+-------+-------+-------+-------+------+------+
-     
+```      
      
 Reference 
 ==============================
