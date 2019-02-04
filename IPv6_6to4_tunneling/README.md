@@ -142,11 +142,11 @@ This means that:
       received on the tunnel link.
 ```
 
-4. Maximum Transmission Unit 
+4 Maximum Transmission Unit  
 ==============================
 MTU size considerations are as described for tunnels in [MECH].
 
-5. Unicast scenarios, scaling, and transition to normal prefixes
+5 Unicast scenarios, scaling, and transition to normal prefixes 
 ==============================
 5.1 Simple scenario - all sites work the same
 ==============================
