@@ -25,10 +25,12 @@ The terminology of [IPV6](https://tools.ietf.org/html/rfc2460) applies to this d
 ``` 
 
 6to4 prefix:
+```
 an IPv6 prefix constructed according to the rule in [Section 2](https://tools.ietf.org/html/rfc3056#section-2) below.
+```
 
 6to4 address:
-``` 
+```
 an IPv6 address constructed using a 6to4 prefix.
 ``` 
 
@@ -84,7 +86,7 @@ To ensure the correct operation of 6to4 in complex topologies, source and destin
 If the source IPv6 host sending a packet has at least one 2002::address assigned to it, and if the set of IPv6 addresses returned by the DNS for the destination host contains at least one 2002::address, then the source host must make an appropriate choice of the source and destination addresses to be used.
 The mechanisms for address selection in general are under study at the time of writing [SELECT](https://tools.ietf.org/html/rfc6724).
 
-3. Encapsulation in IPv4
+3 Encapsulation in IPv4 
 ==============================
 IPv6 packets are transmitted in IPv4 packets [RFC 791] with an IPv4 protocol type of 41, the same as has been assigned [MECH] for IPv6  packets that are tunneled inside of IPv4 frames.
 ``` 
