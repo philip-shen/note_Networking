@@ -15,6 +15,8 @@ The basic mechanism described in the present document, which applies to sites ra
 IPv6 sites or hosts connected using this method do not require IPv4-compatible IPv6 addresses [MECH](https://tools.ietf.org/html/rfc2893) or configured tunnels.  In this way IPv6 gains considerable independence of the underlying wide area network and can step over many hops of IPv4 subnets.
 The abbreviated name of this mechanism is 6to4 (not to be confused with [6OVER4](https://tools.ietf.org/html/rfc2529)).  The 6to4 mechanism is typically implemented almost entirely in border routers, without specific host modifications except a suggested address selection default.  Only a modest amount of router configuration is required.
 
+![alt tag](https://en.wikipedia.org/wiki/6to4#/media/File:6to4.svg)
+
 1.1. Terminology
 ==============================
 The terminology of [IPV6](https://tools.ietf.org/html/rfc2460) applies to this document.
