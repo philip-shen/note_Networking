@@ -106,15 +106,133 @@ IPv6 packets are transmitted in IPv4 packets [RFC 791] with an IPv4 protocol typ
      |            IPv6 header and payload ...              /
      +-------+-------+-------+-------+-------+------+------+
 ```      
-     
+
+3.1. Link-Local Address and NUD
+==============================
+The link-local address of a 6to4 pseudo-interface performing 6to4 encapsulation would, if needed, be formed as described in Section 3.7
+ of [MECH].
+
+The configured tunnels are IPv6 interfaces (over the IPv4 "link layer") and thus MUST have link-local addresses.  The link-local addresses are used by, e.g., routing protocols operating over the tunnels.
+If an IPv4 address is used for forming the IPv6 link-local address, the interface identifier is the IPv4 address, prepended by zeros. Note that the "Universal/Local" bit is zero, indicating that the interface identifier is not globally unique.  The link-local address is formed by appending the interface identifier to the prefix FE80::/64.
+```
+      +-------+-------+-------+-------+-------+-------+------+------+
+      |  FE      80      00      00      00      00      00     00  |
+      +-------+-------+-------+-------+-------+-------+------+------+
+      |  00      00      00      00   |        IPv4 Address         |
+      +-------+-------+-------+-------+-------+-------+------+------+
+```
+
+Neighbor Unreachability Detection (NUD) is handled as described in Section 3.8 of [MECH] 
+
+Configured tunnel implementations MUST at least accept and respond to the probe packets used by Neighbor Unreachability Detection (NUD)
+ [RFC2461](https://tools.ietf.org/html/rfc2461).  The implementations SHOULD also send NUD probe packets to detect when the configured tunnel fails at which point the implementation can use an alternate path to reach the destination.
+
+For the purposes of Neighbor Discovery, the configured tunnels specified in this document are assumed to NOT have a link-layer address, even though the link-layer (IPv4) does have an address.
+This means that:
+```
+   -  the sender of Neighbor Discovery packets SHOULD NOT include Source
+      Link Layer Address options or Target Link Layer Address options on
+      the tunnel link.
+
+   -  the receiver MUST, while otherwise processing the Neighbor
+      Discovery packet, silently ignore the content of any Source Link
+      Layer Address options or Target Link Layer Address options
+      received on the tunnel link.
+```
+
+4. Maximum Transmission Unit 
+==============================
+MTU size considerations are as described for tunnels in [MECH].
+
+5. Unicast scenarios, scaling, and transition to normal prefixes
+==============================
+5.1 Simple scenario - all sites work the same
+==============================
+```
+                            _______________________________
+                           |                               |
+                           |  Wide Area IPv4 Network       |
+                           |_______________________________|
+                                  /                    \
+                        192.1.2.3/         9.254.253.252\
+ _______________________________/_   ____________________\____________
+|                              /  | |                     \           |
+|IPv4 Site A          ##########  | |IPv4 Site B          ##########  |
+| ____________________# 6to4   #_ | | ____________________# 6to4   #_ |
+||                    # router # || ||                    # router # ||
+||IPv6 Site A         ########## || ||IPv6 Site B         ########## ||
+||2002:c001:0203::/48            || ||2002:09fe:fdfc::/48            ||
+||_______________________________|| ||_______________________________||
+|                                 | |                                 |
+|_________________________________| |_________________________________|
+```
+In the case of the global Internet, there is no requirement that the sites all connect to the same Internet service provider.  The only requirement is that any of the sites is able to send IPv4 packets with protocol type 41 to any of the others.  By definition, each site has an IPv6 prefix in the format defined in Section 2.  It will therefore create DNS records for these addresses.
+For example, site A which owns IPv4 address 192.1.2.3 will create DNS records with the IPv6 prefix {FP=001,TLA=0x0002,NLA=192.1.2.3}/48 (i.e., 2002:c001:0203::/48).  Site B which owns address 9.254.253.252 will create DNS records with the IPv6 prefix {FP=001,TLA=0x0002,NLA=9.254.253.252}/48 (i.e., 2002:09fe:fdfc::/48).
+
+5.2 Mixed scenario with relay to native IPv6
+==============================
+```
+            ____________________________         ______________________
+           |                            |       |                      |
+           |  Wide Area IPv4 Network    |       |   Native IPv6        |
+           |                            |       |   Wide Area Network  |
+           |____________________________|       |______________________|
+                /                    \             //
+      192.1.2.3/         9.254.253.252\           // 2001:0600::/48
+  ____________/_   ____________________\_________//_
+             /  | |                     \       //  |
+    ##########  | |IPv4 Site B          ##########  |
+  __# 6to4   #_ | | ____________________# 6to4   #_ |
+    # router # || ||                    # router # ||
+    ########## || ||IPv6 Site B         ########## ||
+               || ||2002:09fe:fdfc::/48            ||
+  __Site A_____|| ||2001:0600::/48_________________||
+    as before   | |                                 |
+  ______________| |_________________________________|
+
+```
+There must be at least one router acting as a relay between the 6to4 domain and a given native IPv6 domain.  There is nothing special
+ about it; it is simply a normal router which happens to have at least one logical 6to4 pseudo-interface and at least one other IPv6 interface.  Since it is a 6to4 router, it implements the additional sending and decapsulation rules defined in Section 5.3.
+
+5.3 Sending and decapsulation rules
+==============================
+The only change to standard IPv6 forwarding is that every 6to4 router (and only 6to4 routers) MUST implement the following additional
+ sending and decapsulation rules.
+
+In the sending rule, "next hop" refers to the next IPv6 node that the packet will be sent to, which is not necessarily the final destination, but rather the next IPv6 neighbor indicated by normal IPv6 routing mechanisms.
+If the final destination is a 6to4 address, it will be considered as the next hop for the purpose of this rule.
+If the final destination is not a 6to4 address, and is not local, the next hop indicated by routing will be the 6to4 address of a relay router.
+
+ADDITIONAL SENDING RULE for 6to4 routers
+```
+        if the next hop IPv6 address for an IPv6 packet
+           does match the prefix 2002::/16, and
+           does not match any prefix of the local site
+               then
+               apply any security checks (see Section 8);
+               encapsulate the packet in IPv4 as in Section 3,
+               with IPv4 destination address = the NLA value V4ADDR
+               extracted from the next hop IPv6 address;
+               queue the packet for IPv4 forwarding.               
+```
+A simple decapsulation rule for incoming IPv4 packets with protocol type 41 MUST be implemented:
+
+ADDITIONAL DECAPSULATION RULE for 6to4 routers
+```
+          apply any security checks (see Section 8);
+          remove the IPv4 header;
+          submit the packet to local IPv6 routing.
+
+```
+
 Reference 
 ==============================
 * [Connection of IPv6 Domains via IPv4 Clouds RFC 3056](https://tools.ietf.org/html/rfc3056)
-* [Basic Transition Mechanisms for IPv6 Hosts and Routers RFC 4213](https://tools.ietf.org/html/rfc4213)
+* [[MECH] Basic Transition Mechanisms for IPv6 Hosts and Routers RFC 4213, October 2005.](https://tools.ietf.org/html/rfc4213)
 * [[6OVER4] "Transmission of IPv6 over IPv4 Domains without Explicit Tunnels", RFC 2529, March 1999](https://tools.ietf.org/html/rfc2529)
 * [[AARCH] "IP Version 6 Addressing Architecture", RFC 2373, July 1998.](https://tools.ietf.org/html/rfc2373)
 * [[AGGR] "An IPv6 Aggregatable Global Unicast Address Format", RFC 2374, July 1998.](https://tools.ietf.org/html/rfc2374)
-* [[SELECT] "Default Address Selection for IPv6", RFC6724, September 2012](https://tools.ietf.org/html/rfc6724)
+* [[SELECT] "Default Address Selection for IPv6", RFC6724, September 2012.](https://tools.ietf.org/html/rfc6724)
 * [[MECH] "Basic Transition Mechanisms for IPv6 Hosts and Routers", RFC 4213, October 2005.](https://tools.ietf.org/html/rfc4213)
 
 * []()
