@@ -164,6 +164,97 @@ If the reason for the failure to deliver is that the route to the destination is
                   in the maximum size of an ICMPv6 error message.
 ```
 
+# 4. ICMPv6 Informational Messages
+# 4.1.  Echo Request Message
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     Type      |     Code      |          Checksum             |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |           Identifier          |        Sequence Number        |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     Data ...
+      +-+-+-+-+-
+
+   IPv6 Fields:
+
+   Destination Address
+
+                  Any legal IPv6 address.
+
+   ICMPv6 Fields:
+
+   Type           128
+
+   Code           0
+
+   Identifier     An identifier to aid in matching Echo Replies
+                  to this Echo Request.  May be zero.
+   Sequence Number
+
+                  A sequence number to aid in matching Echo Replies
+                  to this Echo Request.  May be zero.
+
+   Data           Zero or more octets of arbitrary data.
+```
+# 4.1.  Echo Reply Message
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     Type      |     Code      |          Checksum             |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |           Identifier          |        Sequence Number        |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     Data ...
+      +-+-+-+-+-
+
+   IPv6 Fields:
+
+   Destination Address
+
+                  Copied from the Source Address field of the invoking
+                  Echo Request packet.
+
+   ICMPv6 Fields:
+
+   Type           129
+
+   Code           0
+
+   Identifier     The identifier from the invoking Echo Request message.
+   
+   Sequence Number
+
+                  The sequence number from the invoking Echo Request
+                  message.
+
+   Data           The data from the invoking Echo Request message.   
+```
+# 5. Security Considerations
+# 5.1.  Authentication and Confidentiality of ICMP Messages
+
+# 5.2.  ICMP Attacks
+ICMP messages may be subject to various attacks.  A complete discussion can be found in the IP Security Architecture [IPv6-SA](https://tools.ietf.org/html/rfc2401).  A brief discussion of these attacks and their prevention follows:
+
+   1. ICMP messages may be subject to actions intended to cause the
+      receiver to believe the message came from a different source from
+      that of the message originator.  
+   2. ICMP messages may be subject to actions intended to cause the
+      message or the reply to it to go to a destination different from
+      that of the message originator's intention.
+   3. ICMP messages may be subject to changes in the message fields, or
+      payload.        
+   4. ICMP messages may be used to attempt denial-of-service attacks by
+      sending back to back erroneous IP packets.       
+   5. The exception number 2 of rule e.3 in Section 2.4 gives a
+      malicious node the opportunity to cause a denial-of-service attack
+      to a multicast source.  
+   6. As the ICMP messages are passed to the upper-layer processes, it
+      is possible to perform attacks on the upper layer protocols (e.g.,
+      TCP) with ICMP [TCP-attack].  
+
 Reference 
 ==============================
 * [Internet Control Message Protocol (ICMPv6) for IPv6, RFC4443](https://tools.ietf.org/html/rfc4443)
