@@ -633,11 +633,31 @@ None.
 # 7.1.  Message Validation
 # 7.1.1.  Validation of Neighbor Solicitations
 # 7.1.2.  Validation of Neighbor Advertisements
-# 7.2.  Address Resolution
-# 6.3.7.  Sending Router Solicitations
-# 6.3.7.  Sending Router Solicitations
 
-Reference
+# 7.2.  Address Resolution
+It is possible that a host may receive a solicitation, a router advertisement, or a Redirect message without a link-layer address option included.
+# 7.2.1.  Interface Initialization
+# 7.2.2.  Sending Neighbor Solicitations
+# 7.2.3.  Receipt of Neighbor Solicitations
+# 7.2.4.  Sending Solicited Neighbor Advertisements
+# 7.2.5.  Receipt of Neighbor Advertisements
+# 7.2.6.  Sending Unsolicited Neighbor Advertisements
+# 7.2.7.  Anycast Neighbor Advertisements
+# 7.2.8.  Proxy Neighbor Advertisements
+
+# 7.3.  Neighbor Unreachability Detection
+Neighbor Unreachability Detection is used for all paths between hosts and neighboring nodes, including host-to-host, host-to-router, and router-to-host communication.
+# 7.3.1.  Reachability Confirmation
+# 7.3.2.  Neighbor Cache Entry States
+# 7.3.3.  Node Behavior
+
+# 8.  Redirect Function
+# 8.1.  Validation of Redirect Messages
+# 8.2.  Router Specification
+# 8.3.  Host Specification
+
+# 9.  Extensibility - Option Processing
+
 ==============================
 * [Neighbor Discovery for IP version 6 (IPv6),RFC4861, September 2007](https://tools.ietf.org/html/rfc4861)
 * [[ADDR-ARCH] "IP Version 6 Addressing Architecture", RFC 4291, February 2006.](https://tools.ietf.org/html/rfc4291)
