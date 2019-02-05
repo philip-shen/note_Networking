@@ -38,7 +38,16 @@ The services described in this document that are not directly dependent on multi
                - an identifier for a set of interfaces (typically belonging to different nodes).  A packet sent to an
                  anycast address is delivered to one of the interfaces identified by that address (the "nearest" one,
                  according to the routing protocol's measure of distance).  See [ADDR-ARCH](https://tools.ietf.org/html/rfc4291).
+```
+[Anycast](https://en.wikipedia.org/wiki/Anycast)
+Anycast is a network addressing and routing methodology in which a single destination address has multiple routing paths to two or more endpoint destinations. Routers will select the desired path on the basis of number of hops, distance, lowest cost, latency measurements or based on the least congested route. Anycast networks are widely used for content delivery network (CDN) products to bring their content closer to the end user. 
 
+MultiCast
+![alt tag](https://upload.wikimedia.org/wikipedia/commons/3/30/Multicast.svg)
+
+AnyCast
+![alt tag](https://upload.wikimedia.org/wikipedia/en/1/18/Anycast-BM.svg)
+```
    prefix      - a bit string that consists of some number of initial bits of an address.                 
 
    link-layer address
