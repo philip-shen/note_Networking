@@ -43,7 +43,7 @@ The services described in this document that are not directly dependent on multi
 Anycast is a network addressing and routing methodology in which a single destination address has multiple routing paths to two or more endpoint destinations. Routers will select the desired path on the basis of number of hops, distance, lowest cost, latency measurements or based on the least congested route. Anycast networks are widely used for content delivery network (CDN) products to bring their content closer to the end user. 
 
 MultiCast
-![alt tag](https://upload.wikimedia.org/wikipedia/commons/3/30/Multicast.svg)
+![alt tag](https://en.wikipedia.org/wiki/Multicast#/media/File:Multicast.svg)
 
 AnyCast
 ![alt tag](https://upload.wikimedia.org/wikipedia/en/1/18/Anycast-BM.svg)
