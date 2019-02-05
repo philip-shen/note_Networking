@@ -150,6 +150,7 @@ Neighbor Discovery makes use of a number of different addresses defined in [ADDR
 
 # 3.  Protocol Overview
 This protocol solves a set of problems related to the interaction between nodes attached to the same link.
+
 1~4:Host-Router Discovery Functions
 5~8:Host-Host Communication Functions
 9:Redirect Function
