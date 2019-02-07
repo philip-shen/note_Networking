@@ -60,10 +60,60 @@ The text representation of IPv6 address prefixes is similar to the way IPv4 addr
    Anycast addresses are taken from the unicast address spaces (of any scope) and are not syntactically distinguishable from unicast  addresses.
 
 # 2.5.  Unicast Addresses
+There are several types of unicast addresses in IPv6, in particular, Global Unicast, site-local unicast (deprecated, see Section 2.5.7), and Link-Local unicast.  There are also some special-purpose subtypes of Global Unicast, such as IPv6 addresses with embedded IPv4 addresses.
+A slightly sophisticated host (but still rather simple) may additionally be aware of subnet prefix(es) for the link(s) it is attached to, where different addresses may have different values for n:
+```
+   |          n bits               |           128-n bits            |
+   +-------------------------------+---------------------------------+
+   |       subnet prefix           |           interface ID          |
+   +-------------------------------+---------------------------------+
+```
+# 2.5.1.  Interface Identifiers
+Interface identifiers in IPv6 unicast addresses are used to identify interfaces on a link.  They are required to be unique within a subnet prefix.  It is recommended that the same interface identifier not be assigned to different nodes on a link.
 
+Modified EUI-64 format-based interface identifiers may have universal scope when derived from a universal token (e.g., IEEE 802 48-bit MAC or IEEE EUI-64 identifiers [EUI64]) or may have local scope where a global token is not available (e.g., serial links, tunnel end-points)
+
+In the resulting Modified EUI-64 format, the "u" bit is set to one (1) to indicate universal scope, and it is set to zero (0) to indicate local scope.  The first three octets in binary of an IEEE EUI-64 identifier are as follows:
+```
+          0       0 0       1 1       2
+         |0       7 8       5 6       3|
+         +----+----+----+----+----+----+
+         |cccc|ccug|cccc|cccc|cccc|cccc|
+         +----+----+----+----+----+----+
+```
+written in Internet standard bit-order, where "u" is the universal/local bit, "g" is the individual/group bit, and "c" is the bits of the company_id.
+
+# Converting a 48-bit MAC address to a 64-bit Interface Identifier in EUI-64 format:
+To create a EUI-64 interface identifier from a 48-bit MAC address, two octets of values 0xFF and 0xFE are inserted in the middle of 48-bit MAC address (between vendor ID (OUI) and vendor supplied ID). Also, the universal/local bit is set to 1 indicating global scope.
+
+For example, the MAC address 00-05-9A-3C-78-00 is converted to EUI-64 format interface identifier as follows-
+
+00-05-9A-3C-78-00 can be written in binary as 00000000 00000101 10011010 00111100 01111000 00000000.
+                                                                              ^=U/L bit
+Now, we insert 0xFF and 0xFE between 9A and 3C, and also set the U/L bit to 1. This converts to-
+
+00000010 00000101 10010101 11111111 11111110 00111100 01111000 00000000 which in hexadecimal form is 02-05-9A-FF-FE-3C-78-00.
+
+# 2.5.2.  The Unspecified Address
+The address 0:0:0:0:0:0:0:0 is called the unspecified address.  It must never be assigned to any node.  It indicates the absence of an address.
+
+# 2.5.3.  The Loopback Address
+The unicast address 0:0:0:0:0:0:0:1 is called the loopback address.  It may be used by a node to send an IPv6 packet to itself.  It must not be assigned to any physical interface.
+
+# 2.5.4.  Global Unicast Addresses
+```
+
+   |         n bits         |   m bits  |       128-n-m bits         |
+   +------------------------+-----------+----------------------------+
+   | global routing prefix  | subnet ID |       interface ID         |
+   +------------------------+-----------+----------------------------+
+```
 # 9.  Extensibility - Option Processing
 # 9.  Extensibility - Option Processing
 # 9.  Extensibility - Option Processing
+# 9.  Extensibility - Option Processing
+# 9.  Extensibility - Option Processing
+
 
 Reference
 ==============================
