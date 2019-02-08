@@ -54,27 +54,47 @@ interface identifier -  a link-dependent identifier for an interface that is (at
 ```
 # 3.  Design Goals
 ```
-   o  Manual configuration of individual machines before connecting them to the network should not be required.
-      Consequently, a mechanism is needed that allows a host to obtain or create unique addresses for each of its interfaces.     
-      Address autoconfiguration assumes that each interface can provide a unique identifier for that
-      interface (i.e., an "interface identifier").
+o  Manual configuration of individual machines before connecting them to the network should not be required.
+   Consequently, a mechanism is needed that allows a host to obtain or create unique addresses for each of its interfaces.     
+   Address autoconfiguration assumes that each interface can provide a unique identifier for that
+   interface (i.e., an "interface identifier").
 
-   o  Small sites consisting of a set of machines attached to a single link should not require the presence of a DHCPv6 server or router
-      as a prerequisite for communicating.  Plug-and-play communication is achieved through the use of link-local addresses.
-      Link-local addresses have a well-known prefix that identifies the (single) shared link to which a set of nodes attach.     
-      A host forms a link-local address by appending an interface identifier to the link-local prefix.
+o  Small sites consisting of a set of machines attached to a single link should not require the presence of a DHCPv6 server or router
+   as a prerequisite for communicating.  Plug-and-play communication is achieved through the use of link-local addresses.
+   Link-local addresses have a well-known prefix that identifies the (single) shared link to which a set of nodes attach.     
+   A host forms a link-local address by appending an interface identifier to the link-local prefix.
       
-   o  A large site with multiple networks and routers should not require the presence of a DHCPv6 server for address configuration.
-      In order to generate global addresses, hosts must determine the prefixes that identify the subnets to which they attach.  
-      Routers generate periodic Router Advertisements that include options listing the set of active prefixes on a link.
+o  A large site with multiple networks and routers should not require the presence of a DHCPv6 server for address configuration.
+   In order to generate global addresses, hosts must determine the prefixes that identify the subnets to which they attach.  
+   Routers generate periodic Router Advertisements that include options listing the set of active prefixes on a link.
 
-   o  Address configuration should facilitate the graceful renumbering of a site's machines.  Renumbering is achieved through the
-      leasing ofaddresses to interfaces and the assignment of multiple addresses to the same interface.  Lease lifetimes provide the
-      mechanism through which a site phases out old prefixes.  The assignment of multiple addresses to an interface provides for a
-      transition period during which both a new address and the one being phased out work simultaneously.
+o  Address configuration should facilitate the graceful renumbering of a site's machines.  Renumbering is achieved through the
+   leasing ofaddresses to interfaces and the assignment of multiple addresses to the same interface.  Lease lifetimes provide the
+   mechanism through which a site phases out old prefixes.  The assignment of multiple addresses to an interface provides for a
+   transition period during which both a new address and the one being phased out work simultaneously.
 ```
 # 4.  Protocol Overview
+multicast-capable interface is enabled, e.g., during system startup. Nodes (both hosts and routers) begin the autoconfiguration process by generating a link-local address for the interface.  A link-local address is formed by appending an identifier of the interface to the well-known link-local prefix [RFC4291].
+
+Before the link-local address can be assigned to an interface and used, however, a node must attempt to verify that this "tentative" address is not already in use by another node on the link.
+
+If a node determines that its tentative link-local address is not unique, autoconfiguration stops and manual configuration of the interface is required.
+
+Once a node ascertains that its tentative link-local address is unique, it assigns the address to the interface.  At this point, the node has IP-level connectivity with neighboring nodes.
+
+The next phase of autoconfiguration involves obtaining a Router Advertisement or determining that no routers are present.  If routers are present, they will send Router Advertisements that specify what sort of autoconfiguration a host can do.
+
+Routers send Router Advertisements periodically, but the delay between successive advertisements will generally be longer than a host performing autoconfiguration will want to wait [RFC4861].  To obtain an advertisement quickly, a host sends one or more Router Solicitations to the all-routers multicast group.
+
+Router Advertisements also contain zero or more Prefix Information options that contain information used by stateless address autoconfiguration to generate global addresses.
+
+By default, all addresses should be tested for uniqueness prior to their assignment to an interface for safety.  The test should individually be performed on all addresses obtained manually, via stateless address autoconfiguration, or via DHCPv6.
+
+To speed the autoconfiguration process, a host may generate its link- local address (and verify its uniqueness) in parallel with waiting for a Router Advertisement.
+
 # 4.1.  Site Renumbering
+Address leasing facilitates site renumbering by providing a mechanism to time-out addresses assigned to interfaces in hosts.  At present, upper-layer protocols such as TCP provide no support for changing end-point addresses while a connection is open.
+
 # 1.  Introduction
 # 1.  Introduction
 # 1.  Introduction
