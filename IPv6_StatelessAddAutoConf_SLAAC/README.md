@@ -1,9 +1,11 @@
 # 1.  Introduction
 This document specifies the steps a host takes in deciding how to autoconfigure its interfaces in IP version 6 (IPv6).
 The autoconfiguration process includes:
+```
 generating a link-local address,
 generating global addresses via stateless address autoconfiguration,
 and the Duplicate Address Detection procedure to verify the uniqueness of the addresses on a link.
+```
 
 # 1.  Introduction
 # 1.  Introduction
