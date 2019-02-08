@@ -108,16 +108,206 @@ The unicast address 0:0:0:0:0:0:0:1 is called the loopback address.  It may be u
    | global routing prefix  | subnet ID |       interface ID         |
    +------------------------+-----------+----------------------------+
 ```
-# 9.  Extensibility - Option Processing
-# 9.  Extensibility - Option Processing
-# 9.  Extensibility - Option Processing
-# 9.  Extensibility - Option Processing
-# 9.  Extensibility - Option Processing
+where the global routing prefix is a (typically hierarchically-structured) value assigned to a site (a cluster of subnets/links), the subnet ID is an identifier of a link within the site, and the interface ID is as defined in Section 2.5.1.
 
+All Global Unicast addresses other than those that start with binary 000 have a 64-bit interface ID field (i.e., n + m = 64), formatted as described in Section 2.5.1.  Global Unicast addresses that start with binary 000 have no such constraint on the size or structure of the interface ID field.
+ 
+# 2.5.5.1.  IPv4-Compatible IPv6 Address
+The format of the "IPv4-Compatible IPv6 address" is as follows:
+```
+   |                80 bits               | 16 |      32 bits        |
+   +--------------------------------------+--------------------------+
+   |0000..............................0000|0000|    IPv4 address     |
+   +--------------------------------------+----+---------------------+
+```
+Note: The IPv4 address used in the "IPv4-Compatible IPv6 address" must be a globally-unique IPv4 unicast address.
+
+The "IPv4-Compatible IPv6 address" is now deprecated because the current IPv6 transition mechanisms no longer use these addresses.
+
+# 2.5.5.2.  IPv4-Mapped IPv6 Address
+This address type is used to represent the addresses of IPv4 nodes as IPv6 addresses.
+```
+   |                80 bits               | 16 |      32 bits        |
+   +--------------------------------------+--------------------------+
+   |0000..............................0000|FFFF|    IPv4 address     |
+   +--------------------------------------+----+----------------
+```
+# 2.5.6.  Link-Local IPv6 Unicast Addresses
+```
+   |   10     |
+   |  bits    |         54 bits         |          64 bits           |
+   +----------+-------------------------+----------------------------+
+   |1111111010|           0             |       interface ID         |
+   +----------+-------------------------+----------------------------+
+```
+Link-Local addresses are designed to be used for addressing on a single link for purposes such as automatic address configuration, neighbor discovery, or when no routers are present.
+Routers must not forward any packets with Link-Local source or destination addresses to other links.
+
+# 2.5.7.  Site-Local IPv6 Unicast Addresses
+Site-Local addresses were originally designed to be used for addressing inside of a site without the need for a global prefix.  Site-local addresses are now deprecated as defined in [SLDEP].
+```
+   |   10     |
+   |  bits    |         54 bits         |         64 bits            |
+   +----------+-------------------------+----------------------------+
+   |1111111011|        subnet ID        |       interface ID         |
+   +----------+-------------------------+----------------------------+
+```
+The special behavior of this prefix defined in [RFC3513] must no longer be supported in new implementations (i.e., new implementations must treat this prefix as Global Unicast).
+
+# 2.6.  Anycast Addresses
+An IPv6 anycast address is an address that is assigned to more than one interface (typically belonging to different nodes), with the property that a packet sent to an anycast address is routed to the "nearest" interface having that address, according to the routing protocols' measure of distance.
+
+Anycast addresses are allocated from the unicast address space, using any of the defined unicast address formats.  Thus, anycast addresses are syntactically indistinguishable from unicast addresses.
+When a unicast address is assigned to more than one interface, thus turning it into an anycast address, the nodes to which the address is assigned must be explicitly configured to know that it is an anycast address.
+
+For any assigned anycast address, there is a longest prefix P of that address that identifies the topological region in which all interfaces belonging to that anycast address reside.  
+Within the region identified by P, the anycast address must be maintained as a separate entry in the routing system (commonly referred to as a "host route"); outside the region identified by P, the anycast address may be aggregated into the routing entry for prefix P.
+
+Note that in the worst case, the prefix P of an anycast set may be the null prefix, i.e., the members of the set may have no topological locality.  
+In that case, the anycast address must be maintained as a separate routing entry throughout the entire Internet, which presents a severe scaling limit on how many such "global" anycast sets may be supported.
+
+One expected use of anycast addresses is to identify the set of routers belonging to an organization providing Internet service.
+Such addresses could be used as intermediate addresses in an IPv6 Routing header, to cause a packet to be delivered via a particular service provider or sequence of service providers.
+
+Some other possible uses are to identify the set of routers attached to a particular subnet, or the set of routers providing entry into a  particular routing domain.
+
+# 2.6.1.  Required Anycast Address
+The Subnet-Router anycast address is predefined.  Its format is as follows:
+```
+   |                         n bits                 |   128-n bits   |
+   +------------------------------------------------+----------------+
+   |                   subnet prefix                | 00000000000000 |
+   +------------------------------------------------+----------------+
+```
+The "subnet prefix" in an anycast address is the prefix that identifies a specific link.  This anycast address is syntactically the same as a unicast address for an interface on the link with the interface identifier set to zero.
+
+Packets sent to the Subnet-Router anycast address will be delivered to one router on the subnet.  All routers are required to support the Subnet-Router anycast addresses for the subnets to which they have interfaces.
+
+The Subnet-Router anycast address is intended to be used for applications where a node needs to communicate with any one of the set of routers.
+
+# 2.7.  Multicast Addresses
+An interface may belong to any number of multicast groups.  Multicast addresses have the following format:
+```
+   |   8    |  4 |  4 |                  112 bits                   |
+   +------ -+----+----+---------------------------------------------+
+   |11111111|flgs|scop|                  group ID                   |
+   +--------+----+----+---------------------------------------------+
+```
+binary 11111111 at the start of the address identifies the address as being a multicast address.
+                                    +-+-+-+-+
+      flgs is a set of 4 flags:     |0|R|P|T|
+                                    +-+-+-+-+
+
+The high-order flag is reserved, and must be initialized to 0.
+
+T = 0 indicates a permanently-assigned ("well-known") multicast address, assigned by the Internet Assigned Numbers Authority (IANA).
+T = 1 indicates a non-permanently-assigned ("transient" or "dynamically" assigned) multicast address.
+The P flag's definition and usage can be found in [RFC3306].
+The R flag's definition and usage can be found in [RFC3956].
+
+scop is a 4-bit multicast scope value used to limit the scope of the multicast group.  The values are as follows:
+```
+         0  reserved
+         1  Interface-Local scope
+         2  Link-Local scope
+         3  reserved
+         4  Admin-Local scope
+         5  Site-Local scope
+         6  (unassigned)
+         7  (unassigned)
+         8  Organization-Local scope
+         9  (unassigned)
+         A  (unassigned)
+         B  (unassigned)
+         C  (unassigned)
+         D  (unassigned)
+         E  Global scope
+         F  reserved
+```
+Interface-Local scope spans only a single interface on a node and is useful only for loopback transmission of multicast.
+Link-Local multicast scope spans the same topological region as the corresponding unicast scope.
+Admin-Local scope is the smallest scope that must be administratively configured, i.e., not automatically derived from physical connectivity or other, non-multicast-related configuration.
+Site-Local scope is intended to span a single site.
+Organization-Local scope is intended to span multiple sites belonging to a single organization.
+scopes labeled "(unassigned)" are available for administrators to define additional multicast regions.
+
+# 2.7.1.  Pre-Defined Multicast Addresses
+```
+      Reserved Multicast Addresses:   FF00:0:0:0:0:0:0:0
+                                      FF01:0:0:0:0:0:0:0
+                                      FF02:0:0:0:0:0:0:0
+                                      FF03:0:0:0:0:0:0:0
+                                      FF04:0:0:0:0:0:0:0
+                                      FF05:0:0:0:0:0:0:0
+                                      FF06:0:0:0:0:0:0:0
+                                      FF07:0:0:0:0:0:0:0
+                                      FF08:0:0:0:0:0:0:0
+                                      FF09:0:0:0:0:0:0:0
+                                      FF0A:0:0:0:0:0:0:0
+                                      FF0B:0:0:0:0:0:0:0
+                                      FF0C:0:0:0:0:0:0:0
+                                      FF0D:0:0:0:0:0:0:0
+                                      FF0E:0:0:0:0:0:0:0
+                                      FF0F:0:0:0:0:0:0:0
+```
+The above multicast addresses are reserved and shall never be assigned to any multicast group.
+```
+      All Nodes Addresses:    FF01:0:0:0:0:0:0:1
+                              FF02:0:0:0:0:0:0:1
+```
+The above multicast addresses identify the group of all IPv6 nodes, within scope 1 (interface-local) or 2 (link-local).
+```
+      All Routers Addresses:   FF01:0:0:0:0:0:0:2
+                               FF02:0:0:0:0:0:0:2
+                               FF05:0:0:0:0:0:0:2
+```
+The above multicast addresses identify the group of all IPv6 routers, within scope 1 (interface-local), 2 (link-local), or 5 (site-local).
+```
+      Solicited-Node Address:  FF02:0:0:0:0:1:FFXX:XXXX
+```
+Solicited-Node multicast address are computed as a function of a node's unicast and anycast addresses.  A Solicited-Node multicast address is formed by taking the low-order 24 bits of an address(unicast or anycast) and appending those bits to the prefix FF02:0:0:0:0:1:FF00::/104 resulting in a multicast address in the range
+```
+         FF02:0:0:0:0:1:FF00:0000
+   to
+         FF02:0:0:0:0:1:FFFF:FFFF
+```
+For example, the Solicited-Node multicast address corresponding to the IPv6 address 4037::01:800:200E:8C6C is FF02::1:FF0E:8C6C.  IPv6  addresses that differ only in the high-order bits (e.g., due to multiple high-order prefixes associated with different aggregations)
+
+# 2.8.  A Node's Required Addresses
+A host is required to recognize the following addresses as identifying itself:
+```
+      o Its required Link-Local address for each interface.
+
+      o Any additional Unicast and Anycast addresses that have been
+        configured for the node's interfaces (manually or
+        automatically).
+
+      o The loopback address.
+
+      o The All-Nodes multicast addresses defined in Section 2.7.1.
+
+      o The Solicited-Node multicast address for each of its unicast and
+        anycast addresses.
+
+      o Multicast addresses of all other groups to which the node
+        belongs.
+```
+A router is required to recognize all addresses that a host is required to recognize, plus the following addresses as identifying itself:
+```
+      o The Subnet-Router Anycast addresses for all interfaces for which
+        it is configured to act as a router.
+
+      o All other Anycast addresses with which the router has been
+        configured.
+
+      o The All-Routers multicast addresses defined in Section 2.7.1.
+```
 
 Reference
 ==============================
+* [Internet Protocol Version 6 (IPv6) Addressing Architecture, RFC3531, April 2003](https://tools.ietf.org/html/rfc3513)
 * [IP Version 6 Addressing Architecture, RFC4291, February 2006](https://tools.ietf.org/html/rfc4291)
+* [[GLOBAL] "IPv6 Global Unicast Address Format", RFC 3587, August 2003](https://tools.ietf.org/html/rfc3587)
 
 * []()
 ![alt tag]()
