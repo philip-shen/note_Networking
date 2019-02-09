@@ -95,6 +95,44 @@ To speed the autoconfiguration process, a host may generate its link- local addr
 # 4.1.  Site Renumbering
 Address leasing facilitates site renumbering by providing a mechanism to time-out addresses assigned to interfaces in hosts.  At present, upper-layer protocols such as TCP provide no support for changing end-point addresses while a connection is open.
 
+Dividing valid addresses into preferred and deprecated categories provides a way of indicating to upper layers that a valid address may become invalid shortly and that future communication using the address will fail, should the address's valid lifetime expire before communication ends.
+To avoid this scenario, higher layers should use a preferred address (assuming one of sufficient scope exists) to increase the likelihood that an address will remain valid for the duration of the communication.
+It is up to system administrators to set appropriate prefix lifetimes in order to minimize the impact of failed communication when renumbering takes place.  The deprecation period should be long enough that most, if not all, communications are using the new address at the time an address becomes invalid.
+
+The IP layer is expected to provide a means for upper layers (including applications) to select the most appropriate source address given a particular destination and possibly other constraints.
+An application may choose to select the source address itself before starting a new communication or may leave the address unspecified, in which case, the upper networking layers will use the mechanism provided by the IP layer to choose a suitable address on the application's behalf.
+
+Detailed address selection rules are beyond the scope of this document and are described in [RFC3484](https://tools.ietf.org/html/rfc3484).
+
+# 5.  Protocol Specification
+Autoconfiguration is performed on a per-interface basis on multicast-capable interfaces.  For multihomed hosts, autoconfiguration is performed independently on each interface.
+Autoconfiguration applies primarily to hosts, with two exceptions.  
+Routers are expected to generate a link-local address using the procedure outlined below.  In addition, routers perform Duplicate Address Detection on all addresses prior to assigning them to an interface.
+
+# 5.1.  Node Configuration Variables
+A node MUST allow the following autoconfiguration-related variable to be configured by system management for each multicast-capable interface:
+   DupAddrDetectTransmits  The number of consecutive Neighbor Solicitation messages sent while performing Duplicate Address
+                              Detection on a tentative address.  
+                              A value of zero indicates that Duplicate Address Detection is not performed on tentative addresses.  
+                              A value of one indicates a single transmission with no follow-up retransmissions.
+Default: 1, but may be overridden by a link-type specific value in the document that covers issues related to the transmission of IP
+      over a particular link type (e.g., [RFC2464]).
+
+# 5.2.  Autoconfiguration-Related Structures
+how routers (auto)configure their interfaces is beyond the scope of this document.
+
+A host maintains a list of addresses together with their corresponding lifetimes.  The address list contains both autoconfigured addresses and those configured manually.
+
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
+# 1.  Introduction
 # 1.  Introduction
 # 1.  Introduction
 # 1.  Introduction
@@ -104,6 +142,11 @@ Reference
 ==============================
 * [IPv6 Stateless Address Autoconfiguration, RFC4862, September 2007](https://tools.ietf.org/html/rfc4862)
 * [slaac-wan.tcl  Autoconf / SLAAC client tests for the WAN side of the router](https://support.qacafe.com/test-summary/ipv6-test-summary/#slaac-wan.tcl)
+* [Default Address Selection for Internet Protocol version 6 (IPv6) February 2003](https://tools.ietf.org/html/rfc3484)
+* [Default Address Selection for Internet Protocol Version 6 (IPv6) September 2012](https://tools.ietf.org/html/rfc6724)
+
+* [Identifying the preferred IPv6 source address for an adapter](https://stackoverflow.com/questions/7202316/identifying-the-preferred-ipv6-source-address-for-an-adapter)
+* [IPv6 Source Address Selection – what, why, how 2012/07/21](http://biplane.com.au/blog/?p=22)
 
 * []()
 ![alt tag]()
