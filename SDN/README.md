@@ -28,6 +28,24 @@ Often people point to OpenFlow as being synonymous with software-defined network
 OpenFlow is an open standard for a communications protocol that enables the control plane to interact with the forwarding plane. It must be noted that OpenFlow is not the only protocol available or in development for SDN.
 
 # What are SDN Controllers (or SDN Controllers Platforms)?
+SDN Controllers (aka SDN Controller Platforms) in a software-defined network (SDN) is the “brains” of the network. It is the application that acts as a strategic control point in the SDN network, manage flow control to the switches/routers ‘below’ (via southbound APIs) and the applications and business logic ‘above’ (via northbound APIs) to deploy intelligent networks.  
+Recently, as organizations deploy more SDN networks, the Controllers have been tasked with federating between SDN Controller domains, using common application interfaces, such as OpenFlow and open virtual switch database [OVSDB](http://docs.openvswitch.org/en/latest/).
+
+Two of the most well-known protocols used by SDN Controllers to communicate with the switches/routers is [OpenFlow](https://www.opennetworking.org/wp-content/uploads/2014/10/openflow-spec-v1.3.0.pdf) and OVSDB. 
+Other protocols that could be used by an SDN Controller is YANG or NetConf. 
+Other SDN Controller protocols are being developed, while more established networking protocols are finding ways to run in an SDN environment. For example, the Internet Engineering Task Force (IETF) working group – the Interface to the Routing System [i2rs](https://datatracker.ietf.org/wg/i2rs/documents/) – developed an SDN standard that enables an SDN Controller to leverage proven, traditional protocols, such as OSPF, MPLS, BGP, and IS-IS.
+
+![alt tag](https://www.ixiacom.com/sites/default/files/inline-images/NETCONF-YANG.png)
+```
+The motivation behind NETCONF and YANG was, instead of individual devices with functionalities, to have a network management system that manages the network at the service level that includes: 
+
+    Standardized data model (YANG)
+    Network-wide configuration transactions
+    Validation and roll-back of configuration
+    Centralized backup and restore configuration
+
+Businesses have used SNMP for a long time, but it was being used more for reading device states than for configuring devices. NETCONF and YANG address the shortcomings of SNMP and add more functionalities in network management
+```
 
 Reference
 ==============================
@@ -35,6 +53,7 @@ Reference
 * [SDN 温故知新](https://qiita.com/hichihara/items/d6ede5ec8ad0ae35b9e1)
 * [What is Software Defined Networking (SDN)? Definition](https://www.sdxcentral.com/sdn/definitions/what-the-definition-of-software-defined-networking-sdn/)
 * [What are SDN Controllers (or SDN Controllers Platforms)?](https://www.sdxcentral.com/sdn/definitions/sdn-controllers/)
+* [Network Configuration Protocol (NETCONF) June 2011](https://tools.ietf.org/html/rfc6241)
 
 * []()
 ![alt tag]()
