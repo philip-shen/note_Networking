@@ -4,7 +4,9 @@ SDN encompasses multiple kinds of network technologies designed to make the netw
 Software-defined networking originally defined an approach to designing, building, and managing networks that separates the network’s control or SDN network policy (brains) and forwarding (muscle) planes thus enabling the network control to become directly programmable and the underlying infrastructure to be abstracted for applications and network services for applications as SDN cloud computing or mobile networks.
 
 How Does Software-Defined Networking Work?
+
 ![alt tag](https://www.sdxcentral.com/wp-content/uploads/2013/08/SDN-Framework1.jpg)
+
 All software-defined network solutions have some version of an SDN Controller, as well as southbound APIs and northbound APIs:
 ```
     Controllers: The “brains” of the network, SDN Controllers offer a centralized view of the overall network, and enable network
