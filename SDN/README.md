@@ -37,7 +37,7 @@ Other SDN Controller protocols are being developed, while more established netwo
 
 ![alt tag](https://www.ixiacom.com/sites/default/files/inline-images/NETCONF-YANG.png)
 ```
-                    Network diagram of a NETCONF management system
+        Network diagram of a NETCONF management system
 ```
 ```
 The motivation behind NETCONF and YANG was, instead of individual devices with functionalities, to have a network management system that manages the network at the service level that includes: 
@@ -50,13 +50,46 @@ The motivation behind NETCONF and YANG was, instead of individual devices with f
 Businesses have used SNMP for a long time, but it was being used more for reading device states than for configuring devices. NETCONF and YANG address the shortcomings of SNMP and add more functionalities in network management
 ```
 
+# What is SDN Orchestration (SDN Policy Orchestration)?
+Software-defined networking (SDN) orchestration (or SDN orchestration or SDN policy orchestration) is the ability to program automated behaviors in a network to coordinate the required networking hardware and software elements to support applications and services.
+
+Got SDN Policy Orchestration
+-------------------------------------------------
+SDN orchestration often involves coordinating software actions with an SDN Controller, which can be built using open source technology such as OpenDaylight.
+
+# What are SDN Northbound APIs (and SDN Rest APIs)?
+
+![alt tag](https://www.sdxcentral.com/wp-content/uploads/2013/08/sdn-framework.jpg)
+In a software-defined network (SDN) architecture, the northbound application program interfaces (APIs) are usually SDN Rest APIs used to communicate between the SDN Controller and the services and applications running over the network.
+
+How Do Northbound APIs Work?
+-------------------------------------------------
+Because they are so critical, northbound APIs must support a wide variety of applications, so one size will likely not fit all. This is possibly why SDN northbound APIs are currently the most nebulous component in an SDN environment — a variety of possible interfaces exist in different places up the stack to control different types of applications via an SDN Controller.
+
+SDN Northbound APIs (or SDN Rest APIs) are also used to integrate the SDN Controller with automation stacks, such as Puppet, Chef, SaltStack, Ansible and CFEngine, as well as orchestration platforms, such as [OpenStack](https://www.openstack.org/), VMware’s vCloudDirector or the open source CloudStack(https://cloudstack.apache.org/).
+
+Recently, the Open Networking Foundation (ONF) turned its focus to the SDN northbound API.
+
+# What are SDN Southbound APIs?
+In a software-defined network (SDN) architecture, southbound application program interfaces (APIs) (or SDN southbound APIs) are used to communicate between the SDN Controller and the switches and routers of the network. They can be open or proprietary.
+
+How Do SDN Southbound APIs Work?
+-------------------------------------------------
+Southbound APIs facilitate efficient control over the network and enable the SDN Controller to dynamically make changes according to real-time demands and needs.
+
+![alt tag](https://www.opendaylight.org/wp-content/uploads/sites/14/2018/09/Screen-Shot-2018-09-13-at-3.15.43-PM.png)
+
 Reference
 ==============================
 * [5分でわかる、これまでのSDN動向](https://qiita.com/ttsubo/items/9062addd7c24d5adfcf3)
 * [SDN 温故知新](https://qiita.com/hichihara/items/d6ede5ec8ad0ae35b9e1)
 * [What is Software Defined Networking (SDN)? Definition](https://www.sdxcentral.com/sdn/definitions/what-the-definition-of-software-defined-networking-sdn/)
 * [What are SDN Controllers (or SDN Controllers Platforms)?](https://www.sdxcentral.com/sdn/definitions/sdn-controllers/)
-* [Network Configuration Protocol (NETCONF) June 2011](https://tools.ietf.org/html/rfc6241)
+
+* [Network Configuration Protocol (NETCONF), RFC6241, June 2011](https://tools.ietf.org/html/rfc6241)
+* [YANG - A Data Modeling Language for the Network Configuration Protocol (NETCONF), RFC6020, October 2010](https://tools.ietf.org/html/rfc6020)
+* [SDN and Orchestration, NETCONF and YANG, OPENFLOW and NFV 2016/2/3](https://www.linkedin.com/pulse/sdn-orchestration-netconf-yang-openflow-nfv-harinder-bakhshi)
+* [What is SDN Orchestration (SDN Policy Orchestration)?](https://www.sdxcentral.com/sdn/definitions/what-is-sdn-orchestration/)
 
 * []()
 ![alt tag]()
