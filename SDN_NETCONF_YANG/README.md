@@ -1,4 +1,4 @@
-https://www.ixiacom.com/sites/default/files/inline-images/NETCONF-YANG.png
+![alt tag](https://www.ixiacom.com/sites/default/files/inline-images/NETCONF-YANG.png)
 
 # 1.  Introduction
 
