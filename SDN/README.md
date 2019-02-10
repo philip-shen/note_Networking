@@ -79,17 +79,27 @@ Southbound APIs facilitate efficient control over the network and enable the SDN
 
 ![alt tag](https://www.opendaylight.org/wp-content/uploads/sites/14/2018/09/Screen-Shot-2018-09-13-at-3.15.43-PM.png)
 
+# What is Ryu Controller?
+In general, the SDN Controller is the brains of the SDN environment, communicating information down to the switches and routers with southbound APIs, and up to the applications and business logic with northbound APIs. The Ryu Controller is supported by NTT and is deployed in NTT cloud data centers as well.
+
+Written entirely in Python, all of Ryu’s code is available under the Apache 2.0 license and open for anyone to use. The Ryu Controller supports NETCONF and OF-config network management protocols, as well as OpenFlow, which is one of the first and most widely deployed SDN communications standards.  It also supports Nicira extensions.
+
 Reference
 ==============================
 * [5分でわかる、これまでのSDN動向](https://qiita.com/ttsubo/items/9062addd7c24d5adfcf3)
 * [SDN 温故知新](https://qiita.com/hichihara/items/d6ede5ec8ad0ae35b9e1)
 * [What is Software Defined Networking (SDN)? Definition](https://www.sdxcentral.com/sdn/definitions/what-the-definition-of-software-defined-networking-sdn/)
 * [What are SDN Controllers (or SDN Controllers Platforms)?](https://www.sdxcentral.com/sdn/definitions/sdn-controllers/)
+* [What is SDN Orchestration (SDN Policy Orchestration)?](https://www.sdxcentral.com/sdn/definitions/what-is-sdn-orchestration/)
+* [What is Ryu Controller?](https://www.sdxcentral.com/sdn/definitions/sdn-controllers/open-source-sdn-controllers/what-is-ryu-controller/)
+* [Ryu, Home](https://github.com/osrg/ryu/wiki)
 
 * [Network Configuration Protocol (NETCONF), RFC6241, June 2011](https://tools.ietf.org/html/rfc6241)
 * [YANG - A Data Modeling Language for the Network Configuration Protocol (NETCONF), RFC6020, October 2010](https://tools.ietf.org/html/rfc6020)
 * [SDN and Orchestration, NETCONF and YANG, OPENFLOW and NFV 2016/2/3](https://www.linkedin.com/pulse/sdn-orchestration-netconf-yang-openflow-nfv-harinder-bakhshi)
-* [What is SDN Orchestration (SDN Policy Orchestration)?](https://www.sdxcentral.com/sdn/definitions/what-is-sdn-orchestration/)
+* [Open vSwitch Database(OVSDB)](http://docs.openvswitch.org/en/latest/ref/ovsdb.5/)
+* [The Open vSwitch Database Management Protocol, RFC7047, December 2013](https://tools.ietf.org/html/rfc7047)
+
 
 * []()
 ![alt tag]()
