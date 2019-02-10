@@ -1,12 +1,14 @@
+https://www.ixiacom.com/sites/default/files/inline-images/NETCONF-YANG.png
+
 # 1.  Introduction
 
-# 1.1.  Relationship to Previous DHCPv6 Standards
+# 
    
-# 1.2.  Relationship to DHCPv4
+# 
    
-# 3.  Background
+# 
 
-# 9.  Extensibility - Option Processing
+# 
 
 Reference
 ==============================
