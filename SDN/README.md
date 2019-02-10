@@ -37,6 +37,9 @@ Other SDN Controller protocols are being developed, while more established netwo
 
 ![alt tag](https://www.ixiacom.com/sites/default/files/inline-images/NETCONF-YANG.png)
 ```
+                    Network diagram of a NETCONF management system
+```
+```
 The motivation behind NETCONF and YANG was, instead of individual devices with functionalities, to have a network management system that manages the network at the service level that includes: 
 
     Standardized data model (YANG)
