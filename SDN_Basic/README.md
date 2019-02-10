@@ -1,3 +1,5 @@
+![alt tag](https://camo.qiitausercontent.com/91b940f19c6cd485924424d71e86f0732a16a3f9/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f3231363038372f33653866363635342d373239612d633237302d366237642d3764393432373266393331302e706e67)
+
 # What is Software Defined Networking (SDN)? Definition
 The goal of Software-Defined Networking (SDN) is to enable cloud computing and network engineers and administrators to respond quickly to changing business requirements via a centralized control console. 
 SDN encompasses multiple kinds of network technologies designed to make the network more flexible and agile to support the virtualized server and storage infrastructure of the modern data center. 
@@ -77,7 +79,7 @@ How Do SDN Southbound APIs Work?
 -------------------------------------------------
 Southbound APIs facilitate efficient control over the network and enable the SDN Controller to dynamically make changes according to real-time demands and needs.
 
-![alt tag](https://www.opendaylight.org/wp-content/uploads/sites/14/2018/09/Screen-Shot-2018-09-13-at-3.15.43-PM.png)
+![alt tag](https://camo.qiitausercontent.com/d7f4737ca49204cd7bb4699209d873c5625bae54/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f3231363038372f62643738383865632d343130662d626532392d383162352d6138633336313331313161372e706e67)
 
 # What is Ryu Controller?
 In general, the SDN Controller is the brains of the SDN environment, communicating information down to the switches and routers with southbound APIs, and up to the applications and business logic with northbound APIs. The Ryu Controller is supported by NTT and is deployed in NTT cloud data centers as well.
