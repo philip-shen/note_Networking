@@ -317,6 +317,8 @@ The base protocol includes the following protocol operations:
 ```
 The syntax and XML encoding of the protocol operations are formally defined in the YANG module in Appendix C.  The following sections describe the semantics of each protocol operation.
 
+![alt tag](https://image.slidesharecdn.com/anintroductiontorestapi-170530164024/95/an-introduction-to-rest-api-6-638.jpg?cb=1496162677)
+
 ```
 7.1.  <get-config>
 ```
@@ -626,6 +628,7 @@ Reference
 * [YANG - A Data Modeling Language for the Network Configuration Protocol (NETCONF), RFC6020, October 2010](https://tools.ietf.org/html/rfc6020)
 * [An Introduction to NETCONF/YANG ](https://www.fir3net.com/Networking/Protocols/an-introduction-to-netconf-yang.html)
 * [Python - How to Obtain the Configuration of a Networking Device using NETCONF](https://www.fir3net.com/Networking/Protocols/how-to-operate-a-device-using-netconf-and-python.html)
+* [RESTful APIs HTTP Methods](https://restfulapi.net/http-methods/)
 
 * []()
 ![alt tag]()
