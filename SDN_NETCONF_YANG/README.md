@@ -317,6 +317,102 @@ The base protocol includes the following protocol operations:
 ```
 The syntax and XML encoding of the protocol operations are formally defined in the YANG module in Appendix C.  The following sections describe the semantics of each protocol operation.
 
+```
+7.1.  <get-config>
+```
+Description:  Retrieve all or part of a specified configuration datastore.
+
+Parameters:
+
+      source:  Name of the configuration datastore being queried, such as 
+```   
+      <running/>.
+```
+Example:  To retrieve the entire <users> subtree:
+
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <get-config>
+         <source>
+           <running/>
+         </source>
+         <filter type="subtree">
+           <top xmlns="http://example.com/schema/1.2/config">
+             <users/>
+           </top>
+         </filter>
+       </get-config>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <data>
+         <top xmlns="http://example.com/schema/1.2/config">
+           <users>
+             <user>
+               <name>root</name>
+               <type>superuser</type>
+               <full-name>Charlie Root</full-name>
+               <company-info>
+                 <dept>1</dept>
+                 <id>1</id>
+               </company-info>
+             </user>
+             <!-- additional <user> elements appear here... -->
+           </users>
+         </top>
+       </data>
+     </rpc-reply>   
+```
+
+```
+7.2.  <edit-config>
+```
+Description:
+      The operation loads all or part of a specified configuration to the specified target configuration datastore.
+      This operation allows the new configuration to be expressed in several ways, such as using a local file, a remote file, or
+      inline.  If the target configuration datastore does not exist, it will be created.
+
+Attributes:
+      operation:"operation" attribute, which belongs to the NETCONF namespace defined in Section 3.1.
+      The "operation" attribute has one of the following values:
+      
+      merge:  The configuration data identified by the element
+            containing this attribute is merged with the configuration
+            at the corresponding level in the configuration datastore
+            identified by the <target> parameter.  This is the default
+            behavior.
+
+         replace:  The configuration data identified by the element
+            containing this attribute replaces any related configuration
+            in the configuration datastore identified by the <target>
+            parameter.  If no such configuration data exists in the
+            configuration datastore, it is created.  Unlike a
+            <copy-config> operation, which replaces the entire target
+            configuration, only the configuration actually present in
+            the <config> parameter is affected.
+
+         create:  The configuration data identified by the element
+            containing this attribute is added to the configuration if
+            and only if the configuration data does not already exist in
+            the configuration datastore.  If the configuration data
+            exists, an <rpc-error> element is returned with an
+            <error-tag> value of "data-exists".
+
+         delete:  The configuration data identified by the element
+            containing this attribute is deleted from the configuration
+            if and only if the configuration data currently exists in
+            the configuration datastore.  If the configuration data does
+            not exist, an <rpc-error> element is returned with an
+            <error-tag> value of "data-missing".
+
+         remove:  The configuration data identified by the element
+            containing this attribute is deleted from the configuration
+            if the configuration data currently exists in the
+            configuration datastore.  If the configuration data does not
+            exist, the "remove" operation is silently ignored by the
+            server.
 # 
 # 
 # 
