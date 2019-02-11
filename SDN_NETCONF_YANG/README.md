@@ -128,7 +128,7 @@ The NETCONF protocol uses an RPC-based communication model.  NETCONF peers use <
 
 # 4.  RPC Model 
 
-# 4.1.  <rpc> Element 
+# 4.1.  /<rpc/> Element 
    
 # 
 
