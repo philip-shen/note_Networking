@@ -128,9 +128,207 @@ The NETCONF protocol uses an RPC-based communication model.  NETCONF peers use <
 
 # 4.  RPC Model 
 
- 4.1.  /<rpc/> Element 
-==============================   
+ 4.1.  <rpc> Element 
 
+The <rpc> element is used to enclose a NETCONF request sent from the client to the server.
+The following example invokes the NETCONF <get> method with no parameters:
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <get/>
+     </rpc>   
+```
+   
+4.2.  <rpc-reply> Element
+
+The <rpc-reply> message is sent in response to an <rpc> message.
+
+The <rpc-reply> element has a mandatory attribute "message-id", which is equal to the "message-id" attribute of the <rpc> for which this is a response.
+   
+For example:
+
+   The following <rpc> element invokes the NETCONF <get> method and includes an additional attribute called "user-id".  Note that the
+   "user-id" attribute is not in the NETCONF namespace.  The returned <rpc-reply> element returns the "user-id" attribute, as well as the
+   requested content.
+
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
+          xmlns:ex="http://example.net/content/1.0"
+          ex:user-id="fred">
+       <get/>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
+          xmlns:ex="http://example.net/content/1.0"
+          ex:user-id="fred">
+       <data>
+         <!-- contents here... -->
+       </data>
+     </rpc-reply>   
+```   
+
+4.3.  <rpc-error> Element
+
+The <rpc-error> element is sent in <rpc-reply> messages if an error occurs during the processing of an <rpc> request.
+
+The <rpc-error> element includes the following information:
+error-type:  Defines the conceptual layer that the error occurred.
+      Enumeration.  One of: 
+   
+```
+      *  transport (layer: Secure Transport)
+      *  rpc (layer: Messages)
+      *  protocol (layer: Operations)
+      *  application (layer: Content)
+```
+
+error-tag:  Contains a string identifying the error condition.  See
+      Appendix A for allowed values.
+error-severity:  Contains a string identifying the error severity, as determined by the device.  One of:
+```
+     *  error
+     *  warning
+```
+error-app-tag:
+error-path:
+error-message:
+error-info:
+
+Example:  An error is returned if an <rpc> element is received without a "message-id" attribute.  Note that only in this case is it acceptable for the NETCONF peer to omit the "message-id" attribute in the <rpc-reply> element.
+
+```
+     <rpc xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <get-config>
+         <source>
+           <running/>
+         </source>
+       </get-config>
+     </rpc>
+
+     <rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <rpc-error>
+         <error-type>rpc</error-type>
+         <error-tag>missing-attribute</error-tag>
+         <error-severity>error</error-severity>
+         <error-info>
+           <bad-attribute>message-id</bad-attribute>
+           <bad-element>rpc</bad-element>
+         </error-info>
+       </rpc-error>
+     </rpc-reply>
+```
+
+Note that the data models used in the examples in this section use the <name> element to distinguish between multiple instances of the <interface> element.
+
+```
+     <rpc-reply message-id="101"
+       xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
+       xmlns:xc="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <rpc-error>
+         <error-type>application</error-type>
+         <error-tag>invalid-value</error-tag>
+         <error-severity>error</error-severity>
+         <error-path xmlns:t="http://example.com/schema/1.2/config">
+           /t:top/t:interface[t:name="Ethernet0/0"]/t:mtu
+         </error-path>
+         <error-message xml:lang="en">
+           MTU value 25000 is not within range 256..9192
+         </error-message>
+       </rpc-error>
+       <rpc-error>
+         <error-type>application</error-type>
+         <error-tag>invalid-value</error-tag>
+         <error-severity>error</error-severity>
+         <error-path xmlns:t="http://example.com/schema/1.2/config">
+           /t:top/t:interface[t:name="Ethernet1/0"]/t:address/t:name
+         </error-path>
+         <error-message xml:lang="en">
+           Invalid IP address for interface Ethernet1/0
+         </error-message>
+       </rpc-error>
+     </rpc-reply>   
+```
+
+4.4.  <ok> Element
+The <ok> element is sent in <rpc-reply> messages if no errors or warnings occurred during the processing of an <rpc> request, and no data was returned from the operation.  For example:
+
+```
+     <rpc-reply message-id="101"
+                xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <ok/>
+     </rpc-reply>
+```
+   
+4.5.  Pipelining
+NETCONF <rpc> requests MUST be processed serially by the managed device.  Additional <rpc> requests MAY be sent before previous ones have been completed.
+   
+# 5.  Configuration Model
+
+# 5.1.  Configuration Datastores
+
+# 5.2.  Data Modeling
+NETCONF peers exchange device capabilities when the session is initiated as described in Section 8.1.
+
+# 5.1.  Configuration Datastores
+NETCONF defines the existence of one or more configuration datastores and allows configuration operations on them.  A configuration datastore is defined as the complete set of configuration data that is required to get a device from its initial default state into a desired operational state.
+
+NETCONF protocol operations refer to this datastore using the <running> element.
+Only the <running> configuration datastore is present in the base model.  Additional configuration datastores MAY be defined by capabilities.
+
+The capabilities in Sections 8.3 and 8.7 define the <candidate> and <startup> configuration datastores, respectively.
+   
+# 5.2.  Data Modeling
+Data modeling and content issues are outside the scope of the NETCONF  protocol.
+
+# 6.  Subtree Filtering
+# 6.1.  Overview
+XML subtree filtering is a mechanism that allows an application to select particular XML subtrees to include in the <rpc-reply> for a <get> or <get-config> operation.
+
+# 6.4.7.  Multiple Subtrees
+This filter contains three subtrees (name=root, fred, barney).
+
+# 6.4.8.  Elements with Attribute Naming
+In this example, the filter contains one containment node (<interfaces>), one attribute match expression ("ifName"), and one selection node (<interface>).
+   
+# 7.  Protocol Operations
+The NETCONF protocol provides a small set of low-level operations to manage device configurations and retrieve device state information.
+The base protocol includes the following protocol operations:
+```
+   o  get
+
+   o  get-config
+
+   o  edit-config
+
+   o  copy-config
+
+   o  delete-config
+
+   o  lock
+
+   o  unlock
+
+   o  close-session
+
+   o  kill-session
+```
+The syntax and XML encoding of the protocol operations are formally defined in the YANG module in Appendix C.  The following sections describe the semantics of each protocol operation.
+
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
 # 
 
 
