@@ -127,9 +127,9 @@ Document type declarations (see Section 2.8 of [W3C.REC-xml-20001006]) MUST NOT 
 The NETCONF protocol uses an RPC-based communication model.  NETCONF peers use <rpc> and <rpc-reply> elements to provide transport- protocol-independent framing of NETCONF requests and responses.
 
 # 4.  RPC Model 
-
+```
  4.1.  <rpc> Element 
-
+```
 The <rpc> element is used to enclose a NETCONF request sent from the client to the server.
 The following example invokes the NETCONF <get> method with no parameters:
 ```
@@ -138,9 +138,9 @@ The following example invokes the NETCONF <get> method with no parameters:
        <get/>
      </rpc>   
 ```
-   
+```   
 4.2.  <rpc-reply> Element
-
+```
 The <rpc-reply> message is sent in response to an <rpc> message.
 
 The <rpc-reply> element has a mandatory attribute "message-id", which is equal to the "message-id" attribute of the <rpc> for which this is a response.
@@ -168,9 +168,9 @@ For example:
        </data>
      </rpc-reply>   
 ```   
-
+```
 4.3.  <rpc-error> Element
-
+```
 The <rpc-error> element is sent in <rpc-reply> messages if an error occurs during the processing of an <rpc> request.
 
 The <rpc-error> element includes the following information:
@@ -250,8 +250,9 @@ Note that the data models used in the examples in this section use the <name> el
        </rpc-error>
      </rpc-reply>   
 ```
-
+```
 4.4.  <ok> Element
+```
 The <ok> element is sent in <rpc-reply> messages if no errors or warnings occurred during the processing of an <rpc> request, and no data was returned from the operation.  For example:
 
 ```
