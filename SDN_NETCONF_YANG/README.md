@@ -639,24 +639,24 @@ The <commit> operation effectively sets the running configuration to the current
 
 # 8.3.4.  New Operations
 
-   8.3.4.1.  <commit>
+      8.3.4.1.  <commit>
 
-   Description:
+      Description:
 
          When the candidate configuration's content is complete, the configuration data can be committed, publishing the data set to         
          the rest of the device and requesting the device to conform to the behavior described in the new configuration.
 
-   8.3.4.2.  <discard-changes>
+      8.3.4.2.  <discard-changes>
    
       If the client decides that the candidate configuration is not to be committed, the <discard-changes> operation can be used to 
       revert the candidate configuration to the current running configuration.
 
 # 8.3.5.  Modifications to Existing Operations
    
-   8.3.5.1.  <get-config>, <edit-config>, <copy-config>, and <validate>
+      8.3.5.1.  <get-config>, <edit-config>, <copy-config>, and <validate>
    
-   The candidate configuration can be used as a source or target of any <get-config>, <edit-config>, <copy-config>, or <validate> operation
-   as a <source> or <target> parameter.  The <candidate> element is used to indicate the candidate configuration:
+      The candidate configuration can be used as a source or target of any <get-config>, <edit-config>, <copy-config>, or 
+      <validate> operation as a <source> or <target> parameter.  The <candidate> element is used to indicate the candidate configuration:
 
      <rpc message-id="101"
           xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
@@ -666,13 +666,103 @@ The <commit> operation effectively sets the running configuration to the current
          </source>
        </get-config>
      </rpc>
- 
-# 
-# 
-# 
-# 
-# 
+   
+      8.3.5.2.  <lock> and <unlock>
+   
+# 8.4.  Confirmed Commit Capability
+# 8.4.1.  Description
+      The :confirmed-commit:1.1 capability indicates that the server will support the <cancel-commit> operation and the <confirmed>,
+      <confirm-timeout>, <persist>, and <persist-id> parameters for the <commit> operation.  See Section 8.3 for further details on the
+      <commit> operation.
 
+# 8.4.4.  New Operations
+      8.4.4.1.  <cancel-commit>
+
+      Description:
+         Cancels an ongoing confirmed commit.  If the <persist-id>
+         parameter is not given, the <cancel-commit> operation MUST be
+         issued on the same session that issued the confirmed commit.
+
+# 8.4.5.  Modifications to Existing Operations
+      8.4.5.1.  <commit>
+
+# 8.5.  Rollback-on-Error Capability 
+# 8.5.1.  Description
+      This capability indicates that the server will support the "rollback-on-error" value in the <error-option> parameter to the
+      <edit-config> operation.
+# 8.5.5.  Modifications to Existing Operations
+      8.5.5.1.  <edit-config>
+# 8.6.  Validate Capability
+# 8.6.1.  Description
+Validation consists of checking a complete configuration for syntactical and semantic errors before applying the configuration to the device.
+If this capability is advertised, the device supports the <validate> protocol operation and checks at least for syntax errors.  In addition, this capability supports the <test-option> parameter to the <edit-config> operation and, when it is provided, checks at least for syntax errors.
+
+# 8.6.4.  New Operations
+      8.6.4.1.  <validate>
+
+      Description:
+         This protocol operation validates the contents of the specified
+         configuration.
+
+# 8.6.5.  Modifications to Existing Operations
+      8.6.5.1.  <edit-config>
+
+# 8.7.  Distinct Startup Capability
+# 8.7.1.  Description
+      The device supports separate running and startup configuration datastores.  The startup configuration is loaded by the device when
+      it boots.  Operations that affect the running configuration will not be automatically copied to the startup configuration.  
+      An explicit <copy-config> operation from the <running> to the <startup> is used to update the startup configuration to the current
+      contents of the running configuration.
+# 8.7.5.  Modifications to Existing Operations
+# 8.7.5.1.  General   
+```
+   The :startup capability adds the <startup/> configuration datastore
+   to arguments of several NETCONF operations.  The server MUST support
+   the following additional values:
+
+   +--------------------+--------------------------+-------------------+
+   | Operation          | Parameters               | Notes             |
+   +--------------------+--------------------------+-------------------+
+   | <get-config>       | <source>                 |                   |
+   |                    |                          |                   |
+   | <copy-config>      | <source> <target>        |                   |
+   |                    |                          |                   |
+   | <lock>             | <target>                 |                   |
+   |                    |                          |                   |
+   | <unlock>           | <target>                 |                   |
+   |                    |                          |                   |
+   | <validate>         | <source>                 | If :validate:1.1  |
+   |                    |                          | is advertised     |
+   |                    |                          |                   |
+   | <delete-config>    | <target>                 | Resets the device |
+   |                    |                          | to its factory    |
+   |                    |                          | defaults          |
+   +--------------------+--------------------------+-------------------+
+
+   To save the startup configuration, use the <copy-config> operation to
+   copy the <running> configuration datastore to the <startup>
+   configuration datastore.
+```
+
+# 8.8.  URL Capability
+# 8.8.1.  Description
+      The NETCONF peer has the ability to accept the <url> element in <source> and <target> parameters.  The capability is further
+      identified by URL arguments indicating the URL schemes supported.
+
+# 8.8.5.  Modifications to Existing Operations      
+      8.8.5.1.  <edit-config>      
+      8.8.5.2.  <copy-config>      
+      8.8.5.3.  <delete-config>
+      8.8.5.4.  <validate>
+
+# 8.9.  XPath Capability
+# 8.9.1.  Description
+The XPath capability indicates that the NETCONF peer supports the use of XPath expressions in the <filter> element.  XPath is described in [W3C.REC-xpath-19991116].
+
+# 8.9.5.  Modifications to Existing Operations
+
+      8.9.5.1.  <get-config> and <get>
+      
 
 Reference
 ==============================
