@@ -317,6 +317,7 @@ The base protocol includes the following protocol operations:
 ```
 The syntax and XML encoding of the protocol operations are formally defined in the YANG module in Appendix C.  The following sections describe the semantics of each protocol operation.
 
+# REST API HTTP Method
 ![alt tag](https://image.slidesharecdn.com/pragmaticrestapis-140926223102-phpapp01/95/pragmatic-rest-apis-16-638.jpg?cb=1411771376)
 
 ```
@@ -606,15 +607,66 @@ Example:
        <ok/>
      </rpc-reply>
      
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
+# 8.  Capabilities
+This section defines a set of capabilities that a client or a server MAY implement.  Each peer advertises its capabilities by sending them
+   during an initial capabilities exchange.
+
+A NETCONF capability is identified with a URI.  The base capabilities are defined using URNs following the method described in RFC 3553 [RFC3553].
+format:
+
+      urn:ietf:params:netconf:capability:{name}:1.x
+# 8.1.  Capabilities Exchange
+Capabilities are advertised in messages sent by each peer during session establishment.  When the NETCONF session is opened, each peer (both client and server) MUST send a <hello> element containing a list of that peer's capabilities.
+   
+# 8.2.  Writable-Running Capability
+# 8.2.1.  Description
+         The :writable-running capability indicates that the device supports direct writes to the <running> configuration datastore.  In
+         other words, the device supports <edit-config> and <copy-config> operations where the <running> configuration is the target.
+# 8.2.5.  Modifications to Existing Operations
+         8.2.5.1.  <edit-config>
+         The :writable-running capability modifies the <edit-config> operation to accept the <running> element as a <target>.
+         
+         8.2.5.2.  <copy-config>
+         The :writable-running capability modifies the <copy-config> operation to accept the <running> element as a <target>.
+
+# 8.3.  Candidate Configuration Capability
+# 8.3.1.  Description
+The candidate configuration capability, :candidate, indicates that the device supports a candidate configuration datastore, which is used to hold configuration data that can be manipulated without impacting the device's current configuration.
+
+A <commit> operation MAY be performed at any time that causes the device's running configuration to be set to the value of the candidate configuration.
+   
+The <commit> operation effectively sets the running configuration to the current contents of the candidate configuration.   
+
+# 8.3.4.  New Operations
+
+   8.3.4.1.  <commit>
+
+   Description:
+
+         When the candidate configuration's content is complete, the configuration data can be committed, publishing the data set to         
+         the rest of the device and requesting the device to conform to the behavior described in the new configuration.
+
+   8.3.4.2.  <discard-changes>
+   
+      If the client decides that the candidate configuration is not to be committed, the <discard-changes> operation can be used to 
+      revert the candidate configuration to the current running configuration.
+
+# 8.3.5.  Modifications to Existing Operations
+   
+   8.3.5.1.  <get-config>, <edit-config>, <copy-config>, and <validate>
+   
+   The candidate configuration can be used as a source or target of any <get-config>, <edit-config>, <copy-config>, or <validate> operation
+   as a <source> or <target> parameter.  The <candidate> element is used to indicate the candidate configuration:
+
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <get-config>
+         <source>
+           <candidate/>
+         </source>
+       </get-config>
+     </rpc>
+ 
 # 
 # 
 # 
