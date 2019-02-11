@@ -317,7 +317,7 @@ The base protocol includes the following protocol operations:
 ```
 The syntax and XML encoding of the protocol operations are formally defined in the YANG module in Appendix C.  The following sections describe the semantics of each protocol operation.
 
-![alt tag](https://image.slidesharecdn.com/anintroductiontorestapi-170530164024/95/an-introduction-to-rest-api-6-638.jpg?cb=1496162677)
+![alt tag](https://image.slidesharecdn.com/pragmaticrestapis-140926223102-phpapp01/95/pragmatic-rest-apis-16-638.jpg?cb=1411771376)
 
 ```
 7.1.  <get-config>
