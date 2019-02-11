@@ -378,41 +378,232 @@ Attributes:
       operation:"operation" attribute, which belongs to the NETCONF namespace defined in Section 3.1.
       The "operation" attribute has one of the following values:
       
-      merge:  The configuration data identified by the element
-            containing this attribute is merged with the configuration
-            at the corresponding level in the configuration datastore
-            identified by the <target> parameter.  This is the default
+      merge:  The configuration data identified by the element containing this attribute is merged with the configuration
+            at the corresponding level in the configuration datastore identified by the <target> parameter.  This is the default            
             behavior.
 
-         replace:  The configuration data identified by the element
-            containing this attribute replaces any related configuration
-            in the configuration datastore identified by the <target>
-            parameter.  If no such configuration data exists in the
-            configuration datastore, it is created.  Unlike a
-            <copy-config> operation, which replaces the entire target
-            configuration, only the configuration actually present in
-            the <config> parameter is affected.
+      replace:  The configuration data identified by the element containing this attribute replaces any related configuration            
+            in the configuration datastore identified by the <target> parameter.  If no such configuration data exists in the            
+            configuration datastore, it is created.  Unlike a <copy-config> operation, which replaces the entire target            
+            configuration, only the configuration actually present in the <config> parameter is affected.            
 
-         create:  The configuration data identified by the element
-            containing this attribute is added to the configuration if
-            and only if the configuration data does not already exist in
-            the configuration datastore.  If the configuration data
-            exists, an <rpc-error> element is returned with an
-            <error-tag> value of "data-exists".
+      create:  The configuration data identified by the element containing this attribute is added to the configuration if            
+            and only if the configuration data does not already exist in the configuration datastore.  If the configuration data
+            exists, an <rpc-error> element is returned with an<error-tag> value of "data-exists".
 
-         delete:  The configuration data identified by the element
-            containing this attribute is deleted from the configuration
-            if and only if the configuration data currently exists in
-            the configuration datastore.  If the configuration data does
-            not exist, an <rpc-error> element is returned with an
-            <error-tag> value of "data-missing".
+      delete:  The configuration data identified by the element containing this attribute is deleted from the configuration            
+            if and only if the configuration data currently exists in the configuration datastore.  If the configuration data does            
+            not exist, an <rpc-error> element is returned with an <error-tag> value of "data-missing".
 
-         remove:  The configuration data identified by the element
-            containing this attribute is deleted from the configuration
-            if the configuration data currently exists in the
-            configuration datastore.  If the configuration data does not
-            exist, the "remove" operation is silently ignored by the
-            server.
+      remove:  The configuration data identified by the element containing this attribute is deleted from the configuration
+            if the configuration data currently exists in the configuration datastore.  If the configuration data does not
+            exist, the "remove" operation is silently ignored by the server.
+
+Parameters:
+
+    target:   
+    default-operation:
+    The <default-operation> parameter is optional, but if provided, it has one of the following values:
+    merge:  
+    replace:  
+    none:  
+
+Example:  The <edit-config> examples in this section utilize a simple data model, in which multiple instances of the <interface> element      
+      can be present, and an instance is distinguished by the <name> element within each <interface> element.
+
+      Set the MTU to 1500 on an interface named "Ethernet0/0" in the running configuration:
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <edit-config>
+         <target>
+           <running/>
+         </target>
+         <config>
+           <top xmlns="http://example.com/schema/1.2/config">
+             <interface>
+               <name>Ethernet0/0</name>
+               <mtu>1500</mtu>
+             </interface>
+           </top>
+         </config>
+       </edit-config>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <ok/>
+     </rpc-reply>
+```
+
+```
+7.3.  <copy-config>
+```
+Description:  Create or replace an entire configuration datastore with the contents of another complete configuration datastore.  If
+      the target datastore exists, it is overwritten.  Otherwise, a new one is created, if allowed.
+      
+```
+7.4.  <delete-config>
+```
+Description:  Delete a configuration datastore.  The <running> configuration datastore cannot be deleted.
+
+```
+7.5.  <lock>
+```
+Description:  The <lock> operation allows the client to lock the entire configuration datastore system of a device.  Such locks are
+      intended to be short-lived and allow a client to make a change without fear of interaction with other NETCONF clients, non-
+      NETCONF clients (e.g., SNMP and command line interface (CLI) scripts), and human users.
+
+Example:  The following example shows a successful acquisition of a lock.
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <lock>
+         <target>
+           <running/>
+         </target>
+       </lock>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <ok/> <!-- lock succeeded -->
+     </rpc-reply>
+```
+
+Example:  The following example shows a failed attempt to acquire a lock when the lock is already in use.
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <lock>
+         <target>
+           <running/>
+         </target>
+       </lock>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <rpc-error> <!-- lock failed -->
+         <error-type>protocol</error-type>
+         <error-tag>lock-denied</error-tag>
+         <error-severity>error</error-severity>
+         <error-message>
+           Lock failed, lock is already held
+         </error-message>
+         <error-info>
+           <session-id>454</session-id>
+           <!-- lock is held by NETCONF session 454 -->
+         </error-info>
+       </rpc-error>
+     </rpc-reply>
+```
+
+```
+7.6.  <unlock>
+```
+Description:  The <unlock> operation is used to release a configuration lock, previously obtained with the <lock> operation.
+   
+Example:
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <unlock>
+         <target>
+          <running/>
+         </target>
+       </unlock>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <ok/>
+     </rpc-reply>
+```
+
+```
+7.7.  <get>
+```
+Description:  Retrieve running configuration and device state information.
+
+Example:
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <get>
+         <filter type="subtree">
+           <top xmlns="http://example.com/schema/1.2/stats">
+             <interfaces>
+               <interface>
+                 <ifName>eth0</ifName>
+               </interface>
+             </interfaces>
+           </top>
+         </filter>
+       </get>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <data>
+         <top xmlns="http://example.com/schema/1.2/stats">
+           <interfaces>
+             <interface>
+               <ifName>eth0</ifName>
+               <ifInOctets>45621</ifInOctets>
+               <ifOutOctets>774344</ifOutOctets>
+             </interface>
+           </interfaces>
+         </top>
+       </data>
+     </rpc-reply>
+```
+
+```
+7.8.  <close-session>
+```
+Description:  Request graceful termination of a NETCONF session.
+
+When a NETCONF server receives a <close-session> request, it will gracefully close the session.
+Example:
+
+```
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <close-session/>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <ok/>
+     </rpc-reply>
+```
+ 
+```
+7.9.  <kill-session>
+```
+Description:  Force the termination of a NETCONF session.
+
+      When a NETCONF entity receives a <kill-session> request for an open session, it will abort any operations currently in process,
+      release any locks and resources associated with the session, and close any associated connections.
+
+      If a NETCONF server receives a <kill-session> request while processing a confirmed commit (Section 8.4), it MUST restore the
+      configuration to its state before the confirmed commit was issued.
+
+Example:
+
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <kill-session>
+         <session-id>4</session-id>
+       </kill-session>
+     </rpc>
+
+     <rpc-reply message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <ok/>
+     </rpc-reply>
+     
 # 
 # 
 # 
