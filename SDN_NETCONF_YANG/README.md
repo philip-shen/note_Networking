@@ -771,16 +771,400 @@ YANG is a data modeling language used to model configuration and state data mani
 
 This document describes the syntax and semantics of the YANG language, how the data model defined in a YANG module is represented in the Extensible Markup Language (XML), and how NETCONF operations are used to manipulate the data.
 
-![alt tag](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/4-3_Data_Modelling_Today.svg/1024px-4-3_Data_Modelling_Today.svg.png)
 The data modeling process.
 ==============================
+![alt tag](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/4-3_Data_Modelling_Today.svg/1024px-4-3_Data_Modelling_Today.svg.png)
 
-![alt tag](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Data_modeling_context.svg/1024px-Data_modeling_context.svg.png)
 Data modeling in the context of Business Process Integration
 ==============================
+![alt tag](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Data_modeling_context.svg/1024px-Data_modeling_context.svg.png)
 
-# 8.9.  XPath Capability
-# 8.9.  XPath Capability
+# 3.  Terminology
+```
+   o  anyxml: A data node that can contain an unknown chunk of XML data.
+
+   o  augment: Adds new schema nodes to a previously defined schema node.
+
+   o  base type: The type from which a derived type was derived, which may be either a built-in type or another derived type.
+
+   o  built-in type: A YANG data type defined in the YANG language, such as uint32 or string.
+   
+   o  choice: A schema node where only one of a number of identified alternatives is valid.
+
+   o  configuration data: The set of writable data that is required to transform a system from its initial default state into its current
+                           state [RFC4741].
+
+   o  conformance: A measure of how accurately a device follows a data  model.
+
+   o  container: An interior data node that exists in at most one instance in the data tree.  A container has no value, but rather a
+                  set of child nodes.
+
+   o  data definition statement: A statement that defines new data nodes.  One of container, leaf, leaf-list, list, choice, case,
+                                 augment, uses, and anyxml.
+
+   o  data model: A data model describes how data is represented and accessed.
+
+   o  data node: A node in the schema tree that can be instantiated in a data tree.  One of container, leaf, leaf-list, list, and anyxml.
+
+   o  data tree: The instantiated tree of configuration and state data on a device.
+
+   o  derived type: A type that is derived from a built-in type (such as uint32), or another derived type.
+
+   o  device deviation: A failure of the device to implement the module faithfully.
+
+   o  extension: An extension attaches non-YANG semantics to statements.  The extension statement defines new statements to express these
+                  semantics.
+
+   o  feature: A mechanism for marking a portion of the model as optional.  Definitions can be tagged with a feature name and are
+               only valid on devices that support that feature.
+
+   o  grouping: A reusable set of schema nodes, which may be used locally in the module, in modules that include it, and by other
+               modules that import from it.  The grouping statement is not a data definition statement and, as such, does not define any
+               nodes in the schema tree.
+
+   o  identifier: Used to identify different kinds of YANG items by name.
+
+   o  instance identifier: A mechanism for identifying a particular node in a data tree.
+
+   o  interior node: Nodes within a hierarchy that are not leaf nodes.
+
+   o  leaf: A data node that exists in at most one instance in the data tree.  A leaf has a value but no child nodes.
+
+   o  leaf-list: Like the leaf node but defines a set of uniquely identifiable nodes rather than a single node.  Each node has a
+                  value but no child nodes.
+
+   o  list: An interior data node that may exist in multiple instances in the data tree.  A list has no value, but rather a set of child
+            nodes.
+
+   o  module: A YANG module defines a hierarchy of nodes that can be used for NETCONF-based operations.  With its definitions and the
+               definitions it imports or includes from elsewhere, a module is self-contained and "compilable".
+
+   o  RPC:
+   o  RPC operation:
+   
+   o  schema node: A node in the schema tree.  One of container, leaf, leaf-list, list, choice, case, rpc, input, output, notification,
+                  and anyxml.
+
+   o  schema node identifier: A mechanism for identifying a particular node in the schema tree.
+
+   o  schema tree: The definition hierarchy specified within a module.
+
+   o  state data: The additional data on a system that is not configuration data such as read-only status information and
+                  collected statistics [RFC4741].
+
+   o  submodule: A partial module definition that contributes derived types, groupings, data nodes, RPCs, and notifications to a module.
+                  A YANG module can be constructed from a number of submodules.
+
+   o  top-level data node: A data node where there is no other data node between it and a module or submodule statement.
+
+   o  uses: The "uses" statement is used to instantiate the set of schema nodes defined in a grouping statement.  The instantiated
+            nodes may be refined and augmented to tailor them to any specific needs.   
+```
+![alt tag](https://res.cloudinary.com/practicaldev/image/fetch/s--Y-AMvRwX--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/h2ohetg2bqhiyiedrr78.png)
+
+# 3.1.  Mandatory Nodes
+```
+   o  A leaf, choice, or anyxml node with a "mandatory" statement with the value "true".
+
+   o  A list or leaf-list node with a "min-elements" statement with a value greater than zero.
+
+   o  A container node without a "presence" statement, which has at least one mandatory node as a child.
+```
+
+# 4.  YANG Overview
+# 4.1.  Functional Overview
+YANG is a language used to model data for the NETCONF protocol.
+
+YANG models the hierarchical organization of data as a tree in which each node has a name, and either a value or a set of child nodes.
+
+YANG structures data models into modules and submodules.
+
+YANG models can describe constraints to be enforced on the data, restricting the appearance or value of nodes based on the presence or value of other nodes in the hierarchy.
+
+YANG defines a set of built-in types, and has a type mechanism through which additional types may be defined.
+
+YANG permits the definition of reusable groupings of nodes.
+
+YANG data hierarchy constructs include defining lists where list entries are identified by keys that distinguish them from each other.
+
+YANG modules can be translated into an equivalent XML syntax called YANG Independent Notation (YIN) (Section 11), allowing applications using XML parsers and Extensible Stylesheet Language Transformations (XSLT) scripts to operate on the models.
+
+To the extent possible, YANG maintains compatibility with Simple Network Management Protocol's (SNMP's) SMIv2 (Structure of Management Information version 2 [RFC2578], [RFC2579]).
+
+Like NETCONF, YANG targets smooth integration with the device's native management infrastructure.
+
+# 4.2.  Language Overview 
+# 4.2.1.  Modules and Submodules
+# 4.2.2.  Data Modeling Basics
+# 4.2.2.1.  Leaf Nodes
+A leaf node contains simple data like an integer or a string.
+```
+   YANG Example:
+
+       leaf host-name {
+           type string;
+           description "Hostname for this system";
+       }
+
+   NETCONF XML Example:
+
+       <host-name>my.example.com</host-name>
+```
+The "leaf" statement is covered in Section 7.6.
+
+# 4.2.2.2.  Leaf-List Nodes
+A leaf-list is a sequence of leaf nodes with exactly one value of a particular type per leaf.
+```
+   YANG Example:
+
+     leaf-list domain-search {
+         type string;
+         description "List of domain names to search";
+     }
+
+   NETCONF XML Example:
+
+     <domain-search>high.example.com</domain-search>
+     <domain-search>low.example.com</domain-search>
+     <domain-search>everywhere.example.com</domain-search>
+```
+The "leaf-list" statement is covered in Section 7.7.
+
+# 4.2.2.3.  Container Nodes
+A container node is used to group related nodes in a subtree.
+```
+   YANG Example:
+
+     container system {
+         container login {
+             leaf message {
+                 type string;
+                 description
+                     "Message given at start of login session";
+             }
+         }
+     }
+     
+   NETCONF XML Example:
+
+     <system>
+       <login>
+         <message>Good morning</message>
+       </login>
+     </system>
+```
+The "container" statement is covered in Section 7.5.
+
+# 4.2.2.4.  List Nodes
+A list defines a sequence of list entries.  Each entry is like a structure or a record instance, and is uniquely identified by the values of its key leafs.  A list can define multiple key leafs and may contain any number of child nodes of any type (including leafs, lists, containers etc.).
+```
+   YANG Example:
+
+     list user {
+         key "name";
+         leaf name {
+             type string;
+         }
+         leaf full-name {
+             type string;
+         }
+         leaf class {
+             type string;
+         }
+     }
+     
+   NETCONF XML Example:
+
+     <user>
+       <name>glocks</name>
+       <full-name>Goldie Locks</full-name>
+       <class>intruder</class>
+     </user>
+     <user>
+       <name>snowey</name>
+       <full-name>Snow White</full-name>
+       <class>free-loader</class>
+     </user>
+     <user>
+       <name>rzell</name>
+       <full-name>Rapun Zell</full-name>
+       <class>tower</class>
+     </user>     
+```
+
+# 4.2.2.5.  Example Module
+```
+     // Contents of "acme-system.yang"
+     module acme-system {
+         namespace "http://acme.example.com/system";
+         prefix "acme";
+
+         organization "ACME Inc.";
+         contact "joe@acme.example.com";
+         description
+             "The module for entities implementing the ACME system.";
+
+         revision 2007-06-09 {
+             description "Initial revision.";
+         }
+
+         container system {
+             leaf host-name {
+                 type string;
+                 description "Hostname for this system";
+             }
+
+             leaf-list domain-search {
+                 type string;
+                 description "List of domain names to search";
+             }
+
+             container login {
+                 leaf message {
+                     type string;
+                     description
+                         "Message given at start of login session";
+                 }
+
+                 list user {
+                     key "name";
+                     leaf name {
+                         type string;
+                     }
+                     leaf full-name {
+                         type string;
+                     }
+                     leaf class {
+                         type string;
+                     }
+                 }
+             }
+         }
+     }
+```
+
+# 4.2.3.  State Data
+YANG can model state data, as well as configuration data, based on the "config" statement.  When a node is tagged with "config false", its subhierarchy is flagged as state data, to be reported using NETCONF's <get> operation, not the <get-config> operation.
+
+In this example, two leafs are defined for each interface, a configured speed and an observed speed.  The observed speed is not configuration, so it can be returned with NETCONF <get> operations, but not with <get-config> operations.
+
+```
+     list interface {
+         key "name";
+
+         leaf name {
+             type string;
+         }
+         leaf speed {
+             type enumeration {
+                 enum 10m;
+                 enum 100m;
+                 enum auto;
+             }
+         }
+         leaf observed-speed {
+             type uint32;
+             config false;
+         }
+     }   
+```  
+
+# 4.2.4.  Built-In Types
+YANG has a set of built-in types, similar to those of many programming languages, but with some differences due to special requirements from the management domain.  The following table summarizes the built-in types discussed in Section 9:
+```  
+
+       +---------------------+-------------------------------------+
+       | Name                | Description                         |
+       +---------------------+-------------------------------------+
+       | binary              | Any binary data                     |
+       | bits                | A set of bits or flags              |
+       | boolean             | "true" or "false"                   |
+       | decimal64           | 64-bit signed decimal number        |
+       | empty               | A leaf that does not have any value |
+       | enumeration         | Enumerated strings                  |
+       | identityref         | A reference to an abstract identity |
+       | instance-identifier | References a data tree node         |
+       | int8                | 8-bit signed integer                |
+       | int16               | 16-bit signed integer               |
+       | int32               | 32-bit signed integer               |
+       | int64               | 64-bit signed integer               |
+       | leafref             | A reference to a leaf instance      |
+       | string              | Human-readable string               |
+       | uint8               | 8-bit unsigned integer              |
+       | uint16              | 16-bit unsigned integer             |
+       | uint32              | 32-bit unsigned integer             |
+       | uint64              | 64-bit unsigned integer             |
+       | union               | Choice of member types              |
+       +---------------------+-------------------------------------+
+```  
+The "type" statement is covered in Section 7.4.
+
+# 4.2.5.  Derived Types (typedef)
+``` 
+   YANG Example:
+
+     typedef percent {
+         type uint8 {
+             range "0 .. 100";
+         }
+         description "Percentage";
+     }
+
+     leaf completed {
+         type percent;
+     }
+
+   NETCONF XML Example:
+
+     <completed>20</completed>
+``` 
+The "typedef" statement is covered in Section 7.3.
+
+# 4.2.6.  Reusable Node Groups (grouping)
+Groups of nodes can be assembled into reusable collections using the "grouping" statement.
+``` 
+     grouping target {
+         leaf address {
+             type inet:ip-address;
+             description "Target IP address";
+         }
+         leaf port {
+             type inet:port-number;
+             description "Target port number";
+         }
+     }
+
+     container peer {
+         container destination {
+             uses target;
+         }
+     }
+
+   NETCONF XML Example:
+
+     <peer>
+       <destination>
+         <address>192.0.2.1</address>
+         <port>830</port>
+       </destination>
+     </peer>
+
+``` 
+
+# 
+# 
+# 
+# 
+# 
+
+
+
+
+
+
+
+
+
 
 Reference
 ==============================
