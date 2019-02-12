@@ -766,6 +766,21 @@ The XPath capability indicates that the NETCONF peer supports the use of XPath e
 
 #                                  YANG
 
+# 1.  Introduction
+YANG is a data modeling language used to model configuration and state data manipulated by the Network Configuration Protocol(NETCONF), NETCONF remote procedure calls, and NETCONF notifications.  YANG is used to model the operations and content layers of NETCONF(see the NETCONF Configuration Protocol [RFC4741], Section 1.1).
+
+This document describes the syntax and semantics of the YANG language, how the data model defined in a YANG module is represented in the Extensible Markup Language (XML), and how NETCONF operations are used to manipulate the data.
+
+![alt tag](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/4-3_Data_Modelling_Today.svg/1024px-4-3_Data_Modelling_Today.svg.png)
+The data modeling process.
+==============================
+
+![alt tag](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Data_modeling_context.svg/1024px-Data_modeling_context.svg.png)
+Data modeling in the context of Business Process Integration
+==============================
+
+# 8.9.  XPath Capability
+# 8.9.  XPath Capability
 
 Reference
 ==============================
@@ -774,6 +789,8 @@ Reference
 * [An Introduction to NETCONF/YANG ](https://www.fir3net.com/Networking/Protocols/an-introduction-to-netconf-yang.html)
 * [Python - How to Obtain the Configuration of a Networking Device using NETCONF](https://www.fir3net.com/Networking/Protocols/how-to-operate-a-device-using-netconf-and-python.html)
 * [RESTful APIs HTTP Methods](https://restfulapi.net/http-methods/)
+
+* [Data modeling](https://en.wikipedia.org/wiki/Data_modeling)
 
 * []()
 ![alt tag]()
