@@ -1150,21 +1150,173 @@ Groups of nodes can be assembled into reusable collections using the "grouping" 
      </peer>
 
 ``` 
+The grouping can be refined as it is used, allowing certain statements to be overridden.  In this example, the description is refined:
+``` 
+     container connection {
+         container source {
+             uses target {
+                 refine "address" {
+                     description "Source IP address";
+                 }
+                 refine "port" {
+                     description "Source port number";
+                 }
+             }
+         }
+         container destination {
+             uses target {
+                 refine "address" {
+                     description "Destination IP address";
+                 }
+                 refine "port" {
+                     description "Destination port number";
+                 }
+             }
+         }
+     }
+``` 
+The "grouping" statement is covered in Section 7.11.
 
-# 
-# 
-# 
-# 
-# 
+# 4.2.7.  Choices
+YANG allows the data model to segregate incompatible nodes into distinct choices using the "choice" and "case" statements.  The "choice" statement contains a set of "case" statements that define sets of schema nodes that cannot appear together.  Each "case" may contain multiple nodes, but each node may appear in only one "case" under a "choice".
+``` 
+   YANG Example:
 
+     container food {
+       choice snack {
+           case sports-arena {
+               leaf pretzel {
+                   type empty;
+               }
+               leaf beer {
+                   type empty;
+               }
+           }
+           case late-night {
+               leaf chocolate {
+                   type enumeration {
+                       enum dark;
+                       enum milk;
+                       enum first-available;
+                   }
+               }
+           }
+       }
+    }
 
+   NETCONF XML Example:
 
+     <food>
+       <pretzel/>
+       <beer/>
+     </food>
+``` 
+The "choice" statement is covered in Section 7.9.
 
+# 4.2.8.  Extending Data Models (augment)
+YANG allows a module to insert additional nodes into data models, including both the current module (and its submodules) or an external  module.  This is useful for example for vendors to add vendor-specific parameters to standard data models in an interoperable way.
+``` 
+   YANG Example:
 
+     augment /system/login/user {
+         when "class != 'wheel'";
+         leaf uid {
+             type uint16 {
+                 range "1000 .. 30000";
+             }
+         }
+     }
+``` 
+This example defines a "uid" node that only is valid when the user's "class" is not "wheel".
 
+For example, if the above augmentation were in a module with prefix "other", the XML would look like:
+``` 
+   NETCONF XML Example:
 
+     <user>
+       <name>alicew</name>
+       <full-name>Alice N. Wonderland</full-name>
+       <class>drop-out</class>
+       <other:uid>1024</other:uid>
+     </user>
+``` 
+The "augment" statement is covered in Section 7.15.
 
+# 4.2.9.  RPC Definitions
+YANG allows the definition of NETCONF RPCs.  The operations' names, input parameters, and output parameters are modeled using YANG data definition statements.
+```
+   YANG Example:
 
+     rpc activate-software-image {
+         input {
+             leaf image-name {
+                 type string;
+             }
+         }
+         output {
+             leaf status {
+                 type string;
+             }
+         }
+     }
+
+   NETCONF XML Example:
+
+     <rpc message-id="101"
+          xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <activate-software-image xmlns="http://acme.example.com/system">
+         <image-name>acmefw-2.3</image-name>
+      </activate-software-image>
+     </rpc>
+
+     <rpc-reply message-id="101"
+                xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+       <status xmlns="http://acme.example.com/system">
+         The image acmefw-2.3 is being installed.
+       </status>
+     </rpc-reply>
+```
+The "rpc" statement is covered in Section 7.13.
+
+# 4.2.10.  Notification Definitions
+YANG allows the definition of notifications suitable for NETCONF.
+```
+   YANG Example:
+
+     notification link-failure {
+         description "A link failure has been detected";
+         leaf if-name {
+             type leafref {
+                 path "/interface/name";
+             }
+         }
+         leaf if-admin-status {
+             type admin-status;
+         }
+         leaf if-oper-status {
+             type oper-status;
+         }
+     }
+
+   NETCONF XML Example:
+
+     <notification
+         xmlns="urn:ietf:params:netconf:capability:notification:1.0">
+       <eventTime>2007-09-01T10:00:00Z</eventTime>
+       <link-failure xmlns="http://acme.example.com/system">
+         <if-name>so-1/2/3.0</if-name>
+         <if-admin-status>up</if-admin-status>
+         <if-oper-status>down</if-oper-status>
+       </link-failure>
+     </notification>
+```
+The "notification" statement is covered in Section 7.14.
+
+# 5.  Language Concepts 
+
+# 6.  YANG Syntax
+
+# 7.  YANG Statements
 
 Reference
 ==============================
@@ -1174,7 +1326,7 @@ Reference
 * [Python - How to Obtain the Configuration of a Networking Device using NETCONF](https://www.fir3net.com/Networking/Protocols/how-to-operate-a-device-using-netconf-and-python.html)
 * [RESTful APIs HTTP Methods](https://restfulapi.net/http-methods/)
 
-* [Data modeling](https://en.wikipedia.org/wiki/Data_modeling)
+* [Data modeling---Wiki](https://en.wikipedia.org/wiki/Data_modeling)
 
 * []()
 ![alt tag]()
