@@ -43,7 +43,224 @@ Two advantages of IPv6 are that support for multicast is required and nodes can 
 
 IPv6 Neighbor Discovery [RFC4861] is the node discovery protocol in IPv6 that replaces and enhances functions of ARP [RFC826].  To understand IPv6 and stateless address autoconfiguration, it is strongly recommended that implementers understand IPv6 Neighbor  Discovery.
    
-# 9.  Extensibility - Option Processing
+# 4.  Terminology
+# 4.1.  IPv6 Terminology
+```
+   address                   An IP-layer identifier for an interface or a set of interfaces.
+
+   GUA                       Global unicast address (see [RFC4291]).
+
+   host                      Any node that is not a router.
+
+   IP                        Internet Protocol Version 6 (IPv6).
+   
+   interface                 A node's attachment to a link.
+
+   link                      A communication facility or medium over which nodes can communicate at the link layer, 
+                             i.e., the layer immediately below IP.  Examples are Ethernet
+
+   link-layer identifier     A link-layer identifier for an interface -- for example, IEEE 802 addresses for Ethernet
+                              or Token Ring network interfaces.
+
+   link-local address        An IPv6 address having a link-only scope, indicated by having the prefix (fe80::/10),
+                             that can be used to reach neighboring nodes attached to the same link.
+                             
+   multicast address         An identifier for a set of interfaces (typically belonging to different nodes).
+   
+   neighbor                  A node attached to the same link.
+   node                      A device that implements IP.
+   packet
+   
+   prefix                    The initial bits of an address, or a set of IP addresses that share the same initial bits.
+
+   prefix length             The number of bits in a prefix.
+
+   router                    A node that forwards IP packets not explicitly addressed to itself.
+
+   ULA                       Unique local address (see [RFC4193]).
+
+   unicast address           An identifier for a single interface.
+```
+# 4.2.  DHCP Terminology
+```
+   appropriate to the link   An address is "appropriate to the link" when the address is consistent with the
+                             DHCP server's knowledge of the network topology, prefix assignment, and address assignment policies.
+
+   binding                   A binding (or client binding) is a group of server data records containing the
+                             information the server has about the addresses or delegated prefixes in an Identity Association (IA)
+                              or configurationinformation explicitly assigned to the client.
+                             Configuration information that has been returned to a client through a policy,
+                             such as the information returned to all clients on the same link, does not require a binding.
+                             A binding containing information about an IA is indexed by the tuple <DUID, IA-type, IAID>                             
+                             (where IA-type is the type of lease in the IA -- for example, temporary).  
+                             A binding containing  configuration information for a client is indexed by <DUID>.  See below for
+                             definitions of DUID, IA, and IAID.
+
+   configuration parameter   An element of the configuration information set on the server and delivered to the                             
+                             client using DHCP.  Such parameters may be used to carry information to be used by a                             
+                             node to configure its network subsystem and enable communication on a link or internetwork, for example.
+
+   container option          An option that encapsulates other options (for example, the IA_NA option (see Section 21.4) 
+                             may contain IA Address options (see Section 21.6)).
+
+   delegating router         The router that acts as a DHCP server and responds to requests for delegated
+                             prefixes.  This document primarily uses the term "DHCP server" or "server" when
+                             discussing the "delegating router" functionality of prefix delegation (see Section 1).
+
+   DHCP                      Dynamic Host Configuration Protocol for IPv6.
+   DHCP client                  
+   
+   DHCP domain               A set of links managed by DHCP and operated by a single administrative entity.                             
+
+   DHCP relay agent          Also referred to as "relay agent".  A node that acts as an intermediary to deliver                             
+                             DHCP messages between clients and servers.
+                             In certain configurations, there may be more than one relay agent between clients
+                             and servers, so a relay agent may send DHCP messages to another relay agent.
+
+   DHCP server               Also referred to as "server".  A node that responds to requests from clients.
+                             
+   DUID                      A DHCP Unique Identifier for a DHCP participant.  
+                             Each DHCP client and server has exactly one DUID.  See Section 11 for details of the ways 
+                             in which a DUID may be constructed.
+
+   encapsulated option       A DHCP option that is usually only contained in another option.  
+                             For example, the IA Address option is contained in IA_NA or IA_TA options (see Section 21.5).  See
+                             Section 9 of [RFC7227] for a more complete definition.
+
+   IA                        Identity Association: a collection of leases assigned to a client.
+                             Each IA has an associated IAID (see below).
+                             A client may have more than one IA assigned to it --                             
+                             for example, one for each of its interfaces.  Each IA holds one type of lease;                             
+                             for example, an identity association for temporary addresses (IA_TA) holds temporary addresses, 
+                             and an identity association for prefix delegation (IA_PD) holds delegated prefixes.  
+                             Throughout this document, "IA" is used to refer to an
+                             identity association without identifyingthe type of a lease in the IA.  
+                             At the time of writing this document, there are three
+                             IA types defined: IA_NA, IA_TA, and IA_PD. New IA types may be defined in the future.
+
+   IA option(s)              At the time of writing this document, one or more IA_NA, IA_TA, and/or IA_PD options.                             
+                             New IA types may be defined in the future.
+
+   IAID                      Identity Association Identifier: an identifier for an IA, chosen by the client.
+                             Each IA has an IAID, which is chosen to be unique among IAIDs for IAs of a specific type 
+                             that belong to that client.
+                             
+   IA_NA                     Identity Association for Non-temporary Addresses: 
+                             an IA that carries assigned addresses that are not temporary addresses (see "IA_TA").  
+                             See Section 21.4 for details on the IA_NA option.
+                             
+   IA_PD                     Identity Association for Prefix Delegation:
+                             an IA that carries delegated prefixes.  See Section 21.21 for details on the IA_PD option.                             
+                             
+   IA_TA                     Identity Association for Temporary Addresses: an IA that carries temporary addresses (see [RFC4941]).
+                             See Section 21.5 for details on the IA_TA option.
+                             
+   lease                     A contract by which the server grants the use of an address or delegated prefix to                             
+                             the client for a specified period of time.
+
+   message                   A unit of data carried as the payload of a UDP datagram, exchanged among DHCP servers,                             
+                             relay agents, and clients.
+
+   Reconfigure key           A key supplied to a client by a server.  Used to provide security for Reconfigure                             
+                             messages (see Section 7.3 for the list of available message types).
+
+   relaying                  A DHCP relay agent relays DHCP messages between DHCP participants.
+
+   requesting router         The router that acts as a DHCP client and is requesting prefix(es) to be assigned.
+   
+   retransmission            Another attempt to send the same DHCP message by a client or server, as a result                             
+                             of not receiving a valid response to the previously sent messages.
+                             The retransmitted message is typically modified prior to sending, as required by the DHCP specifications.                            
+                             
+   RKAP                      The Reconfiguration Key Authentication Protocol (see Section 20.4).
+                                                          
+   singleton option          An option that is allowed to appear only once as a top-level option or at any encapsulation level. 
+                             Most options are singletons.
+                             
+   T1                        The time interval after which the client is expected to contact the server that did the                             
+                             assignment to extend (renew) the lifetimes of the addresses assigned (via IA_NA option(s))                             
+                             and/or prefixes delegated (via IA_PD option(s)) to the client.
+                             T1 is expressed as an absolute value in messages (in seconds), is conveyed within IA                             
+                             containers (currently the IA_NA and IA_PD options), and is interpreted as a time                             
+                             interval since the packet's reception.  The value stored in the T1 field in IA options                             
+                             is referred to as the T1 value.  The actual time when the timer expires is referred to as the T1 time.                          
+                             
+   T2                        The time interval after which the client is expected to contact any available server to                             
+                             extend (rebind) the lifetimes of the addresses assigned (via IA_NA option(s))
+                             and/or prefixes delegated (via IA_PD option(s)) to the client.  
+                             T2 is expressed as an absolute value in messages (in seconds), is conveyed within IA containers
+                             (currently the IA_NA and IA_PD options), and is interpreted as a time interval since                             
+                             the packet's reception.  The value stored in the T2 field in IA options is referred
+                             to as the T2 value.  The actual time when the timer expires is referred to as the T2 time.
+                             
+   top-level option          An option conveyed in a DHCP message directly, i.e., not encapsulated in any                             
+                             other option, as described in Section 9 of [RFC7227].
+
+   transaction ID            An opaque value used to match responses with replies initiated by either a client or a server.
+```
+# 5.  Client/Server Exchanges
+Clients and servers exchange DHCP messages using UDP (see [RFC768] and BCP 145 [RFC8085]).  The client uses a link-local address or addresses determined through other mechanisms for transmitting and receiving DHCP messages.
+
+A DHCP client sends most messages using a reserved, link-scoped multicast destination address so that the client need not be configured with the address or addresses of DHCP servers.
+
+To allow a DHCP client to send a message to a DHCP server that is not attached to the same link, a DHCP relay agent on the client's link will relay messages between the client and server.  The operation of the relay agent is transparent to the client.
+
+# 5.1.  Client/Server Exchanges Involving Two Messages
+When a DHCP client does not need to have a DHCP server assign IP addresses or delegated prefixes to it, the client can obtain other configuration information such as a list of available DNS servers [RFC3646] or NTP servers [RFC5908] through a single message and reply exchange with a DHCP server.
+
+A client may also request the server to expedite address assignment and/or prefix delegation by using a two-message exchange instead of  the normal four-message exchange as discussed in the next section.
+Expedited assignment can be requested by the client, and servers may or may not honor the request (see Sections 18.3.1 and 21.14 for more details and why servers may not honor this request).
+Clients may request this expedited service in environments where it is likely that there is only one server available on a link and no expectation that a second server would become available, or when completing the configuration process as quickly as possible is a priority.
+
+To request the expedited two-message exchange, the client sends a Solicit message to the All_DHCP_Relay_Agents_and_Servers multicast address requesting the assignment of addresses and/or delegated prefixes and other configuration information.
+This message includes an indication (the Rapid Commit option; see Section 21.14) that the client is willing to accept an immediate Reply message from the server.
+The server that is willing to commit the assignment of addresses and/or delegated prefixes to the client immediately responds with a Reply message.  
+The configuration information and the addresses and/or delegated prefixes in the Reply message are then immediately available for use by the client.
+
+Each address or delegated prefix assigned to the client has associated preferred and valid lifetimes specified by the server.  To request an extension of the lifetimes assigned to an address or delegated prefix, the client sends a Renew message to the server.
+
+See Section 18 for descriptions of additional two-message exchanges between the client and server.
+
+# 5.2.  Client/Server Exchanges Involving Four Messages
+To request the assignment of one or more addresses and/or delegated prefixes, a client first locates a DHCP server and then requests the assignment of addresses and/or delegated prefixes and other configuration information from the server.  
+The client sends a  Solicit message to the All_DHCP_Relay_Agents_and_Servers multicast address to find available DHCP servers.
+Any server that can meet the client's requirements responds with an Advertise message.  The client then chooses one of the servers and sends a Request message to the server asking for confirmed assignment of addresses and/or delegated prefixes and other configuration information.
+The server responds with a Reply message that contains the confirmed addresses, delegated prefixes, and configuration.
+
+As described in the previous section, the client can request an extension of the lifetimes assigned to addresses or delegated prefixes (this is a two-message exchange).
+
+# 5.3.  Server/Client Exchanges 
+A server that has previously communicated with a client and negotiated for the client to listen for Reconfigure messages may send the client a Reconfigure message to initiate the client to update its configuration by sending an Information-request, Renew, or Rebind message.  The client then performs the two-message exchange as described earlier.
+This can be used to expedite configuration changes to a client, such as the need to renumber a network (see [RFC6879]).
+
+# 6.  Operational Models 
+The described models are not mutually exclusive and are sometimes used together.  For example, a device may start in stateful mode to obtain an address and, at a later time when an application is started, request additional parameters using stateless mode.
+
+DHCP may be extended to support additional stateful services that may interact with one or more of the models described below.
+
+# 6.1.  Stateless DHCP
+Stateless DHCP [RFC3736] is used when DHCP is not used for obtaining a lease but a node (DHCP client) desires one or more DHCP "other configuration" parameters, such as a list of DNS recursive name servers or DNS domain search lists [RFC3646].  
+Stateless DHCP may be used when a node initially boots or at any time the software on the node requires some missing or expired configuration information that is available via DHCP.
+   
+# 6.2.  DHCP for Non-temporary Address Assignment
+# 6.3.  DHCP for Prefix Delegation
+# 6.4.  DHCP for Customer Edge Routers
+#
+#
+#
+#
+#
+#
+#
+
+
+
+
+
+
+
+#
+
 
 Reference
 ==============================
