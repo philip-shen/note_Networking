@@ -420,12 +420,10 @@ The formats of these messages are provided in Sections 8 and 9.  Additional mess
                              relay agent delivers to a client.  The Relay-reply message may be relayed by other                             
                              relay agents for delivery to the destination relay agent.                             
 
-                             The server encapsulates the client message
-                             as an option in the Relay-reply message,
-                             which the relay agent extracts and relays
-                             to the client.
+                             The server encapsulates the client message as an option in the Relay-reply message,                             
+                             which the relay agent extracts and relays to the client.                             
 ```
-![alt tag](https://image.slidesharecdn.com/ipv6autoconfig20c-121128214140-phpapp02/95/i-pv6-autoconfig20c-39-638.jpg?cb=1354139120)
+![alt tag](https://www.cisco.com/c/dam/en/us/products/collateral/ios-nx-os-software/enterprise-ipv6-solution/whitepaper_c11-689821.doc/_jcr_content/renditions/whitepaper_c11-689821-12.jpg)
 
 #
 
