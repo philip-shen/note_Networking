@@ -241,16 +241,192 @@ DHCP may be extended to support additional stateful services that may interact w
 # 6.1.  Stateless DHCP
 Stateless DHCP [RFC3736] is used when DHCP is not used for obtaining a lease but a node (DHCP client) desires one or more DHCP "other configuration" parameters, such as a list of DNS recursive name servers or DNS domain search lists [RFC3646].  
 Stateless DHCP may be used when a node initially boots or at any time the software on the node requires some missing or expired configuration information that is available via DHCP.
-   
+
+This is the simplest and most basic operation for DHCP and requires a client (and a server) to support only two messages --
+ Information-request and Reply.
+ 
 # 6.2.  DHCP for Non-temporary Address Assignment
+This model of operation was the original motivation for DHCP.  
+It is appropriate for situations where stateless address autoconfiguration alone is insufficient or impractical, e.g., because of network policy, additional requirements such as dynamic updates to the DNS, or client-specific requirements.
+
+The model of operation for non-temporary address assignment is as follows.  
+The server is provided with prefixes from which it may allocate addresses to clients, as well as any related network topology information as to which prefixes are present on which links.
+A client requests a non-temporary address to be assigned by the server.  
+The server allocates an address or addresses appropriate for the link on which the client is connected.  
+The server returns the allocated address or addresses to the client.
+
+Each address has associated preferred and valid lifetimes, which constitute an agreement about the length of time over which the client is allowed to use the address.  
+A client can request an extension of the lifetimes on an address and is required to terminate the use of an address if the valid lifetime of the address expires.
+
+Clients can also request more than one address or set of addresses (see Sections 6.6 and 12).
+
 # 6.3.  DHCP for Prefix Delegation
+It is appropriate for situations in which the delegating router 
+(1) does not have knowledge about the topology of the networks to which the requesting router is attached and 
+(2) does not require other information aside from theidentity of the requesting router to choose a prefix for delegation.
+This mechanism is appropriate for use by an ISP to delegate a prefix to a subscriber, where the delegated prefix would possibly be subnetted and assigned to the links within the subscriber's network. [RFC7084] and [RFC7368] describe such use in detail.
+
+The design of this prefix delegation mechanism meets the requirements for prefix delegation in [RFC3769](https://tools.ietf.org/html/rfc3769).
+
+While [RFC3633] assumes that the DHCP client is a router (hence the use of "requesting router") and that the DHCP server is a router(hence the use of "delegating router"), DHCP prefix delegation itself does not require that the client forward IP packets not addressed to itself and thus does not require that the client (or server) be a router as defined in [RFC8200].
+
+The model of operation for prefix delegation is as follows.  
+A server is provisioned with prefixes to be delegated to clients.  
+A client requests prefix(es) from the server, as described in Section 18.  
+The server chooses prefix(es) for delegation and responds with prefix(es) to the client.  
+The client is then responsible for the delegated prefix(es).  
+For example, the client might assign a subnet from a delegated prefix to one of its interfaces and begin sending Router Advertisements for the prefix on that link.
+
+Each prefix has an associated preferred lifetime and valid lifetime, which constitute an agreement about the length of time over which the client is allowed to use the prefix.  
+A client can request an extension of the lifetimes on a delegated prefix and is required to terminate the use of a delegated prefix if the valid lifetime of the prefix expires.
+
+Figure 1 illustrates a network architecture in which prefix delegation could be used.
+```
+
+                      ______________________         \
+                     /                      \         \
+                    |    ISP core network    |         \
+                     \__________ ___________/           |
+                                |                       |
+                        +-------+-------+               |
+                        |  Aggregation  |               | ISP
+                        |    device     |               | network
+                        |  (delegating  |               |
+                        |    router)    |               |
+                        +-------+-------+               |
+                                |                      /
+                                |Network link to      /
+                                |subscriber premises /
+                                |
+                         +------+------+             \
+                         |     CPE     |              \
+                         | (requesting |               \
+                         |   router)   |                |
+                         +----+---+----+                |
+                              |   |                     | Subscriber
+       ---+-------------+-----+   +-----+------         | network
+          |             |               |               |
+     +----+-----+ +-----+----+     +----+-----+         |
+     |Subscriber| |Subscriber|     |Subscriber|        /
+     |    PC    | |    PC    |     |    PC    |       /
+     +----------+ +----------+     +----------+      /
+
+                    Figure 1: Prefix Delegation Network
+```
+In this example, the server (delegating router) is configured with a set of prefixes to be used for assignment to customers at the time of each customer's first connection to the ISP service.  
+The prefix delegation process begins when the client (requesting router) requests configuration information through DHCP.  The DHCP messages from the client are received by the server in the aggregation device.
+When the server receives the request, it selects an available prefix or prefixes for delegation to the client.  The server then returns the prefix or prefixes to the client.
+
+The client subnets the delegated prefix and assigns the longer prefixes to links in the subscriber's network.  
+In a typical scenario based on the network shown in Figure 1, the client subnets a single delegated /48 prefix into /64 prefixes and assigns one /64 prefix to  each of the links in the subscriber network.
+
+The client may, in turn, provide DHCP service to nodes attached to the internal network.  For example, the client may obtain the addresses of DNS and NTP servers from the ISP server and then pass that configuration information on to the subscriber hosts through a DHCP server in the client (requesting router).
+
+If the client uses a delegated prefix to configure addresses on interfaces on itself or other nodes behind it, the preferred and valid lifetimes of those addresses MUST be no longer than the remaining preferred and valid lifetimes, respectively, for the delegated prefix at any time.
+   
 # 6.4.  DHCP for Customer Edge Routers
-#
-#
-#
-#
-#
-#
+The DHCP requirements and network architecture for Customer Edge Routers are described in [RFC7084].(https://tools.ietf.org/html/rfc7084)
+This model of operation combines address assignment (see Section 6.2) and prefix delegation (see Section 6.3).
+
+# 6.5.  DHCP for Temporary Addresses
+Temporary addresses were originally introduced to avoid privacy concerns with stateless address autoconfiguration, which based 64 bits of the address on the EUI-64 (see [RFC4941].  They were added to DHCP to provide complementary support when stateful address assignment is used.
+
+Temporary address assignment works mostly like non-temporary address assignment (see Section 6.2); however, these addresses are generally intended to be used for a short period of time and not to have their lifetimes extended, though they can be if required.
+
+# 6.6.  Multiple Addresses and Prefixes
+DHCP allows a client to receive multiple addresses.  During typical operation, a client sends one instance of an IA_NA option and the server assigns at most one address from each prefix assigned to the link to which the client is attached.
+In particular, the server can be configured to serve addresses out of multiple prefixes for a given link.  This is useful in cases such as when a network renumbering event is in progress.  
+In a typical deployment, the server will grant one address for each IA_NA option (see Section 21.4).
+
+A client can explicitly request multiple addresses by sending multiple IA_NA options (and/or IA_TA options; see Section 21.5).  
+A client can send multiple IA_NA (and/or IA_TA) options in its initial transmissions.  
+lternatively, it can send an extra Request message with additional new IA_NA (and/or IA_TA) options (or include them in a Renew message).
+
+The same principle also applies to prefix delegation.  In principle, DHCP allows a client to request new prefixes to be delegated by sending additional IA_PD options (see Section 21.21).
+
+For more information on how the server distinguishes between IA  option instances, see Section 12.
+
+# 7.  DHCP Constants
+# 7.1.  Multicast Addresses
+DHCP makes use of the following multicast addresses:
+
+   All_DHCP_Relay_Agents_and_Servers (ff02::1:2)
+      A link-scoped multicast address used by a client to communicate
+      with neighboring (i.e., on-link) relay agents and servers.  All
+      servers and relay agents are members of this multicast group.
+
+   All_DHCP_Servers (ff05::1:3)
+      A site-scoped multicast address used by a relay agent to
+      communicate with servers, either because the relay agent wants to
+      send messages to all servers or because it does not know the
+      unicast addresses of the servers.  Note that in order for a relay
+      agent to use this address, it must have an address of sufficient
+      scope to be reachable by the servers. 
+
+# 7.2.  UDP Ports
+Clients listen for DHCP messages on UDP port 546.  Servers and relay agents listen for DHCP messages on UDP port 547.
+
+# 7.3.  DHCP Message Types
+The formats of these messages are provided in Sections 8 and 9.  Additional message types have been defined and may be defined in the future; see <https://www.iana.org/assignments/dhcpv6-parameters>.
+
+```
+   SOLICIT (1)               A client sends a Solicit message to locate servers.                             
+
+   ADVERTISE (2)             A server sends an Advertise message to indicate that it is available for DHCP                             
+                             service, in response to a Solicit message received from a client.                             
+
+   REQUEST (3)               A client sends a Request message to request configuration parameters, including                             
+                             addresses and/or delegated prefixes, from a specific server.                             
+
+   CONFIRM (4)               A client sends a Confirm message to any available server to determine whether the                             
+                             addresses it was assigned are still appropriate to the link to which the client is connected.                            
+                             
+   RENEW (5)                 A client sends a Renew message to the server that originally provided the client's leases and                             
+                             configuration parameters to extend the lifetimes on the                             
+                             leases assigned to the client and to update other configuration parameters.                             
+                             
+   REBIND (6)                A client sends a Rebind message to any available server to extend the lifetimes on                             
+                             the leases assigned to the client and to update other configuration parameters; this                             
+                             message is sent after a client receives no response to a Renew message.                             
+
+   REPLY (7)                 A server sends a Reply message containing assigned leases and configuration                             
+                             parameters in response to a Solicit, Request, Renew, or Rebind message received from a client.                             
+                             A server sends a Reply message containing configuration parameters in response to an Information-request                        
+                             message.  A server sends a Reply message in response to a Confirm message confirming or
+                             denying that the addresses assigned to the client are appropriate to the link to which the client is connected.
+                             A server sends a Reply message to acknowledge receipt of a Release or Decline message.                             
+
+   RELEASE (8)               A client sends a Release message to the server that assigned leases to the client                             
+                             to indicate that the client will no longer use one or more of the assigned leases.                             
+
+   DECLINE (9)               A client sends a Decline message to a server to indicate that the client has                             
+                             determined that one or more addresses assigned by the server are already in use                             
+                             on the link to which the client is connected.                             
+
+   RECONFIGURE (10)          A server sends a Reconfigure message to a client to inform the client that the server                             
+                             has new or updated configuration parameters and that the client is to initiate a                             
+                             Renew/Reply, Rebind/Reply, or Information-request/Reply transaction with                             
+                             the server in order to receive the updated information.                             
+
+   INFORMATION-REQUEST (11)  A client sends an Information-request message to a server to request                             
+                             configuration parameters without the assignment of any leases to the client.
+                             
+   RELAY-FORW (12)           A relay agent sends a Relay-forward message to relay messages to servers, either                             
+                             directly or through another relay agent.
+                             The received message -- either a client message or a Relay-forward message from                             
+                             another relay agent -- is encapsulated in an option in the Relay-forward message.                             
+
+   RELAY-REPL (13)           A server sends a Relay-reply message to a relay agent containing a message that the                             
+                             relay agent delivers to a client.  The Relay-reply message may be relayed by other                             
+                             relay agents for delivery to the destination relay agent.                             
+
+                             The server encapsulates the client message
+                             as an option in the Relay-reply message,
+                             which the relay agent extracts and relays
+                             to the client.
+```
+![alt tag](https://image.slidesharecdn.com/ipv6autoconfig20c-121128214140-phpapp02/95/i-pv6-autoconfig20c-39-638.jpg?cb=1354139120)
+
 #
 
 
@@ -265,6 +441,8 @@ Stateless DHCP may be used when a node initially boots or at any time the softwa
 Reference
 ==============================
 * [Dynamic Host Configuration Protocol for IPv6 (DHCPv6), RFC8415, November 2018](https://tools.ietf.org/html/rfc8415)
+* [Requirements for IPv6 Prefix Delegation, RFC 3769, June 2004](https://tools.ietf.org/html/rfc3769)
+* [Basic Requirements for IPv6 Customer Edge Routers, RFC 7084, November 2013](https://tools.ietf.org/html/rfc7084)
 
 * []()
 ![alt tag]()
