@@ -391,10 +391,10 @@ The formats of these messages are provided in Sections 8 and 9.  Additional mess
 
    REPLY (7)                 A server sends a Reply message containing assigned leases and configuration                             
                              parameters in response to a Solicit, Request, Renew, or Rebind message received from a client.                             
-                             A server sends a Reply message containing configuration parameters in response to an Information-request                        
-                             message.  A server sends a Reply message in response to a Confirm message confirming or
-                             denying that the addresses assigned to the client are appropriate to the link to which the client is connected.
-                             A server sends a Reply message to acknowledge receipt of a Release or Decline message.                             
+                             A server sends a Reply message containing configuration parameters in response to an                         
+                             Information-request essage.  A server sends a Reply message in response to a Confirm message confirming 
+                             or enying that the addresses assigned to the client are appropriate to the link to which the client is 
+                             connected.  A server sends a Reply message to acknowledge receipt of a Release or Decline message.                             
 
    RELEASE (8)               A client sends a Release message to the server that assigned leases to the client                             
                              to indicate that the client will no longer use one or more of the assigned leases.                             
@@ -423,19 +423,309 @@ The formats of these messages are provided in Sections 8 and 9.  Additional mess
                              The server encapsulates the client message as an option in the Relay-reply message,                             
                              which the relay agent extracts and relays to the client.                             
 ```
-![alt tag](https://i.imgur.com/xwwe2D0.jpg)
+![alt tag](https://i.imgur.com/hqxUOOw.jpg)
 
-![alt tag](https://i.imgur.com/xqOKEs4.jpg)
-#
+![alt tag](https://i.imgur.com/1WmmLhQ.jpg)
 
+# 7.4.  DHCP Option Codes
+DHCP makes extensive use of options in messages; some of these are defined later, in Section 21.  Additional options are defined in other documents or may be defined in the future (see [RFC7227] for guidance on new option definitions).
 
+# 7.5.  Status Codes
+DHCP uses status codes to communicate the success or failure of operations requested in messages from clients and servers and to provide additional information about the specific cause of the failure of a message.  The specific status codes are defined in  Section 21.13.
 
+# 7.6.  Transmission and Retransmission Parameters
+This section presents a table of values used to describe the message transmission behavior of clients and servers.  Some of the values are adjusted by a randomization factor and backoffs (see Section 15).
+Transmissions may also be influenced by rate limiting (see Section 14.1).
+```
+   +-----------------+------------------+------------------------------+
+   | Parameter       | Default          | Description                  |
+   +-----------------+------------------+------------------------------+
+   | SOL_MAX_DELAY   | 1 sec            | Max delay of first Solicit   |
+   |                 |                  |                              |
+   | SOL_TIMEOUT     | 1 sec            | Initial Solicit timeout      |
+   |                 |                  |                              |
+   | SOL_MAX_RT      | 3600 secs        | Max Solicit timeout value    |
+   |                 |                  |                              |
+   | REQ_TIMEOUT     | 1 sec            | Initial Request timeout      |
+   |                 |                  |                              |
+   | REQ_MAX_RT      | 30 secs          | Max Request timeout value    |
+   |                 |                  |                              |
+   | REQ_MAX_RC      | 10               | Max Request retry attempts   |
+   |                 |                  |                              |
+   | CNF_MAX_DELAY   | 1 sec            | Max delay of first Confirm   |
+   |                 |                  |                              |
+   | CNF_TIMEOUT     | 1 sec            | Initial Confirm timeout      |
+   |                 |                  |                              |
+   | CNF_MAX_RT      | 4 secs           | Max Confirm timeout          |
+   |                 |                  |                              |
+   | CNF_MAX_RD      | 10 secs          | Max Confirm duration         |
+   |                 |                  |                              |
+   | REN_TIMEOUT     | 10 secs          | Initial Renew timeout        |
+   |                 |                  |                              |
+   | REN_MAX_RT      | 600 secs         | Max Renew timeout value      |
+   |                 |                  |                              |
+   | REB_TIMEOUT     | 10 secs          | Initial Rebind timeout       |
+   |                 |                  |                              |
+   | REB_MAX_RT      | 600 secs         | Max Rebind timeout value     |
+   |                 |                  |                              |
+   | INF_MAX_DELAY   | 1 sec            | Max delay of first           |
+   |                 |                  | Information-request          |
+   |                 |                  |                              |
+   | INF_TIMEOUT     | 1 sec            | Initial Information-request  |
+   |                 |                  | timeout                      |
+   |                 |                  |                              |
+   | INF_MAX_RT      | 3600 secs        | Max Information-request      |
+   |                 |                  | timeout value                |
+   |                 |                  |                              |
 
+   | REL_TIMEOUT     | 1 sec            | Initial Release timeout      |
+   |                 |                  |                              |
+   | REL_MAX_RC      | 4                | Max Release retry attempts   |
+   |                 |                  |                              |
+   | DEC_TIMEOUT     | 1 sec            | Initial Decline timeout      |
+   |                 |                  |                              |
+   | DEC_MAX_RC      | 4                | Max Decline retry attempts   |
+   |                 |                  |                              |
+   | REC_TIMEOUT     | 2 secs           | Initial Reconfigure timeout  |
+   |                 |                  |                              |
+   | REC_MAX_RC      | 8                | Max Reconfigure attempts     |
+   |                 |                  |                              |
+   | HOP_COUNT_LIMIT | 8                | Max hop count in a           |
+   |                 |                  | Relay-forward message        |
+   |                 |                  |                              |
+   | IRT_DEFAULT     | 86400 secs (24   | Default information refresh  |
+   |                 | hours)           | time                         |
+   |                 |                  |                              |
+   | IRT_MINIMUM     | 600 secs         | Min information refresh time |
+   |                 |                  |                              |
+   | MAX_WAIT_TIME   | 60 secs          | Max required time to wait    |
+   |                 |                  | for a response               |
+   +-----------------+------------------+------------------------------+
 
+            Table 1: Transmission and Retransmission Parameters
+```
 
+# 7.7.  Representation of Time Values and "Infinity" as a Time Value
+All time values for lifetimes, T1, and T2 are unsigned 32-bit integers and are expressed in units of seconds.  The value 0xffffffff is taken to mean "infinity" when used as a lifetime (as in [RFC4861]) or a value for T1 or T2.
 
-#
+ Setting the valid lifetime of an address or a delegated prefix to 0xffffffff ("infinity") amounts to a permanent assignment of an
+ address or delegation to a client and should only be used in cases where permanent assignments are desired.
+ 
+ Care should be taken in setting T1 or T2 to 0xffffffff ("infinity").
+ A client will never attempt to extend the lifetimes of any addresses in an IA with T1 set to 0xffffffff.  
+ A client will never attempt to use a Rebind message to locate a different server to extend the lifetimes 
+ of any addresses in an IA with T2 set to 0xffffffff.
 
+# 8.  Client/Server Message Formats
+The following diagram illustrates the format of DHCP messages sent between clients and servers:
+
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |    msg-type   |               transaction-id                  |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                                                               |
+      .                            options                            .
+      .                 (variable number and length)                  .
+      |                                                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                  Figure 2: Client/Server Message Format
+
+      msg-type             Identifies the DHCP message type; the available message types are listed in                           
+                           Section 7.3.  A 1-octet field.
+
+      transaction-id       The transaction ID for this message exchange. A 3-octet field.                           
+
+      options              Options carried in this message; options are described in Section 21.  A variable-length                           
+                           field (4 octets less than the size of the message).                           
+```
+
+# 9.  Relay Agent/Server Message Formats
+Options are stored serially in the "options" field, with no padding between the options.  Options are byte-aligned but are not aligned in
+ any other way (such as on 2-byte or 4-byte boundaries).
+
+There are two relay agent messages (Relay-forward and Relay-reply), which share the following format:
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |    msg-type   |   hop-count   |                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+      |                                                               |
+      |                         link-address                          |
+      |                                                               |
+      |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-|
+      |                               |                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+      |                                                               |
+      |                         peer-address                          |
+      |                                                               |
+      |                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-|
+      |                               |                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+      .                                                               .
+      .            options (variable number and length)   ....        .
+      |                                                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                Figure 3: Relay Agent/Server Message Format
+```
+# 9.1.  Relay-forward Message
+The following table defines the use of message fields in a Relay-forward message.
+```
+      msg-type             RELAY-FORW (12).  A 1-octet field.
+
+      hop-count            Number of relay agents that have already relayed this message.  A 1-octet field.                           
+
+      link-address         An address that may be used by the server to identify the link on 
+                           which the client is located.  This is typically a globally scoped
+                           unicast address (i.e., GUA or ULA), but see the discussion i
+                           n Section 19.1.1.  A 16-octet field.
+
+      peer-address         The address of the client or relay agent from which the message 
+                           to be relayed was received.  A 16-octet field.
+
+      options              MUST include a Relay Message option (see Section 21.10);                            
+                           MAY include other options, such as the Interface-Id option (see Section 21.18),                            
+                           added by the relay agent.  A variable-length field (34 octets less than
+                           the size of the message).
+```
+See Section 13.1 for an explanation of how the link-address field is used.
+
+# 9.2.  Relay-reply Message
+```
+      msg-type             RELAY-REPL (13).  A 1-octet field.
+
+      hop-count            Copied from the Relay-forward message. A 1-octet field.                           
+
+      link-address         Copied from the Relay-forward message. A 16-octet field.                           
+
+      peer-address         Copied from the Relay-forward message.
+                           A 16-octet field.
+
+      options              MUST include a Relay Message option (see Section 21.10); MAY include other options,                           
+                           such as the Interface-Id option (see Section 21.18).  A variable-length field
+                           (34 octets less than the size of the message).
+```
+
+# 10.  Representation and Use of Domain Names
+# 11.  DHCP Unique Identifier (DUID)
+Each DHCP client and server has a DUID.  DHCP servers use DUIDs to identify clients for the selection of configuration parameters and in
+the association of IAs with clients.  DHCP clients use DUIDs to identify a server in messages where a server needs to be identified.
+See Sections 21.2 and 21.3 for details regarding the representation of a DUID in a DHCP message.
+
+The DUID is carried in an option because it may be variable in length and because it is not required in all DHCP messages.
+The DUID is designed to be unique across all DHCP clients and servers, and stable for any specific client or server.
+
+# 11.1.  DUID Contents
+```
+      +------+------------------------------------------------------+
+      | Type | Description                                          |
+      +------+------------------------------------------------------+
+      | 1    | Link-layer address plus time                         |
+      | 2    | Vendor-assigned unique ID based on Enterprise Number |
+      | 3    | Link-layer address                                   |
+      | 4    | Universally Unique Identifier (UUID) [RFC6355]       |
+      +------+------------------------------------------------------+
+
+                            Table 2: DUID Types
+```
+# 11.2.  DUID Based on Link-Layer Address Plus Time (DUID-LLT)
+The time value is the time that the DUID is generated, represented in seconds since midnight (UTC), January 1, 2000, modulo 2^32.  The hardware type MUST be a valid hardware type assigned by IANA; see [IANA-HARDWARE-TYPES].
+
+ The following diagram illustrates the format of a DUID-LLT:
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |         DUID-Type (1)         |    hardware type (16 bits)    |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                        time (32 bits)                         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      .                                                               .
+      .             link-layer address (variable length)              .
+      .                                                               .
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                         Figure 4: DUID-LLT Format
+```
+
+# 11.3.  DUID Assigned by Vendor Based on Enterprise Number (DUID-EN)
+The vendor assigns this form of DUID to the device.  This DUID consists of the 4-octet vendor's registered Private Enterprise Number as maintained by IANA [IANA-PEN] followed by a unique identifier assigned by the vendor.
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |         DUID-Type (2)         |       enterprise-number       |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |   enterprise-number (contd)   |                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+      .                           identifier                          .
+      .                       (variable length)                       .
+      .                                                               .
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                         Figure 5: DUID-EN Format
+```
+
+# 11.4.  DUID Based on Link-Layer Address (DUID-LL)
+The following diagram illustrates the format of a DUID-LL:
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |         DUID-Type (3)         |    hardware type (16 bits)    |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      .                                                               .
+      .             link-layer address (variable length)              .
+      .                                                               .
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                         Figure 7: DUID-LL Format
+
+```
+
+# 11.5.  DUID Based on Universally Unique Identifier (DUID-UUID)
+```
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |         DUID-Type (4)         |        UUID (128 bits)        |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+      |                                                               |
+      |                                                               |
+      |                                -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                                |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+                        Figure 8: DUID-UUID Format
+```
+
+# 12.  Identity Association
+An Identity Association (IA) is a construct through which a server and a client can identify, group, and manage a set of related IPv6 addresses or delegated prefixes.  Each IA consists of an IAID and associated configuration information.
+
+# 12.1.  Identity Associations for Address Assignment
+# 12.2.  Identity Associations for Prefix Delegation
+
+# 13.  Assignment to an IA
+# 13.1.  Selecting Addresses for Assignment to an IA_NA
+# 13.2.  Assignment of Temporary Addresses
+# 13.3.  Assignment of Prefixes for IA_PD
+
+# 14.  Transmission of Messages by a Client
+# 14.1.  Rate Limiting
+# 14.2.  Client Behavior when T1 and/or T2 Are 0
+In certain cases, T1 and/or T2 values may be set to 0.  Currently, there are three such cases:
+
+   1.  a client received an IA_NA option (see Section 21.4) with a zero value
+
+   2.  a client received an IA_PD option (see Section 21.21) with a zero value
+
+   3.  a client received an IA_TA option (see Section 21.5) (which does
+       not contain T1 and T2 fields and these leases are not generally renewed)
+       
 
 Reference
 ==============================
