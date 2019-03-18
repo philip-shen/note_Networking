@@ -1,14 +1,10 @@
 # Purpose
-Create personal GitHub Pages in github.io domain.
-Setup up individual GitHub Pages site locally with Jekyll by Docker more quickly and easily.
-
-# 
-
-# Troubleshooting
+Review Ad-Hoc On-Demand Distance Vector Routing of Mobile Ad-Hoc Network(MANET).
 
 
 # Reference
 * [600.647 - Advanced Topics in Wireless Networks, Spring 08](https://www.cs.jhu.edu/~cs647/)
+* [Mobile ad-hoc networks](http://www.yl.is.s.u-tokyo.ac.jp/~kaneda/misc/resumes/mobile_ad_hoc_networks.ppt)
 * [第7回 AODV(Ad hoc On-Demand Distance Vector)プロトコル 2003/5/22](https://internet.watch.impress.co.jp/www/column/wp2p/wp2p07.htm)
 * [アドホックネットワークの概要と技術動向 千葉大学大学院 阪田 史郎 2005年2月26日](https://slidesplayer.net/slide/11226125/)
 * [創発システムに向けて 慶應義塾大学環境情報学部 徳田英幸](https://slidesplayer.net/slide/11499738/)
