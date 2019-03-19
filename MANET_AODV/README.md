@@ -87,6 +87,173 @@ In AODV routing protocol messages, it is used by other nodes to determine the fr
 ## valid route
 See active route.
 
+# 4. Applicability Statement
+The AODV routing protocol is designed for mobile ad hoc networks with populations of tens to thousands of mobile nodes.  AODV can handle low, moderate, and relatively high mobility rates, as well as a variety of data traffic levels.
+AODV is designed for use in networks where the nodes can all trust each other, either by use of preconfigured keys, or because it is known that there are no malicious intruder nodes.  
+AODV has been designed to reduce the dissemination of control traffic and eliminate overhead on data traffic, in order to improve scalability and performance.
+
+# 5. Message Formats
+
+## 5.1. Route Request (RREQ) Message Format
+```
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |J|R|G|D|U|   Reserved          |   Hop Count   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            RREQ ID                            |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Destination IP Address                     |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                  Destination Sequence Number                  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Originator IP Address                      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                  Originator Sequence Number                   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+The format of the Route Request message is illustrated above, and contains the following fields:
+```
+      Type           1
+
+      J              Join flag; reserved for multicast.
+
+      R              Repair flag; reserved for multicast.
+
+      G              Gratuitous RREP flag; indicates whether a gratuitous RREP should be unicast to the node                     
+                     specified in the Destination IP Address field (see sections 6.3, 6.6.3).                     
+
+      D              Destination only flag; indicates only the destination may respond to this RREQ (see                     
+                     section 6.5).
+
+      U              Unknown sequence number; indicates the destination sequence number is unknown (see section 6.3).                     
+
+      Reserved       Sent as 0; ignored on reception.
+
+      Hop Count      The number of hops from the Originator IP Address to the node handling the request.                     
+
+      RREQ ID        A sequence number uniquely identifying the particular RREQ when taken in conjunction with the
+                     originating node's IP address.
+
+      Destination IP Address
+      Destination Sequence Number
+      Originator IP Address
+      Originator Sequence Number                  
+```
+
+## 5.2. Route Reply (RREP) Message Format
+```
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |R|A|    Reserved     |Prefix Sz|   Hop Count   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                     Destination IP address                    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                  Destination Sequence Number                  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Originator IP address                      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                           Lifetime                            |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+The format of the Route Reply message is illustrated above, and contains the following fields:
+```
+      Type          2
+
+      R             Repair flag; used for multicast.
+
+      A             Acknowledgment required; see sections 5.4 and 6.7.
+
+      Reserved      Sent as 0; ignored on reception.
+
+      Prefix Size   If nonzero, the 5-bit Prefix Size specifies that the indicated next hop may be used for any nodes with                    
+                    the same routing prefix (as defined by the Prefix Size) as the requested destination.                    
+
+      Hop Count     The number of hops from the Originator IP Address to the Destination IP Address.  
+                    For multicast route requests this indicates the number of hops to the                    
+                    multicast tree member sending the RREP.
+
+      Destination IP Address
+      Destination Sequence Number
+      Originator IP Address
+
+      Lifetime      The time in milliseconds for which nodes receiving the RREP consider the route to be valid.
+```
+
+## 5.3. Route Error (RERR) Message Format
+```
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |N|          Reserved           |   DestCount   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |            Unreachable Destination IP Address (1)             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |         Unreachable Destination Sequence Number (1)           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-|
+   |  Additional Unreachable Destination IP Addresses (if needed)  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |Additional Unreachable Destination Sequence Numbers (if needed)|
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
+
+The format of the Route Error message is illustrated above, and contains the following fields:
+```
+      Type        3
+
+      N           No delete flag; set when a node has performed a local repair of a link, and upstream nodes should not delete                  
+                  the route.
+
+      Reserved    Sent as 0; ignored on reception.
+
+      DestCount   The number of unreachable destinations included in the message; MUST be at least 1.                  
+
+      Unreachable Destination IP Address
+                  The IP address of the destination that has become unreachable due to a link break.                  
+
+      Unreachable Destination Sequence Number
+                  The sequence number in the route table entry for
+                  the destination listed in the previous Unreachable Destination IP Address field.                  
+```
+The RERR message is sent whenever a link break causes one or more destinations to become unreachable from some of the node's neighbors.
+See section 6.2 for information about how to maintain the appropriate records for this determination, and 
+section 6.11 for specification about how to create the list of destinations.
+
+# 6. AODV Operation
+This section describes the scenarios under which nodes generate Route Request (RREQ), Route Reply (RREP) and Route Error (RERR) messages for unicast communication towards a destination, and how the message data are handled.  
+In order to process the messages correctly, certain state information has to be maintained in the route table entries for the destinations of interest.
+
+All AODV messages are sent to port 654 using UDP.
+
+## 6.1. Maintaining Sequence Numbers
+
+## 6.2. Route Table Entries and Precursor Lists
+
+## 6.3. Generating Route Requests
+## 6.4. Controlling Dissemination of Route Request Messages
+## 6.5. Processing and Forwarding Route Requests
+## 6.6. Generating Route Replies
+### 6.6.1. Route Reply Generation by the Destination
+### 6.6.2. Route Reply Generation by an Intermediate Node
+### 6.6.3. Generating Gratuitous RREPs
+## 6.7. Receiving and Forwarding Route Replies
+## 6.8. Operation over Unidirectional Links
+## 6.9. Hello Messages
+## 6.10. Maintaining Local Connectivity 
+## 6.11. Route Error (RERR) Messages, Route Expiry and Route Deletion
+## 6.12. Local Repair
+## 6.13. Actions After Reboot
+## 6.14. Interfaces
+
+# 7. AODV and Aggregated Networks 
+
+# 8. Using AODV with Other Networks
+
+# 9. Extensions
+
 # Reference
 * [Ad hoc On-Demand Distance Vector (AODV) Routing RFC3561](https://tools.ietf.org/html/rfc3561)
 * [600.647 - Advanced Topics in Wireless Networks, Spring 08](https://www.cs.jhu.edu/~cs647/)
