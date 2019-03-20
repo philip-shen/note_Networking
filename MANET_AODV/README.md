@@ -313,18 +313,18 @@ Each new attempt **MUST increment and update the RREQ ID**.  For each attempt, t
 Data packets **waiting for a route** (i.e., waiting for a RREP after a RREQ has been sent) **SHOULD be buffered**.  The buffering SHOULD be "first-in, first-out" (FIFO).
 If a route discovery has been attempted RREQ_RETRIES times **at the maximum TTL without receiving any RREP**, all data packets destined for the corresponding destination **SHOULD be dropped from the buffer** and **a Destination Unreachable message SHOULD be delivered to the application**.
 
-To reduce congestion in a network, repeated attempts by a source node at route discovery for a single destination **MUST utilize a binary exponential backoff**.
-The first time a source node broadcasts a RREQ, **it waits NET_TRAVERSAL_TIME milliseconds** for the reception of a RREP.
-If a RREP is not received within that time, the source node sends a new RREQ.
-When calculating the time to wait for the RREP after sending the second RREQ, the source node MUST use a binary exponential backoff.
+To reduce congestion in a network, repeated attempts by a source node at route discovery for a single destination **MUST utilize a binary exponential backoff**.  
+The first time a source node broadcasts a RREQ, **it waits NET_TRAVERSAL_TIME milliseconds** for the reception of a RREP.  
+If a RREP is not received within that time, the source node sends a new RREQ.  
+When calculating the time to wait for the RREP after sending the second RREQ, the source node MUST use a binary exponential backoff.  
 Hence, the waiting time for the RREP corresponding to the **second RREQ** is **2 * NET_TRAVERSAL_TIME milliseconds**.  
 If a RREP is not received within this time period, another RREQ may be sent, up to RREQ_RETRIES additional attempts after the first RREQ.  
 **For each additional attempt, the waiting time for the RREP is multiplied by 2**, so that the time conforms to a binary exponential backoff.
 
 ## 6.4. Controlling Dissemination of Route Request Messages
 To prevent unnecessary network-wide dissemination of RREQs, the originating node SHOULD use an **expanding ring search technique**.
-In an expanding ring search, the originating node initially uses a TTL =TTL_START in the RREQ packet IP header and sets the timeout for receiving a RREP to RING_TRAVERSAL_TIME milliseconds.
-RING_TRAVERSAL_TIME is calculated as described in section 10.  The TTL_VALUE used in calculating RING_TRAVERSAL_TIME is set equal to the value of the TTL field in the IP header.
+In an expanding ring search, the originating node initially uses a TTL =TTL_START in the RREQ packet IP header and sets the timeout for receiving a RREP to RING_TRAVERSAL_TIME milliseconds.  
+RING_TRAVERSAL_TIME is calculated as described in section 10.  The TTL_VALUE used in calculating RING_TRAVERSAL_TIME is set equal to the value of the TTL field in the IP header.  
 If the RREQ times out without a corresponding RREP, the originator broadcasts the RREQ again with the TTL incremented by TTL_INCREMENT.
 This continues **until the TTL set in the RREQ reaches TTL_THRESHOLD, beyond which a TTL = NET_DIAMETER is used for each attempt**.  
 Each time, **the timeout for receiving a RREP is RING_TRAVERSAL_TIME.**  **When it is desired to have all retries traverse the entire ad hoc network, this can be achieved by configuring TTL_START and TTL_INCREMENT both to be the same value as NET_DIAMETER**.
@@ -335,12 +335,13 @@ Thereafter, following each timeout the TTL is incremented by TTL_INCREMENT until
 Beyond this TTL = NET_DIAMETER is used.
 Once TTL = NET_DIAMETER, the timeout for waiting for the RREP is set to NET_TRAVERSAL_TIME, as specified in section 6.3.
 
-An expired routing table entry SHOULD NOT be expunged before (current_time + DELETE_PERIOD) (see section 6.11).
+An expired routing table entry **SHOULD NOT be expunged before (current_time + DELETE_PERIOD) (see section 6.11)**.
 Otherwise, the soft state corresponding to the route (e.g., last known hop count) will be lost.  
 Furthermore, a longer routing table entry expunge time MAY be configured.  
 Any routing table entry **waiting for a RREP SHOULD NOT be expunged before (current_time + 2 * NET_TRAVERSAL_TIME)**.
 
 ## 6.5. Processing and Forwarding Route Requests
+
 ## 6.6. Generating Route Replies
 ### 6.6.1. Route Reply Generation by the Destination
 ### 6.6.2. Route Reply Generation by an Intermediate Node
