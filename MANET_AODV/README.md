@@ -88,7 +88,8 @@ In AODV routing protocol messages, it is used by other nodes to determine the fr
 See active route.
 
 # 4. Applicability Statement
-The AODV routing protocol is designed for mobile ad hoc networks with populations of tens to thousands of mobile nodes.  AODV can handle low, moderate, and relatively high mobility rates, as well as a variety of data traffic levels.
+The AODV routing protocol is designed for mobile ad hoc networks with populations of tens to thousands of mobile nodes.  
+AODV can handle low, moderate, and relatively high mobility rates, as well as a variety of data traffic levels.
 AODV is designed for use in networks where the nodes can all trust each other, either by use of preconfigured keys, or because it is known that there are no malicious intruder nodes.  
 AODV has been designed to reduce the dissemination of control traffic and eliminate overhead on data traffic, in order to improve scalability and performance.
 
@@ -229,11 +230,116 @@ In order to process the messages correctly, certain state information has to be 
 All AODV messages are sent to port 654 using UDP.
 
 ## 6.1. Maintaining Sequence Numbers
+Every route table entry at every node MUST include the latest information available about the sequence number for the IP address of the destination node for which the route table entry is maintained.
+This sequence number is called the **"destination sequence number"**.  It is updated whenever a node receives new (i.e., not stale) information about the sequence number from **RREQ, RREP, or RERR** messages that may be received related to that destination.
+AODV depends on each node  in the network to own and maintain its destination sequence number to guarantee the loop-freedom of all routes towards that node.
+A destination node increments its own sequence number in two circumstances:
+```
+   -  Immediately before a node originates a route discovery, it MUST increment its own sequence number.
+      This prevents conflicts with previously established reverse routes towards the originator of a
+      RREQ.
+
+   -  Immediately before a destination node originates a RREP in response to a RREQ,
+      it MUST update its own sequence number to the maximum of its current sequence number and the destination      
+      sequence number in the RREQ packet.
+```
+
+When the destination increments its sequence number, it MUST do so by treating the sequence number value as if it were an unsigned number.
+
+In order to ascertain that information about a destination is not stale, the node compares its current numerical value for the sequence number with that obtained from the incoming AODV message.
+If **the result of subtracting the currently stored sequence number from the value of the incoming sequence number is less than zero**, then the information related to **that destination in the AODV message MUST be discarded**, since that information is stale compared to the node's currently stored information.
+
+The only other circumstance in which a node may change the destination sequence number in one of its route table entries is in response to **a lost or expired link to the next hop towards that destination**.
+
+The node determines which destinations use a particular next hop by consulting its routing table.  In this case, for each destination that uses the next hop, **the node increments the sequence number and marks the route as invalid (see also sections 6.11, 6.12)**.
+
+A node may change the sequence number in the routing table entry of a destination only if:
+```
+   -  it is itself the destination node, and offers a new route to itself, or      
+
+   -  it receives an AODV message with new information about the sequence number for a destination node, or      
+
+   -  the path towards the destination node expires or breaks.
+```
 
 ## 6.2. Route Table Entries and Precursor Lists
+When a node receives an AODV control packet from a neighbor, or creates or updates a route for a particular destination or subnet, it checks its route table for an entry for the destination.
+In the event that there is no corresponding entry for that destination, an entry is created.
+The sequence number is either determined from the information contained in the control packet, or else the valid sequence number field is set to false. 
+
+The route is only updated if the new sequence number is either
+```
+   (i)       higher than the destination sequence number in the route table, or             
+
+   (ii)      the sequence numbers are equal, but the hop count (of the new information) plus one, is smaller than the existing hop             
+             count in the routing table, or
+
+   (iii)     the sequence number is unknown.
+```
+
+The Lifetime field of the routing table entry is either determined from the control packet, or **it is initialized to ACTIVE_ROUTE_TIMEOUT**.
+
+Each time a route is used to forward a data packet, its Active Route Lifetime field of the source, destination and the next hop on the path to the destination is updated to be no less than the current time plus ACTIVE_ROUTE_TIMEOUT.
+
+Since the route between each originator and destination pair is expected to be symmetric, the Active Route Lifetime for the previous hop, along the reverse path back to the IP source, is **also updated to be no less than the current time plus ACTIVE_ROUTE_TIMEOUT**.  
+The lifetime for an Active Route is updated each time the route is used regardless of whether the destination is a single node or a subnet.
+
+For each valid route maintained by a node as a routing table entry, **the node also maintains a list of precursors that may be forwarding packets on this route**.
+These precursors will receive notifications from the node in the event of detection of the loss of the next hop link.  
+The list of precursors in a routing table entry contains those neighboring nodes to which a route reply was generated or forwarded.
 
 ## 6.3. Generating Route Requests
+A node disseminates a RREQ when it determines that it needs a route to a destination and does not have one available.
+This can happen if the destination is previously unknown to the node, or if a previously valid route to the destination expires or is marked as invalid.
+The Destination Sequence Number field in the RREQ message is the last known destination sequence number for this destination and is copied from the Destination Sequence Number field in the routing table.
+**If no sequence number is known, the unknown sequence number flag MUST be set**.
+
+The Originator Sequence Number in the RREQ message is the node's own sequence number, which is incremented prior to insertion in a RREQ.  
+The RREQ ID field is incremented by one from the last RREQ ID used by the current node.  Each node maintains only one RREQ ID.  
+The Hop Count field is set to zero.
+
+Before broadcasting the RREQ, the originating node buffers the **RREQ ID and the Originator IP address (its own address) of the RREQ for PATH_DISCOVERY_TIME**.  
+In this way, when the node receives the packet again from its neighbors, it will not reprocess and re-forward the packet.
+
+An originating node often expects to have bidirectional communications with a destination node.
+In order for this to happen as efficiently as possible, any generation of **a RREP by an intermediate node (as in section 6.6) for delivery to the originating node** SHOULD be accompanied by some action that **notifies the destination about a route back to the originating node**.
+The originating node selects this mode of operation in **the intermediate nodes by setting the 'G' flag**.  **See section 6.6.3** for details about actions taken by the intermediate node in response to a RREQ with the 'G' flag set.   
+
+A node **SHOULD NOT** originate more than **RREQ_RATELIMIT RREQ messages per second**.
+After broadcasting a RREQ, a node waits for a RREP (or other control message with current information regarding a route to the appropriate destination).
+If a route is not received **within NET_TRAVERSAL_TIME milliseconds**, the node MAY try again to discover a route by broadcasting another RREQ, **up to a maximum of RREQ_RETRIES times at the maximum TTL value**.  
+Each new attempt **MUST increment and update the RREQ ID**.  For each attempt, the TTL field of the IP header is set according to the mechanism specified in section 6.4, in order to enable control over how far the RREQ is disseminated for the each retry.
+
+Data packets **waiting for a route** (i.e., waiting for a RREP after a RREQ has been sent) **SHOULD be buffered**.  The buffering SHOULD be "first-in, first-out" (FIFO).
+If a route discovery has been attempted RREQ_RETRIES times **at the maximum TTL without receiving any RREP**, all data packets destined for the corresponding destination **SHOULD be dropped from the buffer** and **a Destination Unreachable message SHOULD be delivered to the application**.
+
+To reduce congestion in a network, repeated attempts by a source node at route discovery for a single destination **MUST utilize a binary exponential backoff**.
+The first time a source node broadcasts a RREQ, **it waits NET_TRAVERSAL_TIME milliseconds** for the reception of a RREP.
+If a RREP is not received within that time, the source node sends a new RREQ.
+When calculating the time to wait for the RREP after sending the second RREQ, the source node MUST use a binary exponential backoff.
+Hence, the waiting time for the RREP corresponding to the **second RREQ** is **2 * NET_TRAVERSAL_TIME milliseconds**.  
+If a RREP is not received within this time period, another RREQ may be sent, up to RREQ_RETRIES additional attempts after the first RREQ.  
+**For each additional attempt, the waiting time for the RREP is multiplied by 2**, so that the time conforms to a binary exponential backoff.
+
 ## 6.4. Controlling Dissemination of Route Request Messages
+To prevent unnecessary network-wide dissemination of RREQs, the originating node SHOULD use an **expanding ring search technique**.
+In an expanding ring search, the originating node initially uses a TTL =TTL_START in the RREQ packet IP header and sets the timeout for receiving a RREP to RING_TRAVERSAL_TIME milliseconds.
+RING_TRAVERSAL_TIME is calculated as described in section 10.  The TTL_VALUE used in calculating RING_TRAVERSAL_TIME is set equal to the value of the TTL field in the IP header.
+If the RREQ times out without a corresponding RREP, the originator broadcasts the RREQ again with the TTL incremented by TTL_INCREMENT.
+This continues **until the TTL set in the RREQ reaches TTL_THRESHOLD, beyond which a TTL = NET_DIAMETER is used for each attempt**.  
+Each time, **the timeout for receiving a RREP is RING_TRAVERSAL_TIME.**  **When it is desired to have all retries traverse the entire ad hoc network, this can be achieved by configuring TTL_START and TTL_INCREMENT both to be the same value as NET_DIAMETER**.
+
+The Hop Count stored in an invalid routing table entry indicates the last known hop count to that destination in the routing table.  
+When a new route to the same destination is required at a later time (e.g., upon route loss), the TTL in the RREQ IP header is initially set to the Hop Count plus TTL_INCREMENT.
+Thereafter, following each timeout the TTL is incremented by TTL_INCREMENT until TTL = TTL_THRESHOLD is reached.  
+Beyond this TTL = NET_DIAMETER is used.
+Once TTL = NET_DIAMETER, the timeout for waiting for the RREP is set to NET_TRAVERSAL_TIME, as specified in section 6.3.
+
+An expired routing table entry SHOULD NOT be expunged before (current_time + DELETE_PERIOD) (see section 6.11).
+Otherwise, the soft state corresponding to the route (e.g., last known hop count) will be lost.  
+Furthermore, a longer routing table entry expunge time MAY be configured.  
+Any routing table entry **waiting for a RREP SHOULD NOT be expunged before (current_time + 2 * NET_TRAVERSAL_TIME)**.
+
 ## 6.5. Processing and Forwarding Route Requests
 ## 6.6. Generating Route Replies
 ### 6.6.1. Route Reply Generation by the Destination
@@ -265,6 +371,28 @@ All AODV messages are sent to port 654 using UDP.
 * [第7回 AODV(Ad hoc On-Demand Distance Vector)プロトコル 2003/5/22](https://internet.watch.impress.co.jp/www/column/wp2p/wp2p07.htm)
 
 * [DSDV VS AODV Published on Sep 19, 2014](https://www.slideshare.net/SenthilKanth/dsdv-dsr-aodvtuto)
+* [DSDV VS AODV page28 2/27/06](https://www.slideshare.net/SenthilKanth/dsdv-dsr-aodvtuto)
+```
+28. AODV --- Optimizations 
+• Expanding ring search 
+– Prevents flooding of network during route discovery 
+– Control Time to Live of RREQ 
+
+• Local repair 
+– Repair breaks in active routes locally instead of notifying source 
+– Use small TTL because destination probably has not moved far 
+– If first repair attempt is unsuccessful, send RERR to source 
+```
+* [An Engineering Approach to Computer Networking— Routing page98](https://slideplayer.com/slide/12337178/)
+```
+ Expanding ring search 
+ A way to use multicast groups for resource discovery 
+ Routers decrement TTL when forwarding 
+ Sender sets TTL and multicasts 
+    reaches all receivers <= TTL hops away 
+ Discovers local resources first 
+ Since heavily loaded servers can keep quiet, automatically distributes load 
+```
 
 * [Shashank95/AODV-vs-DSDV-vs-DSR-on-NS2.35 - GitHub 8 Apr 2017](https://github.com/Shashank95/AODV-vs-DSDV-vs-DSR-on-NS2.35)
 * [joshjdevl/docker-ns3  29 Apr 2014](https://github.com/joshjdevl/docker-ns3)
