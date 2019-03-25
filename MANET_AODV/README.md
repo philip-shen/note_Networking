@@ -590,7 +590,28 @@ The DestCount field of the RERR packet indicates the number of unreachable desti
 Just before transmitting the RERR, certain updates are made on the routing table that **may affect the destination sequence numbers for the unreachable destinations**.  
 For each one of these destinations, the corresponding routing table entry is updated as follows:
 
+   1. The **destination sequence number** of this routing entry, if it exists and is valid, 
+       **is incremented for cases (i) and (ii) above**, and **copied from the incoming RERR in case (iii) above**.      
+
+   2. The entry is invalidated by marking the route entry as invalid
+
+   3. The Lifetime field is updated to **current time plus DELETE_PERIOD**.  Before this time, the entry **SHOULD NOT be deleted**.      
+
+Note that **the Lifetime field in the routing table** plays dual role -- **for an active route it is the expiry time**, and **for an invalid route it is the deletion time**.  
+If a data packet is received for an invalid route, the Lifetime field is updated to current time plus DELETE_PERIOD.  The determination of DELETE_PERIOD is discussed in Section 10.
+![alt tag](https://i.imgur.com/kYmac78.jpg)
+
 ## 6.12. Local Repair
+When a link break in an active route occurs, the node upstream of that break **MAY choose to repair the link locally if the destination was no farther than MAX_REPAIR_TTL hops away**.  
+To repair the link break, the node **increments the sequence number for the destination** and then **broadcasts a RREQ for that destination**.  The TTL of the RREQ  should initially be set to the following value:
+max(MIN_REPAIR_TTL, 0.5 * #hops) + LOCAL_ADD_TTL,
+
+where **#hops is the number of hops to the sender (originator)** of the currently undeliverable packet.  
+Thus, local repair attempts will often be invisible to the originating node, and will always have **TTL >= MIN_REPAIR_TTL + LOCAL_ADD_TTL**.
+
+![alt tag](https://i.imgur.com/Qf2paH3.jpg)
+![alt tag](https://i.imgur.com/ibzLVJS.jpg)
+
 ## 6.13. Actions After Reboot
 ## 6.14. Interfaces
 
@@ -635,6 +656,9 @@ For each one of these destinations, the corresponding routing table entry is upd
 ```
 
 * [Slides for 『Mobile and Wireless Networking』](http://erdos.csie.ncnu.edu.tw/~ccyang/WirelessNetwork/WirelessNetworkSlide.html)
+* [Routing Protocol Comparison for 6LoWPAN](http://docplayer.net/2637876-Routing-protocol-comparison-for-6lowpan.html)
+* [AODV implementation on TinyOS-2.x April 8, 2011](http://www2.engr.arizona.edu/~junseok/AODV.html)
+* [RFC 3561 AODV Routing Protocol 2005/2/29](https://www.slideserve.com/stash/rfc-3561-aodv-routing-protocol)
 
 * [Shashank95/AODV-vs-DSDV-vs-DSR-on-NS2.35 - GitHub 8 Apr 2017](https://github.com/Shashank95/AODV-vs-DSDV-vs-DSR-on-NS2.35)
 * [joshjdevl/docker-ns3  29 Apr 2014](https://github.com/joshjdevl/docker-ns3)
