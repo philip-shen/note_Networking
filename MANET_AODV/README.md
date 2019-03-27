@@ -25,7 +25,7 @@ Review Ad-Hoc On-Demand Distance Vector Routing of Mobile Ad-Hoc Network(MANET).
        [6.8. Operation over Unidirectional Links ...................](#68-operation-over-unidirectional-links)  
        [6.9. Hello Messages ........................................](#69-hello-messages)  
        [6.10 Maintaining Local Connectivity ........................](#610-maintaining-local-connectivity)  
-       [6.11 Route Error (RERR) Messages, Route Expiry and Route Deletion .](#611-route-error-rerr-messages-route-expiry-and-route-deletion) 
+       [6.11 Route Error (RERR) Messages, Route Expiry and Route Deletion .](#611-route-error-rerr-messages-route-expiry-and-route-deletion)  
        [6.12 Local Repair ..........................................](#612-local-repair)  
        [6.13 Actions After Reboot  .................................](#613-actions-after-reboot)  
        [6.14 Interfaces ............................................](#614-interfaces)  
