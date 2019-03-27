@@ -10,35 +10,33 @@ Review Ad-Hoc On-Demand Distance Vector Routing of Mobile Ad-Hoc Network(MANET).
        [5.1. Route Request (RREQ) Message Format ...................](#51-route-request-rreq-message-format)  
        [5.2. Route Reply (RREP) Message Format .....................](#52-route-reply-rrep-message-format)  
        [5.3. Route Error (RERR) Message Format .....................](#53-route-error-rerr-message-format)  
-       [5.4. Route Reply Acknowledgment (RREP-ACK) Message Format ..](#54-route-reply-acknowledgment-(rrep-ack)-message-format)  
-   6.  AODV Operation .............................................  
-       6.1. Maintaining Sequence Numbers ..........................  
-       6.2. Route Table Entries and Precursor Lists ...............  
-       6.3. Generating Route Requests .............................  
-       6.4. Controlling Dissemination of Route Request Messages ...  
-       6.5. Processing and Forwarding Route Requests ..............  
-       6.6. Generating Route Replies ..............................  
-            6.6.1. Route Reply Generation by the Destination ......  
-            6.6.2. Route Reply Generation by an Intermediate
-                   Node ...........................................  
-            6.6.3. Generating Gratuitous RREPs ....................  
-       6.7. Receiving and Forwarding Route Replies ................  
-       6.8. Operation over Unidirectional Links ...................  
-       6.9. Hello Messages ........................................  
-       6.10 Maintaining Local Connectivity ........................  
-       6.11 Route Error (RERR) Messages, Route Expiry and Route
-            Deletion ..............................................  
-       6.12 Local Repair ..........................................  
-       6.13 Actions After Reboot  .................................  
-       6.14 Interfaces ............................................  
-   7.  AODV and Aggregated Networks ...............................  
-   8.  Using AODV with Other Networks .............................  
-   9.  Extensions .................................................  
-       9.1. Hello Interval Extension Format .......................  
-   10. Configuration Parameters ...................................  
-   11. Security Considerations ....................................  
-   12. IANA Considerations ........................................  
-   13. IPv6 Considerations ........................................  
+       [5.4. Route Reply Acknowledgment (RREP-ACK) Message Format ..](#54-route-reply-acknowledgment-rrep-ack-message-format)  
+   [6.  AODV Operation .............................................](#6-aodv-operation)  
+       [6.1. Maintaining Sequence Numbers ..........................](#61-maintaining-sequence-numbers)  
+       [6.2. Route Table Entries and Precursor Lists ...............](#62-route-table-entries-and-precursor-lists)  
+       [6.3. Generating Route Requests .............................](#63-generating-route-requests)  
+       [6.4. Controlling Dissemination of Route Request Messages ...](#64-controlling-dissemination-of-route-request-messages)  
+       [6.5. Processing and Forwarding Route Requests ..............](#65-processing-and-forwarding-route-requests)  
+       [6.6. Generating Route Replies ..............................](#66-generating-route-replies)  
+            [6.6.1. Route Reply Generation by the Destination ......](#661-route-reply-generation-by-the-destination)  
+            [6.6.2. Route Reply Generation by an Intermediate Node .](#662-route-reply-generation-by-an-intermediate-node)  
+            [6.6.3. Generating Gratuitous RREPs ....................](#663-generating-gratuitous-rreps)  
+       [6.7. Receiving and Forwarding Route Replies ................](#67-receiving-and-forwarding-route-replies)  
+       [6.8. Operation over Unidirectional Links ...................](#68-operation-over-unidirectional-links)  
+       [6.9. Hello Messages ........................................](#69-hello-messages)  
+       [6.10 Maintaining Local Connectivity ........................](#610-maintaining-local-connectivity)  
+       [6.11 Route Error (RERR) Messages, Route Expiry and Route Deletion .](#611-route-error-rerr-messages-route-expiry-and-route-deletion) 
+       [6.12 Local Repair ..........................................](#612-local-repair)  
+       [6.13 Actions After Reboot  .................................](#613-actions-after-reboot)  
+       [6.14 Interfaces ............................................](#614-interfaces)  
+   [7.  AODV and Aggregated Networks ...............................](#7-aodv-and-aggregated-networks)  
+   [8.  Using AODV with Other Networks .............................](#8-using-aodv-with-other-networks)  
+   [9.  Extensions .................................................](#9-extensions)  
+       [9.1. Hello Interval Extension Format .......................]()  
+   [10. Configuration Parameters ...................................]()  
+   [11. Security Considerations ....................................]()  
+   [12. IANA Considerations ........................................]()  
+   [13. IPv6 Considerations ........................................]()  
 
 # 1 Introduction
 AODV allows mobile nodes to respond to link breakages and changes in network topology in a timely manner.
@@ -262,7 +260,7 @@ The RERR message is sent whenever a link break causes one or more destinations t
 See section 6.2 for information about how to maintain the appropriate records for this determination, and 
 section 6.11 for specification about how to create the list of destinations.
 
-# 5.4. Route Reply Acknowledgment (RREP-ACK) Message Format
+## 5.4. Route Reply Acknowledgment (RREP-ACK) Message Format
 The Route Reply Acknowledgment (RREP-ACK) message **MUST be sent in response to a RREP message with the 'A' bit set (see section 5.2)**.   
 This is typically done when there is danger of unidirectional links preventing the completion of a Route Discovery cycle (see section 6.8).
 
@@ -342,6 +340,9 @@ The lifetime for an Active Route is updated each time the route is used regardle
 For each valid route maintained by a node as a routing table entry, **the node also maintains a list of precursors that may be forwarding packets on this route**.
 These precursors will receive notifications from the node in the event of detection of the loss of the next hop link.  
 The list of precursors in a routing table entry contains those neighboring nodes to which a route reply was generated or forwarded.
+
+**Precursor List**
+![alt tag](https://i.imgur.com/kYmac78.jpg)
 
 ## 6.3. Generating Route Requests
 A node disseminates a RREQ when it determines that it needs a route to a destination and does not have one available.
@@ -571,7 +572,7 @@ If it has not, it **MAY broadcast a RREP with TTL = 1, called a Hello message, w
 ```
 
 A node MAY determine connectivity by listening for packets from its set of neighbors.  
-If, within the past DELETE_PERIOD, it has received a Hello message from a neighbor, and then for that neighbor does not receive any packets (Hello messages or otherwise) for **more than ALLOWED_HELLO_LOSS * HELLO_INTERVAL milliseconds**, the node **SHOULD assume that the link to this neighbor is currently lost**.  When this happens, the node **SHOULD proceed as in Section 6.11**.
+If, **within the past DELETE_PERIOD**, it has received a Hello message from a neighbor, and then for that neighbor does not receive any packets (Hello messages or otherwise) for **more than ALLOWED_HELLO_LOSS * HELLO_INTERVAL milliseconds**, the node **SHOULD assume that the link to this neighbor is currently lost**.  When this happens, the node **SHOULD proceed as in Section 6.11**.
 
 Whenever a node receives a Hello message from a neighbor, the node SHOULD make sure that it has an active route to the neighbor, and create one if necessary.  
 If a route already exists, then **the Lifetime for the route should be increased, if necessary, to be at least ALLOWED_HELLO_LOSS * HELLO_INTERVAL**.  
@@ -580,7 +581,7 @@ The current node can now begin using this route to forward data packets.
 Routes that are created by hello messages and not used by any other active routes will have empty precursor lists and would not trigger a RERR message if the neighbor moves away and a neighbor timeout occurs.
 
 ## 6.10. Maintaining Local Connectivity 
-Each forwarding node **SHOULD keep track of its continued connectivity to its active next hops (i.e., which next hops or precursors have forwarded packets to or from the forwarding node during the last ACTIVE_ROUTE_TIMEOUT)**, as well as neighbors that have transmitted Hello messages during the last (ALLOWED_HELLO_LOSS * HELLO_INTERVAL).   
+Each forwarding node **SHOULD keep track of its continued connectivity to its active next hops (i.e., which next hops or precursors have forwarded packets to or from the forwarding node during the last ACTIVE_ROUTE_TIMEOUT)**, as well as neighbors that have transmitted Hello messages during **the last (ALLOWED_HELLO_LOSS * HELLO_INTERVAL)**.   
 A node can maintain accurate information about its continued connectivity to these active next hops, using one or more of the available link or network layer mechanisms, as described below.
 ```
    -  Any suitable link layer notification, such as those provided by IEEE 802.11, can be used to determine connectivity, 
@@ -653,8 +654,15 @@ For each one of these destinations, the corresponding routing table entry is upd
    3. The Lifetime field is updated to **current time plus DELETE_PERIOD**.  Before this time, the entry **SHOULD NOT be deleted**.      
 
 Note that **the Lifetime field in the routing table** plays dual role -- **for an active route it is the expiry time**, and **for an invalid route it is the deletion time**.  
-If a data packet is received for an invalid route, the Lifetime field is updated to current time plus DELETE_PERIOD.  The determination of DELETE_PERIOD is discussed in Section 10.
-![alt tag](https://i.imgur.com/kYmac78.jpg)
+**If a data packet is received for an invalid route**, **the Lifetime field is updated to current time plus DELETE_PERIOD**.  The determination of DELETE_PERIOD is discussed in Section 10.
+
+**DELETE_PERIOD**
+**DELETE_PERIOD is intended to provide an upper bound on the time for which an upstream node A can have a neighbor B as an active next hop for destination D, while B has invalidated the route to D.  Beyond this time B can delete the (already invalidated) route to D.**  
+[Section 10](#10_configuration_parameters)
+![alt tag](https://i.imgur.com/4hqBdTt.jpg)
+![alt tag](https://i.imgur.com/khimQ4Q.jpg)
+![alt tag](https://i.imgur.com/xfyiisc.jpg)
+![alt tag](https://i.imgur.com/avTbF1S.jpg)
 
 ## 6.12. Local Repair
 When a link break in an active route occurs, the node upstream of that break **MAY choose to repair the link locally if the destination was no farther than MAX_REPAIR_TTL hops away**.  
@@ -663,18 +671,188 @@ max(MIN_REPAIR_TTL, 0.5 * #hops) + LOCAL_ADD_TTL,
 
 where **#hops is the number of hops to the sender (originator)** of the currently undeliverable packet.  
 Thus, local repair attempts will often be invisible to the originating node, and will always have **TTL >= MIN_REPAIR_TTL + LOCAL_ADD_TTL**.
-
+**Local Repair**
 ![alt tag](https://i.imgur.com/Qf2paH3.jpg)
 ![alt tag](https://i.imgur.com/ibzLVJS.jpg)
 
 ## 6.13. Actions After Reboot
+A node participating in the ad hoc network must take certain actions after reboot as it might lose all sequence number records for all destinations, including its own sequence number.  
+However, there may be neighboring nodes that are using this node as an active next hop.  This can potentially create routing loops.  
+To prevent this  possibility, **each node on reboot waits for DELETE_PERIOD before transmitting any route discovery messages**.  
+If the node receives a RREQ, RREP, or RERR control packet, **it SHOULD create route entries as appropriate given the sequence number information in the control packets**, **but MUST not forward any control packets.**  
+If the node receives a data packet for some other destination, it **SHOULD broadcast a RERR as described in subsection 6.11** and **MUST reset the waiting timer to expire after current time plus DELETE_PERIOD**.
+
+It can be shown [4] that by the time the rebooted node comes out of the waiting phase and becomes an active router again, none of its neighbors will be using it as an active next hop any more.  
+Its own sequence number gets updated once it receives a RREQ from any other node, as the RREQ always carries the maximum destination sequence number seen en route.  
+If no such RREQ arrives, the node MUST initialize its own sequence number to zero.
+
 ## 6.14. Interfaces
+Because AODV should operate smoothly over wired, as well as wireless, networks, and because it is likely that AODV will also be used with multiple wireless devices, the particular interface over which packets arrive must be known to AODV whenever a packet is received.   
+This includes the reception of RREQ, RREP, and RERR messages.
+
+When multiple interfaces are available, a node retransmitting a RREQ message rebroadcasts that message on all interfaces that have been configured for operation in the ad-hoc network, except those on which it is known that all of the nodes neighbors have already received the RREQ.  
+For instance, for some broadcast media (e.g., Ethernet) it may be presumed that all nodes on the same link receive a broadcast message at the same time.  
+When a node needs to transmit a RERR, it **SHOULD only transmit it on those interfaces that have neighboring precursor nodes for that route**.
 
 # 7. AODV and Aggregated Networks 
+AODV has been designed for use by mobile nodes with IP addresses that are not necessarily related to each other, to create an ad hoc network.  
+However, in some cases **a collection of mobile nodes MAY operate in a fixed relationship to each other and share a common subnet prefix, moving together within an area where an ad hoc network has formed**.  Call such **a collection of nodes a "subnet"**.  
+In this case, it is possible for **a single node within the subnet to advertise reachability for all other nodes on the subnet**, by responding with a RREP message to any RREQ message requesting a route to any node with the subnet routing prefix.  Call **the single node the "subnet router"**.   
+In order for a subnet router to operate the AODV protocol for the whole subnet, **it has to maintain a destination sequence number for the entire subnet.**  
+In any such RREP message sent by the subnet router, **the Prefix Size field of the RREP message MUST be set to the length of the subnet prefix**.  
+**Other nodes sharing the subnet prefix SHOULD NOT issue RREP messages, and SHOULD forward RREQ messages to the subnet router**.
+
+The processing for RREPs that give routes to subnets (i.e., have nonzero prefix length) is the same as processing for host-specific RREP messages.  Every node that receives the RREP with prefix size information SHOULD create or **update the route table entry for the subnet**, including **the sequence number supplied by the subnet router**, and including **the appropriate precursor information**.  
+Then, in the future the node can use the information to avoid sending future RREQs for other nodes on the same subnet.
+
+When a node uses a subnet route it may be that a packet is routed to an IP address on the subnet that is not assigned to any existing node in the ad hoc network.  
+When that happens, the subnet router **MUST return ICMP Host Unreachable message to the sending node**.  Upstream nodes receiving such an ICMP message **SHOULD record the information that the particular IP address is unreachable**, but **MUST NOT invalidate the route entry for any matching subnet prefix**.
+
+If several nodes in the subnet advertise reachability to the subnet defined by the subnet prefix, the node with the lowest IP address is elected to be the subnet router, and **all other nodes MUST stop advertising reachability**.
+
+**The behavior of default routes (i.e., routes with routing prefix length 0) is not defined in this specification**.  Selection of routes sharing prefix bits should be according to longest match first.
 
 # 8. Using AODV with Other Networks
+In some configurations, an ad hoc network may be able to provide connectivity between external routing domains that do not use AODV.  
+If the points of contact to the other networks can act as subnet routers (see Section 7) for any relevant networks within the external routing domains, then the ad hoc network can maintain connectivity to the external routing domains.  Indeed, the external routing networks can use the ad hoc network defined by AODV as a transit network.
+
+In order to provide this feature, a point of contact to an external network (call it an Infrastructure Router) has to act as the subnet router for every subnet of interest within the external network for which the Infrastructure Router can provide reachability.  **This includes the need for maintaining a destination sequence number for that external subnet**.
+
+If multiple Infrastructure Routers offer reachability to the same external subnet, those Infrastructure Routers have to cooperate (by means outside the scope of this specification) to provide consistent AODV semantics for ad hoc access to those subnets.
 
 # 9. Extensions
+In this section, the format of extensions to the RREQ and RREP messages is specified.  
+All such extensions appear after the message data, and have the following format:
+```
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |    Length     |     type-specific data ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   where:
+
+   Type     1-255
+
+   Length   The length of the type-specific data, not including the Type and Length fields of the extension in bytes.            
+```
+Extensions with types between 128 and 255 may NOT be skipped.  The rules for extensions will be spelled out more fully, and conform to the rules for handling IPv6 options.
+
+## 9.1. Hello Interval Extension Format
+```
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |    Length     |       Hello Interval ...      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | ... Hello Interval, continued |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Type     1
+
+   Length   4
+
+   Hello Interval
+            The number of milliseconds between successive transmissions of a Hello message.            
+```
+The Hello Interval extension MAY be appended to a RREP message with TTL == 1, to be used by a neighboring receiver in determine how long to wait for subsequent such RREP messages (i.e., Hello messages; see section 6.9).
+
+# 10. Configuration Parameters
+This section gives default values for some important parameters associated with AODV protocol operations.  
+A particular mobile node may wish to change certain of the parameters, in particular the **NET_DIAMETER, MY_ROUTE_TIMEOUT, ALLOWED_HELLO_LOSS, RREQ_RETRIES, and possibly the HELLO_INTERVAL**.  
+In the latter case, **the node should advertise the HELLO_INTERVAL in its Hello messages**, by appending a Hello Interval Extension to **the RREP message**.  
+Choice of these parameters may affect the performance of the protocol.  
+**Changing NODE_TRAVERSAL_TIME** also changes **the node's estimate of the NET_TRAVERSAL_TIME**, and so can only be done with suitable knowledge about the behavior of other nodes in the ad hoc network.  
+The configured **value for MY_ROUTE_TIMEOUT MUST be at least 2 * PATH_DISCOVERY_TIME**.
+```
+   Parameter Name           Value
+   ----------------------   -----
+   ACTIVE_ROUTE_TIMEOUT     3,000 Milliseconds
+   ALLOWED_HELLO_LOSS       2
+   BLACKLIST_TIMEOUT        RREQ_RETRIES * NET_TRAVERSAL_TIME
+   DELETE_PERIOD            see note below
+   HELLO_INTERVAL           1,000 Milliseconds
+   LOCAL_ADD_TTL            2
+   MAX_REPAIR_TTL           0.3 * NET_DIAMETER
+   MIN_REPAIR_TTL           see note below
+   MY_ROUTE_TIMEOUT         2 * ACTIVE_ROUTE_TIMEOUT
+   NET_DIAMETER             35
+   NET_TRAVERSAL_TIME       2 * NODE_TRAVERSAL_TIME * NET_DIAMETER
+   NEXT_HOP_WAIT            NODE_TRAVERSAL_TIME + 10
+   NODE_TRAVERSAL_TIME      40 milliseconds
+   PATH_DISCOVERY_TIME      2 * NET_TRAVERSAL_TIME
+   RERR_RATELIMIT           10
+   RING_TRAVERSAL_TIME      2 * NODE_TRAVERSAL_TIME * (TTL_VALUE + TIMEOUT_BUFFER)
+   RREQ_RETRIES             2
+   RREQ_RATELIMIT           10
+   TIMEOUT_BUFFER           2
+   TTL_START                1
+   TTL_INCREMENT            2
+   TTL_THRESHOLD            7
+   TTL_VALUE                see note below
+```
+
+The **MIN_REPAIR_TTL should be the last known hop count to the destination**.  
+If **Hello messages are used**, then **the ACTIVE_ROUTE_TIMEOUT** parameter value **MUST be more than** the value **(ALLOWED_HELLO_LOSS * HELLO_INTERVAL)**.  
+For a **given ACTIVE_ROUTE_TIMEOUT value**, this may require **some adjustment to the value of the HELLO_INTERVAL**, and consequently use of **the Hello Interval Extension in the Hello messages**.  
+
+**TTL_VALUE is the value of the TTL field in the IP header** while the **expanding ring search is being performed**.  
+This is described further in [section 6.4]((#64-controlling-dissemination-of-route-request-messages)).  
+The TIMEOUT_BUFFER is configurable.  **Its purpose is to provide a buffer for the timeout so that if the RREP is delayed due to congestion**, **a timeout is less likely to occur while the RREP is still en route back to the source**.  To omit this buffer, set TIMEOUT_BUFFER = 0.
+
+**DELETE_PERIOD is intended to provide an upper bound on the time for which an upstream node A can have a neighbor B as an active next hop for destination D, while B has invalidated the route to D.  Beyond this time B can delete the (already invalidated) route to D.**  
+The determination of the upper bound depends somewhat on the characteristics of the underlying link layer.  
+**If Hello messages are used to determine the continued availability of links to next hop nodes**, **DELETE_PERIOD must be at least ALLOWED_HELLO_LOSS * HELLO_INTERVAL**.  
+**If the link layer feedback is used to detect loss of link**, DELETE_PERIOD must be **at least ACTIVE_ROUTE_TIMEOUT**.  
+**If hello messages are received from a neighbor but data packets to that neighbor are lost** (e.g., due to temporary link asymmetry), we have to make more concrete assumptions about the underlying link layer. 
+We assume that such asymmetry cannot persist beyond a certain time, say, **a multiple K of HELLO_INTERVAL**.  In other words, a node will invariably receive at least one out of K subsequent Hello messages from a neighbor if the link is working and the neighbor is sending no other traffic.  
+Covering all possibilities,
+```
+      DELETE_PERIOD = K * max (ACTIVE_ROUTE_TIMEOUT, HELLO_INTERVAL)
+                         (K = 5 is recommended).
+```
+
+**NET_DIAMETER** measures the maximum possible number of hops between two nodes in the network.  
+**NODE_TRAVERSAL_TIME** is a conservative estimate of the average one hop traversal time for packets and should include **queuing delays, interrupt processing times and transfer times**.   
+**ACTIVE_ROUTE_TIMEOUT SHOULD be set to a longer value (at least 10,000 milliseconds)** if link-layer indications are used to detect link breakages such as in IEEE 802.11 [5] standard.  
+TTL_START should be set to at least 2 if Hello messages are used for local connectivity information.  Performance of the AODV protocol is sensitive to the chosen values of these constants, which often depend on the characteristics of the underlying link layer protocol, radio technologies etc.  **BLACKLIST_TIMEOUT should be suitably increased** if **an expanding ring search is used**.  
+In such cases, it should be {[(TTL_THRESHOLD - TTL_START)/TTL_INCREMENT] + 1 + RREQ_RETRIES} * NET_TRAVERSAL_TIME.  This is to account for possible additional route discovery attempts.
+
+# 11. Security Considerations
+Currently, AODV does not specify any special security measures. Route protocols, however, are prime targets for impersonation attacks.  
+While AODV does not place restrictions on the authentication mechanism used for this purpose, IPsec AH is an appropriate choice for cases where the nodes share an appropriate security association that enables the use of AH.
+
+In particular, **RREP messages SHOULD be authenticated to avoid creation of spurious routes to a desired destination**.  
+Otherwise, an attacker could masquerade as the desired destination, and maliciously deny service to the destination and/or maliciously inspect and consume traffic intended for delivery to the destination.  
+**RERR messages, while less dangerous, SHOULD be authenticated** in order to **prevent malicious nodes from disrupting valid routes between nodes that are communication partners**.
+
+AODV does not make any assumption about the method by which addresses are assigned to the mobile nodes, except that they are presumed to have unique IP addresses.  
+However, if the mobile nodes in the ad hoc network have pre-established security associations, it is presumed that the purposes for which the security associations are created include that of authorizing the processing of AODV control messages.  
+Given this understanding, the mobile nodes should be able to use the same authentication mechanisms based on their IP addresses as they would have used otherwise.
+
+# 12. IANA Considerations
+AODV defines a "Type" field for messages sent to port 654.  
+A new registry has been created for the values for this Type field, and the following values have been assigned:
+```
+      Message Type                    Value
+      ---------------------------     -----
+      Route Request (RREQ)            1
+      Route Reply (RREP)              2
+      Route Error (RERR)              3
+      Route-Reply Ack (RREP-ACK)      4
+```
+
+AODV control messages can have extensions.  Currently, only one extension is defined.  
+A new registry has been created for the Type field of the extensions:
+```
+      Extension Type                  Value
+      ---------------------------     -----
+      Hello Interval                  1
+```
+
+# 13. IPv6 Considerations
+See [6] for detailed operation for IPv6.  The only changes to the protocol are that the address fields are enlarged.
+
 
 # Reference
 * [Ad hoc On-Demand Distance Vector (AODV) Routing RFC3561](https://tools.ietf.org/html/rfc3561)
@@ -714,6 +892,7 @@ Thus, local repair attempts will often be invisible to the originating node, and
 * [Routing Protocol Comparison for 6LoWPAN](http://docplayer.net/2637876-Routing-protocol-comparison-for-6lowpan.html)
 * [AODV implementation on TinyOS-2.x April 8, 2011](http://www2.engr.arizona.edu/~junseok/AODV.html)
 * [RFC 3561 AODV Routing Protocol 2005/2/29](https://www.slideserve.com/stash/rfc-3561-aodv-routing-protocol)
+* [Presentation on theme: "Spring 2005UCSC CMPE2571 CMPE 257: Wireless Networking SET 4: Unicast Routing in MANETs."](https://slideplayer.com/slide/5191726/)
 
 * [Shashank95/AODV-vs-DSDV-vs-DSR-on-NS2.35 - GitHub 8 Apr 2017](https://github.com/Shashank95/AODV-vs-DSDV-vs-DSR-on-NS2.35)
 * [joshjdevl/docker-ns3  29 Apr 2014](https://github.com/joshjdevl/docker-ns3)
