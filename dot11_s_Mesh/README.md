@@ -16,7 +16,38 @@ Review 802.11s STD.
 ![alt tag](https://i.imgur.com/ZdKe6zZ.jpg)
 
 # dot11s Security
- 
+## Transport Security
+### prevent unauthorized devices from directly sending and receiving traffic via the mesh
+```
+Protect unicast/broadcast traffic between neighbor MPs
+```
+
+### We need
+```
+Mutually authenticate neighbor MPs
+Generate and manage session keys and broadcast keys
+Data confidentiality over a link
+Detect message forgeries and replays received on a link
+```
+
+## Authentication and Initial Key Management
+### Basic approach is to re-use 802.11i/802.1X
+> Re-use of 802.11i facilitates implementation  
+> Allows other AKM schemes
+
+![alt tag](https://i.imgur.com/KW2rAZb.jpg)
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))
+
+### 802.1X is widely used and is suitable for many mesh scenarios
+> but can be replaced with small scale alternatives if required
+
+### Provides a basis for secure key distribution (PMK)
+
+### In a mesh, PMK is treated as token of authorication for a MP to join the mesh
+> Authorized to send and receive messages to/from mesh neighbors
+
+![alt tag](https://i.imgur.com/DOb5nsv.jpg)
+
 # Reference
 * [802.11s based wireless mesh network OpenWrt](https://openwrt.org/docs/guide-user/network/wifi/mesh/80211s)
 * [good background article from CWNP](http://www.cwnp.com/wp-content/uploads/pdf/802.11s_mesh_networking_v1.0.pdf)
