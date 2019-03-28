@@ -32,11 +32,11 @@ Review Ad-Hoc On-Demand Distance Vector Routing of Mobile Ad-Hoc Network(MANET).
    [7.  AODV and Aggregated Networks ...............................](#7-aodv-and-aggregated-networks)  
    [8.  Using AODV with Other Networks .............................](#8-using-aodv-with-other-networks)  
    [9.  Extensions .................................................](#9-extensions)  
-       [9.1. Hello Interval Extension Format .......................]()  
-   [10. Configuration Parameters ...................................]()  
-   [11. Security Considerations ....................................]()  
-   [12. IANA Considerations ........................................]()  
-   [13. IPv6 Considerations ........................................]()  
+       [9.1. Hello Interval Extension Format .......................](#91-hello-interval-extension-format)  
+   [10. Configuration Parameters ...................................](#10-configuration-parameters)  
+   [11. Security Considerations ....................................](#11-security-considerations)  
+   [12. IANA Considerations ........................................](#12-iana-considerations)  
+   [13. IPv6 Considerations ........................................](#13-ipv6-considerations)  
 
 # 1 Introduction
 AODV allows mobile nodes to respond to link breakages and changes in network topology in a timely manner.
