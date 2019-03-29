@@ -74,10 +74,10 @@ For 802.11s, the mesh Amendment for the 802.11 standard, a new connection method
 SAE also offers a much better method of establishing a secure connection over an unsecure medium – the Diffie-Hellman (DH) key exchange [3] in combination with a Prime Modulus Group or an Elliptic Curve Group. 
 Since the later is made mandatory for WPA3-Personal, the following explanations refer to it.
 
-**WPA3 Connection Flow Chart**
+**WPA3 Connection Flow Chart**  
 ![alt tag](https://wlan1nde.files.wordpress.com/2018/09/wpa3_connection_graph1.png)
 
-**WPA3 Authentication Messages**
+**WPA3 Authentication Messages**  
 ![alt tag](https://wlan1nde.files.wordpress.com/2018/09/wpa3_connection_graph_detailed2.png)
 
 # dot11s Routing
