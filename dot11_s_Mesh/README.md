@@ -102,7 +102,7 @@ Since the later is made mandatory for WPA3-Personal, the following explanations 
 
 ## Hybrid Wireless Mesh Protocol (HWMP)
 **On demand routing based no Radio Metric AODV (RM-AODV)**
-- Based on basic mandatory features of AODV (RFC 3561)  
+- Based on basic mandatory features of [AODV (RFC 3561)](https://github.com/philip-shen/note_Networking/tree/master/MANET_AODV)  
 - Extensions to identify best-metric path with arbitrary path metrics  
 - By default, RM-AODV used to discover routes to destinations in the mesh on-demand  
 
@@ -133,7 +133,17 @@ Since the later is made mandatory for WPA3-Personal, the following explanations 
 
 ![alt tag](https://i.imgur.com/glxczZH.jpg)
 
-##
+## Radio Aware OLSR (RA-OLSR)
+**Extensible routing framework based on the three link-state routing protocols**
+- OLSR (RFC 3626)  
+- (Optional) Fisheye State Routing (FSR)  
+
+**With the following extensions**
+- Use of radio aware metric in MPR and routing path selection  
+- Efficient association discovery and dissemination protocol to support 802.11 stations  
+
+**Proactively maintains link-state for routing **
+- Changes in link state are communicated to "neighbothood" node  
 
 ### dot11s Header
 ![alt tag](http://codeant.cc/images/phocagallery/Network/80211s-header-format.jpg)
