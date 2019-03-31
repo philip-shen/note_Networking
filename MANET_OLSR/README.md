@@ -3,8 +3,8 @@ Take note of OLSRv1
 
 # Table of Contents
    [1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .](#1-introduction)  
-       1.1. OLSR Terminology.  . . . . . . . . . . . . . . . . . . .   5
-       1.2. Applicability. . . . . . . . . . . . . . . . . . . . . .   7
+       [1.1. OLSR Terminology.  . . . . . . . . . . . . . . . . . . .](#11--olsr-terminology)
+       [1.2. Applicability. . . . . . . . . . . . . . . . . . . . . .]()
        1.3. Protocol Overview  . . . . . . . . . . . . . . . . . . .   8
        1.4. Multipoint Relays  . . . . . . . . . . . . . . . . . . .   9
    2.  Protocol Functioning  . . . . . . . . . . . . . . . . . . . .   9
@@ -145,8 +145,8 @@ multiple OLSR interface node
 > A node which has multiple OLSR interfaces, participating in an OLSR routing domain.
 
 main address
-> The main address of a node, which will be used in OLSR control traffic as the "originator address" of all messages emitted by this node.  It is the address of one of the OLSR interfaces of the node.
-> A single OLSR interface node MUST use the address of its only OLSR interface as the main address.
+> The main address of a node, which will be used in OLSR control traffic as the "originator address" of all messages emitted by this node.  It is the address of one of the OLSR interfaces of the node.  
+> A single OLSR interface node MUST use the address of its only OLSR interface as the main address.  
 > A multiple OLSR interface node MUST choose one of its OLSR interface addresses as its "main address" (equivalent of "router ID" or "node identifier").  It is of no importance which address is chosen, however a node SHOULD always use the same address as its main address.
 
 neighbor node
@@ -158,9 +158,55 @@ neighbor node
 strict 2-hop neighbor
 > a 2-hop neighbor which is not the node itself or a neighbor of the node, and in addition is a neighbor of a neighbor, with willingness different from WILL_NEVER, of the node.
 
-
 multipoint relay (MPR)
 > A node which is selected by its 1-hop neighbor, node X, to "re-transmit" all the broadcast messages that it receives from X, provided that the message is not a duplicate, and that the time to live field of the message is greater than one.
+
+multipoint relay selector (MPR selector, MS)
+> A node which has selected its 1-hop neighbor, node X, as its multipoint relay, will be called a multipoint relay selector of node X.
+
+link
+> A link is a pair of OLSR interfaces (from two different nodes) susceptible to hear one another (i.e., one may be able to receive traffic from the other).  A node is said to have a link to another node when one of its interface has a link to one of the interfaces of the other node.
+
+symmetric link
+> A verified bi-directional link between two OLSR interfaces.
+
+asymmetric link
+> A link between two OLSR interfaces, verified in only one direction.
+
+symmetric 1-hop neighborhood
+> The symmetric 1-hop neighborhood of any node X is the set of nodes which have at least one symmetric link to X.
+
+symmetric 2-hop neighborhood
+> The symmetric 2-hop neighborhood of X is the set of nodes, excluding X itself, which have a symmetric link to the symmetric 1-hop neighborhood of X.
+
+symmetric strict 2-hop neighborhood
+> The symmetric strict 2-hop neighborhood of X is the set of nodes, excluding X itself and its neighbors, which have a symmetric link to some symmetric 1-hop neighbor, with willingness different of WILL_NEVER, of X.
+
+![alt tag](https://i.imgur.com/42INNSC.png)
+
+## 1.2.  Applicability
+OLSR is a proactive routing protocol for mobile ad-hoc networks (MANETs) [1], [2].  
+It is well suited to large and dense mobile networks, as the optimization achieved using the MPRs works well in this context.  
+The larger and more dense a network, the more optimization can be achieved as compared to the classic link state algorithm.  
+OLSR uses **hop-by-hop routing, i.e., each node uses its local information to route packets.**
+
+OLSR is well suited for networks, where the traffic is random and sporadic between a larger set of nodes rather than being almost exclusively between a small specific set of nodes.  
+As a proactive protocol, OLSR is also suitable for scenarios **where the communicating pairs change over time: no additional control traffic is generated in this situation since routes are maintained for all known destinations at all times**.
+
+## 1.3.  Protocol Overview
+OLSR is a proactive routing protocol for mobile ad hoc networks.  
+The protocol inherits **the stability of a link state algorithm** and has the advantage of having routes immediately available when needed due to its proactive nature.  
+OLSR is an optimization over the classical link state protocol, tailored for mobile ad hoc networks.
+
+OLSR **minimizes the overhead from flooding of control traffic by using only selected nodes, called MPRs, to retransmit control messages.**  
+Secondly, OLSR requires only partial link state to be flooded in order to provide shortest path routes.  
+The minimal set of link state information required is, that all nodes, selected as MPRs, MUST declare the links to their MPR selectors.  
+Additional topological information, if present, MAY be utilized e.g., for redundancy purposes.
+
+OLSR MAY optimize the reactivity to topological changes by reducing the maximum time interval for periodic control message transmission.  
+Furthermore, as OLSR continuously maintains routes to all destinations in the network, the protocol is beneficial for traffic patterns where a large subset of nodes are communicating with another large subset of nodes, and where the [source, destination] pairs are changing over time.  
+The protocol is particularly suited for **large and dense networks, as the optimization done using MPRs works well in this context.**  
+The larger and more dense a network, the more optimization can be achieved as compared to the classic link state algorithm.
 
 # Reference
 * [Optimized Link State Routing Protocol (OLSR) October 2003](https://tools.ietf.org/html/rfc3626)
