@@ -111,9 +111,9 @@ GUAの一種なのでインターネットに出られます。Apple AirMac Expr
 
 # Reference
 * []()  
-* []()  
+* [IPv6 IPoE に思いを馳せながら ISP をどうやって選定するか考える話 2019-02-18](https://qiita.com/soprano1125/items/65295cd8c371abc6ebe8)  
 * [AndroidのIPv6アドレス, ルーティングテーブルの確認 (モバイルがIPv6接続の時) 2017-05-30](https://qiita.com/ip6/items/68178d4c864ec6504d5d)  
-* [/etc/network/interface での IPv6 2017-05-10](https://qiita.com/kwi/items/1dd8ed8f89255956d7a9)  
+* [/etc/network/interface での IPv6 2017-05-10](https://qiita.com/kwi/items/1dd8ed8f89255956d7a9)   
 
 
 * []()  
