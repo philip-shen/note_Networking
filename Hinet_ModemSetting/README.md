@@ -3,7 +3,19 @@ Take note for IPv6/IPv4 access methods
 
 # Table of Contents  
 [PPPoE dailed by Hinet Modem or by Router/PC](#pppoe-dailed-by-hinet-modem-or-by-routerpc)  
+
 [IPv6アドレス図鑑](#ipv6アドレス図鑑)  
+[::1](#1)  
+[fe80:0:0:0:...](#fe80000)  
+[::](#)  
+[2001:db8:...](#2001db8)  
+[2xxx:... or 3xxx:...](#2xxx-or-3xxx)  
+[fcxx:... or fdxx:...](#fcxx-or-fdxx)  
+[ffxx:...](#ffxx)  
+[::ffff:a.b.c.d](#ffffabcd)  
+[2002:...](#2002)  
+[2001:0:...](#20010)  
+
 []()  
 []()  
 []()  
@@ -45,7 +57,7 @@ Take note for IPv6/IPv4 access methods
 ```  
 
 ## 2001:db8:...  
-## 種別：文書記述用アドレス  
+## 種別：文書記述用 Address
 ## レア度: ★  
 ```  
 文書の中に生息する紙魚のようなアドレスです。例として使用します。最初、なんの説明もなくドキュメントの中に出てきて戸惑いました。ルーターで中継されないので実際に使ってしまっても害はないようですが……。
