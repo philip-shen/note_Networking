@@ -104,6 +104,13 @@ GUAの一種なのでインターネットに出られます。Apple AirMac Expr
 ```  
 これも6to4同様トンネリング用です。Windows機に付与されてました。
 ```    
+## Access DUT using IPv6 by Web
+> IPv6/IPv4 Address 
+![alt tag](https://i.imgur.com/E7XvCfj.jpg)  
+> tracert -d -6 www.kame.net
+![alt tag](https://i.imgur.com/oE6slkn.jpg)
+> Access DUT using IPv6 by Browser  
+![alt tag](https://i.imgur.com/bD8OOAP.jpg)  
 
 
 # Troubleshooting
@@ -114,7 +121,18 @@ GUAの一種なのでインターネットに出られます。Apple AirMac Expr
 * [IPv6 IPoE に思いを馳せながら ISP をどうやって選定するか考える話 2019-02-18](https://qiita.com/soprano1125/items/65295cd8c371abc6ebe8)  
 * [AndroidのIPv6アドレス, ルーティングテーブルの確認 (モバイルがIPv6接続の時) 2017-05-30](https://qiita.com/ip6/items/68178d4c864ec6504d5d)  
 * [/etc/network/interface での IPv6 2017-05-10](https://qiita.com/kwi/items/1dd8ed8f89255956d7a9)   
+* [How to open Public IPv6 IP on browser without DNS Oct 5, 2015](https://stackoverflow.com/questions/32942793/how-to-open-public-ipv6-ip-on-browser-without-dns)  
+```    
+To make firefox use ipv6 enter -> about:config in the adress-bar. In the field beside -> Filter: enter ipv6. There is an option named network.dns.disable.IPv6. Doubleclick on it so it value turns to false and firefox will check about IPv6 now.
 
+You should use the bracket notation like you did
+
+http://[2a00:1450:4006:803::200e]/
+```    
+* [Unix command “host” - is there Windows equivalent? Mar 7, 2017](https://stackoverflow.com/questions/21520191/unix-command-host-is-there-windows-equivalent)  
+```    
+This question is more suited to Super User, but the command you're looking for is nslookup. Both are (at their most basic) used to look up IP addresses for hostnames. You can run cmd and do nslookup hostname the same way you'd do host hostname. If you need something other than the IP address, the command-line arguments will differ. Run nslookup with no arguments and type help at the prompt for details.
+```    
 
 * []()  
 ![alt tag]()
