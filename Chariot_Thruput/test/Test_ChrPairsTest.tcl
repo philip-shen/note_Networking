@@ -5,8 +5,8 @@
 #***************************************************************
 set currpath [file dirname [info script]]
 set lib_path [file join  ".." "lib"]
-#source "$lib_path/API_Loop.tcl"
 source "$lib_path/API_Misc.tcl"
+source "$lib_path/API_Chariot.tcl"
 
 set inifile [file join [file dirname [info script]] setup.ini]
 ################################################################################
@@ -22,3 +22,13 @@ Func_INI::_GetWLAN_ClientModelName $inifile
 Func_INI::_GetCriteria $inifile
 
 set Func_INI::verbose on;#on off
+
+#***************************************************************
+#
+# Script main
+#
+# catch is used when there could be extended error information,
+# so we can log what happened.
+#***************************************************************
+
+
