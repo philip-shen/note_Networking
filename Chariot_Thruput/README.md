@@ -11,7 +11,7 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; LAN<--->WAN) via Chariot by Tcl
 
 
 # Reference
-
+* [Python call Ixchariot tcl API - GitHub 8 Jun 2017](https://github.com/qdyxmas/PyIxChariot)
 
 * []()
 ![alt tag]()
