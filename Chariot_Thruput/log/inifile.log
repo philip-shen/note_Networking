@@ -1,0 +1,17 @@
+[17:41:39 04272019]  scripts = High_Performance_Throughput.src
+[17:41:39 04272019]  protocols = TCP
+[17:41:39 04272019]  timeout = 5
+[17:41:39 04272019]  test_duration = 120
+[17:41:39 04272019]  paircount = 6
+[17:41:39 04272019]  dut_modelname = DIR-846
+[17:41:39 04272019]  dut_fwver = 1.05
+[17:41:39 04272019]  dut_hwver = A1
+[17:41:39 04272019]  192.168.1.1 alive
+[17:41:39 04272019]  dut_wan_ipaddr = 10.0.0.1
+[17:41:39 04272019]  wlan_ep_ipaddr = 192.168.0.100
+[17:41:39 04272019]  wan_ep_ipaddr = 10.0.0.2
+[17:41:39 04272019]  dut_lan_ipaddr = 192.168.0.1
+[17:41:39 04272019]  lan_ep_ipaddr = 192.168.0.200
+[17:41:39 04272019]  wlan_modelname = AC8260
+[17:41:39 04272019]  thruput_11ac_avg = 500
+[17:41:39 04272019]  thruput_11n_avg = 300

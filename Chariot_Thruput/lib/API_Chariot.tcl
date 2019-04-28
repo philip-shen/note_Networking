@@ -1,5 +1,5 @@
 # ChangeLog
-# By Philip Shen @DQA CMO
+# By Philip Shen 
 # ---------------------------------------------------------------------
 # Apr28219 Initialize
 ################################################################################
@@ -29,6 +29,8 @@ namespace eval Func_Chariot {
     variable protocols    {}
     variable chrscript    {}
     variable pair    {}
+    variable chr_done    {}
+    variable chr_how_ended    {}
     variable tp_avg    {}
     variable min    {}
     variable max    {}
@@ -189,9 +191,7 @@ proc Func_Chariot::RunTest_tillEnd {} {
     variable logfile
     variable test
     variable pair
-    variable tp_avg
-    variable min
-    variable max
+    variable chr_done
     
     # The test is complete, so now we can run it.
     puts "Run the test..."
@@ -205,16 +205,27 @@ proc Func_Chariot::RunTest_tillEnd {} {
         return
     }
     
-    set done [chrTest isStopped $test]
+    set chr_done [chrTest isStopped $test]
     
-    while { !$done } {
+    while { !$chr_done } {
         # wait 5 second
-        set done [chrTest isStopped $test 5]
+        set chr_done [chrTest isStopped $test 5]
     }
     
-    set how_ended [chrTest get $test HOW_ENDED]
+}
+
+proc Func_Chariot::GetPairResult {} {
+    variable verbose
+    variable logfile
+    variable test
+    variable tp_avg
+    variable min
+    variable max
+    variable chr_how_ended
     
-    if {$how_ended == "NORMAL"} {
+    set chr_how_ended [chrTest get $test HOW_ENDED]
+    
+    if {$chr_how_ended == "NORMAL"} {
         set throughput [list 0 0 0]
         catch {set throughput [chrPairResults get $pair THROUGHPUT]}
         
@@ -236,5 +247,13 @@ proc Func_Chariot::RunTest_tillEnd {} {
         
         set tp_avg 0
     };#if {$how_ended == "NORMAL"}
+}
+proc  Func_Chariot::Close {} {
+    variable verbose
+    variable logfile
+    variable test
     
+    # Terminate a new test.
+    puts "Terminate the test..."
+    set test [chrTest close]
 }
