@@ -1,5 +1,5 @@
 # Purpose
-Throuput Test(LAN<--->WLAN; WLAN<--->WAN; LAN<--->WAN) via Chariot by Tcl
+Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 
 # Table of Contents  
 
@@ -14,6 +14,9 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; LAN<--->WAN) via Chariot by Tcl
 * [Python call Ixchariot tcl API - GitHub 8 Jun 2017](https://github.com/qdyxmas/PyIxChariot)
 * [Tcl Windows API extension May 6, 2018](https://twapi.magicsplat.com/)  
 * [Tcl Programming for Windows [DRAFT] 2015-01-20](https://www.magicsplat.com/book/)  
+* [Tcl Windows API usage examples 2003](https://twapi.magicsplat.com/v1.1/examples.html)  
+* [TclCurl 5/2013](https://wiki.tcl-lang.org/page/TclCurl)  
+* [Tcl wrapper for Curl ](https://github.com/jdc8/tclcurl)  
 
 * []()  
 ![alt tag]()
