@@ -11,8 +11,13 @@ namespace eval Func_Chariot {
     # use Chariot instead of ChariotExt.  For example:
     # load Chariot
     # package require Chariot
-    load ChariotExt
+    #load ChariotExt
     package require ChariotExt
+    ################################################################################
+    # refer chariotext.tcl
+    ################################################################################
+    global auto_index
+    eval $auto_index(ChariotExt)
     
     # Define symbols for the errors we're interested in.
     variable CHR_OPERATION_FAILED "CHRAPI 108"
@@ -248,6 +253,10 @@ proc Func_Chariot::GetPairResult {} {
         set tp_avg 0
     };#if {$how_ended == "NORMAL"}
 }
+# Refer ChrLBSimple.tcl
+# (13)
+# Clean up used resources before exiting.
+# (Test will deallocate associated pairs automatically)
 proc  Func_Chariot::Close {} {
     variable verbose
     variable logfile
@@ -255,5 +264,5 @@ proc  Func_Chariot::Close {} {
     
     # Terminate a new test.
     puts "Terminate the test..."
-    set test [chrTest close]
+    set test [chrTest delete $test force]
 }

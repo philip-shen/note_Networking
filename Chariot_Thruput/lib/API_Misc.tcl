@@ -337,7 +337,7 @@ proc Func_INI::Ping_igp {host} {
     
     if {[catch {exec ping $host -n 1} result]} { set result 0 }
     
-    if { [regexp "0% loss"  $result]} {
+    if { [regexp "0% "  $result]} {;#"0% loss"
         set logstr "$host alive"
         #puts $logstr
         if {$verbose == on} {
