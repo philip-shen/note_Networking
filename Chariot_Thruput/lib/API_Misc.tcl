@@ -21,8 +21,8 @@ namespace eval Func_INI {
     variable dict_Criteria    {}
     variable list_DUT    {}
     variable dict_DUT    {}
-    
-    variable str_LoopSimulator ""    
+    variable testChrfile_11ac_lan2wan    {}
+    variable testChrfile_11n_lan2wan    {}
 }
 proc Func_INI::GetSections {inifname} {
     variable list_sections
@@ -360,7 +360,29 @@ proc Func_INI::ChkDUTalive {strIPAddr} {
     set retval [Ping_igp $strIPAddr]
     return $retval
 }
-########################################
+proc Func_INI::GenChariotTestFile_11ac {} {
+    variable verbose off
+    variable logfile "../log/inifile.log"
+    variable testChrfile_11ac_lan2wan
+    
+    append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
+            [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
+            "11ac" "_" "LAN2WLAN" "_" \
+            [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
+    
+}
+
+proc Func_INI::GenChariotTestFile_11n {} {
+    variable verbose off
+    variable logfile "../log/inifile.log"
+    variable testChrfile_11n_lan2wan
+    
+    append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
+            [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
+            "11n" "_" "LAN2WLAN" "_" \
+            [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
+    
+}########################################
 # Define a simple custom logproc
 ##########################################
 namespace eval Log {
