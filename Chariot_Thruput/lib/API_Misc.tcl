@@ -442,3 +442,94 @@ proc Log::LogOut {str_out logfname} {
     puts $rnewinfd $str_out
     flush $rnewinfd;close $rnewinfd
 }
+
+namespace eval Func_CSV {
+    package require csv
+    package require struct
+    
+    variable verbose off
+    variable logfile "../log/csvfile.log"
+    
+    variable list_noisepathfname_ChNum {}
+    variable str_noisepathfname_CO ""
+    variable str_noisepathfname_CPE ""
+    
+    variable LoopLen
+    variable BTLen
+    variable TestProfile ""
+    variable sepChar ","
+    variable str_testplan_table ""
+    variable LoopType ""
+}
+proc Func_CSV::Read {list_csvfname} {
+    
+    variable sepChar
+    variable verbose
+    variable logfile
+    
+    if {[llength $list_csvfname] == 0} {
+        set list_csvfname -
+    }
+    
+    set stdin 1
+    set first 1
+    if [info exists m] {m destroy }
+    
+    # struct::matrix m
+    set list_csv {}
+    
+    foreach f $list_csvfname {
+        if {![string compare $f -]} {
+            if {!$stdin} {
+                puts stderr "Cannot use - (stdin) more than once"
+                exit -1
+            }
+            set in stdin; set stdin 0
+        } else {
+            set in [open $f r]
+        };#if {![string compare $f -]}
+        
+        if {$first} {
+            if {$verbose == on} {
+                Log "info" $logfile [list "CSV File= $f"]
+            }
+            
+            while {[eof $in] != 1} {
+                if {[gets $in line] > 0} {
+                    switch -regexp $line  {
+                        {^(#|;)} {
+                            continue
+                        }
+                        {([0-9]|[0-9][0-9]|[0-9][0-9][0-9]),} {
+                            set list_data [::csv::split $line $sepChar]
+                        }
+                        {([0-9][0-9][0-9][0-9]),} {
+                            set list_data [::csv::split $line $sepChar]
+                        }
+                        default {
+                            set list_data [::csv::split $line $sepChar]
+                        }
+                    };#switch -regexp $linr
+                    # m add columns [llength $list_data]
+                    # m add row $list_data
+                    lappend list_csv $list_data
+                };#if {[gets $in line] > 0}
+                
+            };#while {[eof $in] != 1}
+        };#if {$first}
+        
+        # csv::read2matrix $in m $sepChar
+        
+        if {[string compare $f -]} {
+            close $in
+        }
+    };#foreach f $list_csvfname
+    
+    return $list_csv
+}
+proc Func_CSV::Log {level filename list_msg} {
+    foreach temp $list_msg {
+        set msg "$temp"
+        Log::tofile $level $filename $msg
+    }
+}

@@ -33,6 +33,8 @@ namespace eval Func_Chariot {
     variable e2Addrs    {}
     variable protocols    {}
     variable chrscript    {}
+    variable runOpts    {}
+    variable test_duration    {}
     variable pair    {}
     variable chr_done    {}
     variable chr_how_ended    {}
@@ -190,7 +192,35 @@ proc Func_Chariot::SetChrPair_reverse {} {
     };#for {set index 0}
     
 }
-
+proc Func_Chariot::SetRunOpts {} {
+    variable verbose
+    variable logfile
+    variable test
+    variable runOpts
+    variable test_duration
+    
+    set runOpts [chrTest getRunOpts $test]
+    
+    puts "Set test duration..."
+    if {[chrRunOpts set $runOpts TEST_END FIXED_DURATION]} {
+        if {$verbose == on} {
+            GetErrmsg $errorCode
+            Func_INI::Log "info" $logfile [list $test $errmsg "chrTest Test_End Fixed_Duration"]
+        };#if {$verbose == on}
+        
+        return
+    }
+    
+    if {[chrRunOpts set $runOpts TEST_DURATION $test_duration]} {
+        if {$verbose == on} {
+            GetErrmsg $errorCode
+            Func_INI::Log "info" $logfile [list $test $errmsg "chrTest Test_Duration"]
+        };#if {$verbose == on}
+        
+        return
+    }     
+    
+}
 proc Func_Chariot::RunTest_tillEnd {} {
     variable verbose
     variable logfile
