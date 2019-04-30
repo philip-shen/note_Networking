@@ -44,7 +44,7 @@ set maindir $dir
 # set dir [file join $maindir counter] ;	 source [file join $dir pkgIndex.tcl]
 # set dir [file join $maindir crc] ;	 source [file join $dir pkgIndex.tcl]
 # set dir [file join $maindir cron] ;	 source [file join $dir pkgIndex.tcl]
-# set dir [file join $maindir csv] ;	 source [file join $dir pkgIndex.tcl]
+set dir [file join $maindir csv] ;	 source [file join $dir pkgIndex.tcl]
 # set dir [file join $maindir debug] ;	 source [file join $dir pkgIndex.tcl]
 # set dir [file join $maindir defer] ;	 source [file join $dir pkgIndex.tcl]
 # set dir [file join $maindir des] ;	 source [file join $dir pkgIndex.tcl]
