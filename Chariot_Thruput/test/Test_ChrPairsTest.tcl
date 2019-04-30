@@ -26,6 +26,7 @@ Func_INI::_GetCriteria $inifile
 set path_chariot [dict get $Func_INI::dict_Chariot_Param "chariot_path"];#get chariot directory
 lappend auto_path $path_chariot
 source "$lib_path/API_Chariot.tcl"
+
 ################################################################################
 # Check each endpoint if alive
 ################################################################################
@@ -51,9 +52,9 @@ set Func_Chariot::verbose on;#on off
 set testChrfile_11ac_lan2wan "";#dut modelname ;#wlan client modelname \;#TX or RX ;#timestamp
 # if [info exist testChrfile_11ac_lan2wan] {unset testChrfile_11ac_lan2wan}
 # append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
-        # [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
-        # "11ac" "_" "LAN2WLAN" "_" \
-        # [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
+# [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
+# "11ac" "_" "LAN2WLAN" "_" \
+# [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
 
 Func_INI::GenChariotTestFile_11ac
 set testChrfile_11ac_lan2wan $Func_INI::testChrfile_11ac_lan2wan
@@ -62,7 +63,7 @@ set testChrfile_11ac_lan2wan $Func_INI::testChrfile_11ac_lan2wan
 Func_Chariot::Initialize
 
 set Func_Chariot::testFile $testChrfile_11ac_lan2wan
-        
+
 # Set the test filename for saving later.
 Func_Chariot::Test_Filename
 
@@ -82,7 +83,7 @@ set Func_Chariot::chrscript [dict get $Func_INI::dict_Chariot_Param "scripts"]
 # Define some pairs for the test.
 Func_Chariot::SetChrPair
 
-Func_Chariot::RunTest_tillEnd
+#Func_Chariot::RunTest_tillEnd
 
 # Save the test so we can show results later.
 Func_Chariot::GetPairResult
@@ -101,19 +102,19 @@ set testChrfile_11ac_wlan2wan2wlan [regsub -all "LAN2WLAN" $Func_INI::testChrfil
 ################################################################################
 
 # Setup Chariot test file name
-set testChrfile_11n_lan2wan ""     ;;#wlan client modelname#TX or RX #timestamp
-append testChrfile_11n_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
-        [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
-        "11n" "_" [string toupper "lan2wlan"] "_" \
-        [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
+#set testChrfile_11n_lan2wan ""     ;;#wlan client modelname#TX or RX #timestamp
+#append testChrfile_11n_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
+#        [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
+#        "11n" "_" [string toupper "lan2wlan"] "_" \
+#        [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
 
-set testChrfile_11n_wlan2lan [regsub -all "LAN2WLAN" $testChrfile_11n_lan2wan "WLAN2LAN"]
-set testChrfile_11n_wlan2wan2wlan [regsub -all "LAN2WLAN" $testChrfile_11n_lan2wan "WLAN2LAN2WLAN"]
+#set testChrfile_11n_wlan2lan [regsub -all "LAN2WLAN" $testChrfile_11n_lan2wan "WLAN2LAN"]
+#set testChrfile_11n_wlan2wan2wlan [regsub -all "LAN2WLAN" $testChrfile_11n_lan2wan "WLAN2LAN2WLAN"]
 
 #puts $testChrfile_11n_lan2wan,$testChrfile_11n_wlan2lan,$testChrfile_11n_wlan2wan2wlan
 
 #set Func_Chariot::testFile $testChrfile_11ac_lan2wan
-# 
+#
 # Set the test filename for saving later.
 #Func_Chariot::Test_Filename
 

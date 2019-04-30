@@ -50,7 +50,16 @@ proc Func_Chariot::Initialize {} {
     
     # Create a new test.
     puts "Create the test..."
+    update
+    
     set test [chrTest new]
+    #puts "chrTest_new_test: $test"
+    
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list "$test chrTest new"]
+    };#if {$verbose == on}
+    
+    
 }
 proc Func_Chariot::GetErrmsg {errcode} {
     variable errmsg
@@ -77,16 +86,19 @@ proc Func_Chariot::Test_Filename {} {
     
     # Set the test filename for saving later.
     puts "Set test filename..."
+    update
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list "$test chrTest set FILENAME"]
+    };#if {$verbose == on}
+    
     if {[catch {chrTest set $test FILENAME $testFile}]} {
         # pLogError $test $errorCode "chrTest set FILENAME"
-        
-        if {$verbose == on} {
-            GetErrmsg $errorCode
-            Func_INI::Log "info" $logfile [list $test $errmsg "chrTest set FILENAME"]            
-        };#if {$verbose == on}
+        GetErrmsg $errorCode
+        Func_INI::Log "info" $logfile [list $test $errmsg "chrTest set FILENAME"]            
         
         return
     }
+    
 }
 
 proc Func_Chariot::SetChrPair {} {
@@ -101,33 +113,48 @@ proc Func_Chariot::SetChrPair {} {
     variable chrscript
     variable pair
     
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list "$test PairCount:$pairCount"]
+    };#if {$verbose == on}
+    
     for {set index 0} {$index < $pairCount} {incr index} {
         # Create a pair.
         puts "Create a pair..."
+        update
         set pair [chrPair new]
+        if {$verbose == on} {
+            Func_INI::Log "info" $logfile [list "$pair chrPair new"]
+        };#if {$verbose == on}
         
         # Set pair attributes from our lists.
         puts "Set pair atttributes..."
+        update
         chrPair set $pair COMMENT "Pair [expr $index + 1]"
         chrPair set $pair E1_ADDR $e1Addrs
         chrPair set $pair E2_ADDR $e2Addrs
         chrPair set $pair PROTOCOL $protocols
+        
+        if {$verbose == on} {
+            Func_INI::Log "info" $logfile [list  "$test $pair $chrscript chrPair useScript"]
+            
+        };#if {$verbose == on}
         
         # Define a script for use by this pair.
         # We need to check for errors with extended info here.
         
         if {[catch {chrPair useScript $pair $chrscript}]} {            
             # pLogError $pair $errorCode "chrPair useScript"
-            if {$verbose == on} {
-                GetErrmsg $errorCode
-                Func_INI::Log "info" $logfile [list $test $errmsg "chrPair useScript"]
-            };#if {$verbose == on}
-            
+            #GetErrmsg $errorCode
+            Func_INI::Log "info" $logfile [list  "$test $pair $chrscript chrPair useScript"]
+                        
             return
         }
         
+        
+        
         # Add the pair to the test.
         puts "Add the pair to the test..."
+        update
         if {[catch {chrTest addPair $test $pair}]} {
             # pLogError $test $errorCode "chrTest addPair"
             GetErrmsg $errorCode
@@ -135,6 +162,11 @@ proc Func_Chariot::SetChrPair {} {
             
             return
         }
+        
+        if {$verbose == on} {
+            Func_INI::Log "info" $logfile [list $test "chrPair useScript"]
+            Func_INI::Log "info" $logfile [list $test "chrTest addPair"]
+        };#if {$verbose == on}
                 
     };#for {set index 0}
     
@@ -192,6 +224,7 @@ proc Func_Chariot::SetChrPair_reverse {} {
     };#for {set index 0}
     
 }
+
 proc Func_Chariot::SetRunOpts {} {
     variable verbose
     variable logfile
@@ -200,25 +233,33 @@ proc Func_Chariot::SetRunOpts {} {
     variable test_duration
     
     set runOpts [chrTest getRunOpts $test]
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list  "$test,$runOpts "]
+    };#if {$verbose == on}
     
     puts "Set test duration..."
-    if {[chrRunOpts set $runOpts TEST_END FIXED_DURATION]} {
-        if {$verbose == on} {
-            GetErrmsg $errorCode
-            Func_INI::Log "info" $logfile [list $test $errmsg "chrTest Test_End Fixed_Duration"]
-        };#if {$verbose == on}
+    update
+    if {[catch {chrRunOpts set $runOpts TEST_END FIXED_DURATION}]} {
+        GetErrmsg $errorCode
+        Func_INI::Log "info" $logfile [list $test $errmsg "chrTest Test_End Fixed_Duration"]
+        
+        return
+    }    
+    
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list "$test,$runOpts chrTest Test_End Fixed_Duration"]
+    };#if {$verbose == on}
+    
+    if {[ catch {chrRunOpts set $runOpts TEST_DURATION $test_duration}]} {
+        GetErrmsg $errorCode
+        Func_INI::Log "info" $logfile [list $test $errmsg "chrTest Test_Duration"]
         
         return
     }
-    
-    if {[chrRunOpts set $runOpts TEST_DURATION $test_duration]} {
-        if {$verbose == on} {
-            GetErrmsg $errorCode
-            Func_INI::Log "info" $logfile [list $test $errmsg "chrTest Test_Duration"]
-        };#if {$verbose == on}
-        
-        return
-    }     
+
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list "$test,$runOpts chrTest Test_Duration"]
+    };#if {$verbose == on}
     
 }
 proc Func_Chariot::RunTest_tillEnd {} {
@@ -230,6 +271,7 @@ proc Func_Chariot::RunTest_tillEnd {} {
     
     # The test is complete, so now we can run it.
     puts "Run the test..."
+    update
     if {[catch {chrTest start $test}]} {
         # pLogError $test $errorCode "chrTest start"
         if {$verbose == on} {
@@ -270,7 +312,8 @@ proc Func_Chariot::GetPairResult {} {
         
         # Save the test so we can show results later.
         puts "Save the test..."
-        if {[catch {chrTest save $test}]} {
+        update
+         if {[catch {chrTest save $test}]} {
             # pLogError $test $errorCode "chrTest save"
             if {$verbose == on} {
                 GetErrmsg $errorCode

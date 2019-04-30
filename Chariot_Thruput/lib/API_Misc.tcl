@@ -361,8 +361,8 @@ proc Func_INI::ChkDUTalive {strIPAddr} {
     return $retval
 }
 proc Func_INI::GenChariotTestFile_11ac {} {
-    variable verbose off
-    variable logfile "../log/inifile.log"
+    variable verbose
+    variable logfile
     variable testChrfile_11ac_lan2wan
     
     append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
@@ -373,8 +373,8 @@ proc Func_INI::GenChariotTestFile_11ac {} {
 }
 
 proc Func_INI::GenChariotTestFile_11n {} {
-    variable verbose off
-    variable logfile "../log/inifile.log"
+    variable verbose
+    variable logfile
     variable testChrfile_11n_lan2wan
     
     append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
@@ -382,7 +382,8 @@ proc Func_INI::GenChariotTestFile_11n {} {
             "11n" "_" "LAN2WLAN" "_" \
             [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
     
-}########################################
+}
+########################################
 # Define a simple custom logproc
 ##########################################
 namespace eval Log {
@@ -454,6 +455,7 @@ proc Log::LogList_level {level filename list_msg} {
         Log::tofile $level $path_logfile $strmsg
     }
 }
+
 proc Log::LogOut {str_out logfname} {
     
     set path_logfile [file join ".." "log" $logfname]
@@ -483,6 +485,7 @@ namespace eval Func_CSV {
     variable str_testplan_table ""
     variable LoopType ""
 }
+
 proc Func_CSV::Read {list_csvfname} {
     
     variable sepChar
@@ -549,6 +552,7 @@ proc Func_CSV::Read {list_csvfname} {
     
     return $list_csv
 }
+
 proc Func_CSV::Log {level filename list_msg} {
     foreach temp $list_msg {
         set msg "$temp"

@@ -49,7 +49,7 @@
 set testFile "chrpairstest.tst"
 
 set pairCount 3
-set e1Addrs {"192.168.0.200" "192.168.0.200" "192.168.0.200"}
+set e1Addrs {"192.168.0.101" "192.168.0.101" "192.168.0.101"}
 set e2Addrs {"192.168.0.100" "192.168.0.100" "192.168.0.100"}
 set protocols {"TCP" "RTP" "UDP"}
 set scripts {"d:/Program Files/Ixia/IxChariot/Scripts/Response_Time.scr" \
