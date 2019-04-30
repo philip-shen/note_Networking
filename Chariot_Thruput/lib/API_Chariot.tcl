@@ -274,13 +274,15 @@ proc Func_Chariot::RunTest_tillEnd {} {
     update
     if {[catch {chrTest start $test}]} {
         # pLogError $test $errorCode "chrTest start"
-        if {$verbose == on} {
-            GetErrmsg $errorCode
-            Func_INI::Log "info" $logfile [list $test $errmsg "chrTest start"]        
-        };#if {$verbose == on}
-        
+        # GetErrmsg $errorCode
+        Func_INI::Log "info" $logfile [list "$test chrTest start"]
+                
         return
     }
+    
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list  "$test chrTest start"]
+    };#if {$verbose == on}
     
     set chr_done [chrTest isStopped $test]
     
@@ -289,6 +291,9 @@ proc Func_Chariot::RunTest_tillEnd {} {
         set chr_done [chrTest isStopped $test 5]
     }
     
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list  "$test chrTest isStopped"]
+    };#if {$verbose == on}
 }
 
 proc Func_Chariot::GetPairResult {} {
@@ -301,6 +306,10 @@ proc Func_Chariot::GetPairResult {} {
     variable chr_how_ended
     
     set chr_how_ended [chrTest get $test HOW_ENDED]
+    
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list "$test $chr_how_ended chrTest save"]
+    };#if {$verbose == on}
     
     if {$chr_how_ended == "NORMAL"} {
         set throughput [list 0 0 0]
@@ -315,11 +324,13 @@ proc Func_Chariot::GetPairResult {} {
         update
          if {[catch {chrTest save $test}]} {
             # pLogError $test $errorCode "chrTest save"
-            if {$verbose == on} {
-                GetErrmsg $errorCode
-                Func_INI::Log "info" $logfile [list $test $errmsg "chrTest save"]
-            };#if {$verbose == on}
+            # GetErrmsg $errorCode
+            Func_INI::Log "info" $logfile [list "$test chrTest save"]
         }
+        
+        if {$verbose == on} {
+            Func_INI::Log "info" $logfile [list "$test chrTest save"]
+        };#if {$verbose == on}
         
     } else  {
         

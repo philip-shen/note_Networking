@@ -5,6 +5,7 @@
 #***************************************************************
 set currpath [file dirname [file normalize [info script]]];#[file dirname [info script]]
 set lib_path [regsub -all "test" $currpath "lib"];#[file join  ".." "lib"]
+set log_path  [regsub -all "test" $currpath "log"]
 lappend auto_path $lib_path
 source "$lib_path/API_Misc.tcl"
 
@@ -49,7 +50,7 @@ set Func_Chariot::verbose on;#on off
 ################################################################################
 
 # Setup Chariot test file name
-set testChrfile_11ac_lan2wan "";#dut modelname ;#wlan client modelname \;#TX or RX ;#timestamp
+# set testChrfile_11ac_lan2wan "";#dut modelname ;#wlan client modelname \;#TX or RX ;#timestamp
 # if [info exist testChrfile_11ac_lan2wan] {unset testChrfile_11ac_lan2wan}
 # append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
 # [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
@@ -57,7 +58,9 @@ set testChrfile_11ac_lan2wan "";#dut modelname ;#wlan client modelname \;#TX or 
 # [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
 
 Func_INI::GenChariotTestFile_11ac
-set testChrfile_11ac_lan2wan $Func_INI::testChrfile_11ac_lan2wan
+# Set absoluate path
+if [info exist testChrfile_11ac_lan2wan] {unset testChrfile_11ac_lan2wan} 
+append testChrfile_11ac_lan2wan $log_path $Func_INI::testChrfile_11ac_lan2wan
 
 # Create a new test.
 Func_Chariot::Initialize
@@ -78,12 +81,16 @@ set Func_Chariot::pairCount [dict get $Func_INI::dict_Chariot_Param "paircount"]
 set Func_Chariot::e1Addrs [dict get $Func_INI::dict_TopologyIP  "lan_ep_ipaddr"]
 set Func_Chariot::e2Addrs [dict get $Func_INI::dict_TopologyIP  "wlan_ep_ipaddr"]
 set Func_Chariot::protocols [dict get $Func_INI::dict_Chariot_Param "protocols"]
-set Func_Chariot::chrscript [dict get $Func_INI::dict_Chariot_Param "scripts"]
+
+# Set absoluate path
+if [info exist Func_Chariot::chrscript] {unset Func_Chariot::chrscript}
+append Func_Chariot::chrscript $lib_path [dict get $Func_INI::dict_Chariot_Param "scripts"]
 
 # Define some pairs for the test.
 Func_Chariot::SetChrPair
 
-#Func_Chariot::RunTest_tillEnd
+# Excute test.
+Func_Chariot::RunTest_tillEnd
 
 # Save the test so we can show results later.
 Func_Chariot::GetPairResult
@@ -92,9 +99,14 @@ Func_Chariot::GetPairResult
 Func_Chariot::Close
 
 Func_INI::GenChariotTestFile_11ac
-set testChrfile_11ac_wlan2lan [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN"]
+# Set absoluate path
+if [info exist testChrfile_11ac_wlan2lan] {unset testChrfile_11ac_wlan2lan}
+append testChrfile_11ac_wlan2lan $log_path [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN"]
+
 Func_INI::GenChariotTestFile_11ac
-set testChrfile_11ac_wlan2wan2wlan [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN2WLAN"]
+# Set absoluate path
+if [info exist testChrfile_11ac_wlan2wan2wlan] {unset testChrfile_11ac_wlan2wan2wlan}
+append testChrfile_11ac_wlan2wan2wlan $log_path [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN2WLAN"]
 #puts $testChrfile_11ac_lan2wan,$testChrfile_11ac_wlan2lan,$testChrfile_11ac_wlan2wan2wlan
 
 ################################################################################
