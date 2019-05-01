@@ -1,7 +1,8 @@
 #***************************************************************
 #
-#  Purpose Test ChrPairs
+# Purpose Test ChrPairs
 #
+# Apr282019 Initialize
 #***************************************************************
 set currpath [file dirname [file normalize [info script]]];#[file dirname [info script]]
 set lib_path [regsub -all "test" $currpath "lib"];#[file join  ".." "lib"]
@@ -98,11 +99,14 @@ Func_Chariot::GetPairResult
 # Clean up used resources before exiting.
 Func_Chariot::Close
 
+
+if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
 Func_INI::GenChariotTestFile_11ac
 # Set absoluate path
 if [info exist testChrfile_11ac_wlan2lan] {unset testChrfile_11ac_wlan2lan}
 append testChrfile_11ac_wlan2lan $log_path [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN"]
 
+if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
 Func_INI::GenChariotTestFile_11ac
 # Set absoluate path
 if [info exist testChrfile_11ac_wlan2wan2wlan] {unset testChrfile_11ac_wlan2wan2wlan}

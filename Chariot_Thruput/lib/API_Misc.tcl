@@ -1,7 +1,7 @@
 # ChangeLog
 # By Philip Shen 
 # ---------------------------------------------------------------------
-# Apr27219 Initialize 
+# Apr272019 Initialize 
 ################################################################################
 namespace eval Func_INI {
     package require inifile

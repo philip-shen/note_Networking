@@ -1,0 +1,203 @@
+################################################################################
+#  May01-2019 Initailization.
+################################################################################
+package require Tcl 8.4
+package require Tk 8.4
+package require tile
+package require Tktable
+
+set currpath [file dirname [file normalize [info script]]];#[file dirname [info script]]
+set lib_path [regsub -all "test" $currpath "lib"];#[file join  ".." "lib"]
+set log_path  [regsub -all "test" $currpath "log"]
+lappend auto_path $lib_path
+source "$lib_path/API_Misc.tcl"
+source "$lib_path/API_GUI.tcl"
+
+set inifile [file join $currpath setup.ini]
+################################################################################
+# Get INI file paramter
+################################################################################
+# Func_INI::Ping_igp "192.168.1.152"
+set Func_INI::verbose on;#on off
+
+Func_INI::_GetChariot_Param $inifile
+Func_INI::_GetDUT $inifile
+Func_INI::Ping_igp "192.168.1.1"
+Func_INI::_GetTopologyIP $inifile
+Func_INI::_GetWLAN_ClientModelName $inifile
+Func_INI::_GetCriteria $inifile
+
+# source Chariot related API
+set path_chariot [dict get $Func_INI::dict_Chariot_Param "chariot_path"];#get chariot directory
+lappend auto_path $path_chariot
+#source "$lib_path/API_Chariot.tcl"
+
+################################################################################
+# GUI Procedure
+################################################################################
+set config(elide,time) 0
+set config(elide,level) 0
+foreach level [logger::levels] {
+    set config(elide,$level) 0
+}
+#
+# Create a simple logger with the servicename 'global'
+#
+#
+proc createLogger {} {
+    global mylogger
+    set mylogger [logger::init global]
+    
+    # loggers logproc takes just one arg, so curry
+    # our proc with the loglevel and use an alias
+    foreach level [logger::levels] {
+        interp alias {} insertLogLine_$level {} insertLogLine $level
+        ${mylogger}::logproc $level insertLogLine_$level
+    }
+}
+
+# Put the logmessage to the logger system
+proc sendMessageToLog {level} {
+    ${::mylogger}::$level $::logmessage
+}
+
+proc createGUI {str_title str_args list_csvrow list_cpe_testconds_log_dslaminfo_relaybdptnum \
+            list_414ELenCoeff list_410ALooplenCoeff list_410AGPIBCmdSet \
+            list_noise_pathfname list_dslamprofile} {
+    global mylogger
+    global logwidget
+    
+    wm title . $str_title
+    
+    # The output window
+    labelframe .log -text "Output Message"
+    text .log.text -yscrollcommand [list .log.yscroll set] -wrap none
+    set logwidget .log.text
+    scrollbar .log.yscroll -orient vertical -command [list $logwidget yview]
+    frame .log.buttons
+    frame .log.buttons.elide
+    
+    grid .log.text .log.yscroll -sticky nsew
+    grid configure .log.yscroll -sticky nws
+    grid .log.buttons.elide -sticky ew
+    grid .log.buttons -columnspan 200 -sticky ew
+    grid .log -sticky ew;#news
+    grid columnconfigure . 0 -weight 1
+    grid rowconfigure . 0 -weight 0
+    grid rowconfigure . 1 -weight 1
+    grid columnconfigure .log 0 -weight 1
+    grid columnconfigure .log 1 -weight 0
+    grid rowconfigure .log 0 -weight 1
+    
+    ### a little compose window for entering messages
+    labelframe .compose -text "Function Button"
+    frame .compose.levels
+    button .compose.levels.run -command [list main $str_args $list_csvrow \
+            $list_cpe_testconds_log_dslaminfo_relaybdptnum \
+            $list_414ELenCoeff $list_410ALooplenCoeff $list_410AGPIBCmdSet \
+            $list_noise_pathfname $list_dslamprofile] -text "Run"
+            button .compose.levels.exit -command [list exit] -text "Exit"
+    lappend buttons .compose.levels.exit .compose.levels.run
+    eval grid $buttons -sticky ew -padx 20 -pady 5
+    # grid .compose.logmessage -sticky ew
+    grid .compose.levels -sticky ew
+    grid .compose -sticky ew
+    
+    # Now we create some fonts
+    # a fixed font for the first two columns, so they stay nicely lined up
+    # a proportional font for the message as it is probably better to read
+    #
+    font create logger::timefont -family {Courier} -size 8
+    font create logger::levelfont -family {Courier} -size 8
+    font create logger::msgfont -family {Arial} -size 10
+    $logwidget tag configure logger::time -font logger::timefont
+    $logwidget tag configure logger::level -font logger::levelfont
+    $logwidget tag configure logger::message -font logger::msgfont
+    
+    # Now we create some colors for the levels, so our messages appear in different colors
+    # color<->levels {debug,info,notice,warn,error,critical }
+    foreach level [logger::levels] color {darkgrey lightgrey lightgreen lightblue red orange} {
+        $logwidget tag configure logger::$level -background $color
+    }
+    
+    # Disable the widget, so it is read only
+    $logwidget configure -state disabled
+    
+}
+proc insertLogLine {level txt} {
+    global logwidget
+    
+    $logwidget configure -state normal
+    $logwidget insert end "<[clock format [clock seconds] -format "%H:%M:%S"]> " \
+            [list logger::time logger::$level] \
+            $txt\n [list logger::message logger::$level]
+    
+    $logwidget yview moveto 1;update
+    $logwidget configure -state disabled
+}
+
+proc GUIRun {str_title str_args list_csvrow list_cpe_testconds_log_dslaminfo_relaybdptnum \
+            list_414ELenCoeff list_410ALooplenCoeff list_410AGPIBCmdSet \
+            list_noise_pathfname list_dslamprofile} {
+    createLogger
+    createGUI $str_title $str_args $list_csvrow $list_cpe_testconds_log_dslaminfo_relaybdptnum \
+            $list_414ELenCoeff $list_410ALooplenCoeff $list_410AGPIBCmdSet \
+            $list_noise_pathfname $list_dslamprofile
+}
+
+################################################################################
+# Start Here
+################################################################################
+set COPYRIGHT {
+    Copyright (c) 2019, 2020 QA,
+    This program is free to modify, extend at will.  The author(s)
+    provides no warrantees, guarantees or any responsibility for usage.
+}
+set VERSION "    If you have question, please contact QA Dept."
+
+array set pref [list \
+        debug		0 \
+        usesession	1 \
+        sessionfile	[file join [file normalize $env(HOME)] .tksqlite]\
+        appname		"Chariot Thruput Test"  \
+        enable_encoding	[lsort -dictionary [encoding names]] \
+        recent_file [list] \
+        openTypeSqlite	[list {"SQLite Files" {.db .db2 .db3 .sqlite}} {"All Files" *}] \
+        openTypeSql		[list {"SQL Files" {.sql}} {"All Files" *}] \
+        openTypeText	[list {"Text Files" {.txt .csv .tab .tsv .dat}} {"All Files" *}] \
+        ]
+
+################################################################################
+#Get test condition parameter from INI File.
+################################################################################
+set timeout 10;set looptimes 1
+
+#############################################
+# Get MultiDSLAMs parameters.
+#############################################
+set procom_inifile "dslam.ini"
+
+###########################
+#DUT modem setting
+###########################
+set modem_passwd "1234";#"1234"
+
+################################################################################
+# Run Here
+################################################################################
+append  str_title $pref(appname) " " Version ":" $VERSION
+
+if [info exist str_args] {unset str_args}
+append str_args $looptimes ";" $modem_passwd ";" $procom_inifile ";" $timeout
+# $waituptimes ";" $timeout ";" $errorsec_duration ";" $adslreset_iniopt
+
+set list_target_testcasesid []
+set list_cpe_testconds_log_dslaminfo_relaybdptnum []
+set list_414ELenCoeff []; set list_410ALoopLen []
+set list_410ACmdSet []; set list_noise_pathfname []
+set list_dslamprofile []
+        
+GUIRun $str_title $str_args $list_target_testcasesid \
+        $list_cpe_testconds_log_dslaminfo_relaybdptnum \
+        $list_414ELenCoeff $list_410ALoopLen $list_410ACmdSet \
+        $list_noise_pathfname $list_dslamprofile

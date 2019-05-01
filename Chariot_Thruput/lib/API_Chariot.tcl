@@ -320,6 +320,13 @@ proc Func_Chariot::GetPairResult {} {
         set max [format "%.3f" [lindex $throughput 2]]
         
         # Save the test so we can show results later.
+        puts "Get the test result..."
+        update
+        if {$verbose == on} {
+            Func_INI::Log "info" $logfile [list "tp_avg: $tp_avg" "min: $min" "max: $max"]
+        };#if {$verbose == on}
+        
+        # Save the test so we can show results later.
         puts "Save the test..."
         update
          if {[catch {chrTest save $test}]} {
