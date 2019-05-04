@@ -6,6 +6,11 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 # Topology  
 ![alt tag]()
 
+# Setup Procedure  
+## Installation version of Tcl/Tk is x86 not x64, even on Win 10.
+[How to load a dll in Tcl? Aug 11, 2013](https://stackoverflow.com/questions/18171997/how-to-load-a-dll-in-tcl)  
+
+## Edit setup.ini to meet your testing topology  
 
 # Troubleshooting  
 
