@@ -366,9 +366,11 @@ proc Func_INI::GenChariotTestFile_11ac {} {
     variable testChrfile_11ac_lan2wan
     
     append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
+            [dict get $Func_INI::dict_DUT "dut_fwver"] "_" \
+            [dict get $Func_INI::dict_DUT "dut_hwver"] "_" \
             [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
             "11ac" "_" "LAN2WLAN" "_" \
-            [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
+            [clock format [clock seconds] -format "%H%M%S_%m%d%Y"] ".tst"
     
 }
 
@@ -378,9 +380,11 @@ proc Func_INI::GenChariotTestFile_11n {} {
     variable testChrfile_11n_lan2wan
     
     append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
+            [dict get $Func_INI::dict_DUT "dut_fwver"] "_" \
+            [dict get $Func_INI::dict_DUT "dut_hwver"] "_" \
             [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
             "11n" "_" "LAN2WLAN" "_" \
-            [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
+            [clock format [clock seconds] -format "%H%M%S_%m%d%Y"] ".tst"
     
 }
 ########################################

@@ -88,7 +88,7 @@ proc Func_Chariot::Test_Filename {} {
     puts "Set test filename..."
     update
     if {$verbose == on} {
-        Func_INI::Log "info" $logfile [list "$test chrTest set FILENAME"]
+        Func_INI::Log "info" $logfile [list "$test chrTest $testFile"]
     };#if {$verbose == on}
     
     if {[catch {chrTest set $test FILENAME $testFile}]} {
@@ -135,7 +135,8 @@ proc Func_Chariot::SetChrPair {} {
         chrPair set $pair PROTOCOL $protocols
         
         if {$verbose == on} {
-            Func_INI::Log "info" $logfile [list  "$test $pair $chrscript chrPair useScript"]
+            Func_INI::Log "info" $logfile [list  "$test $pair {Pair [expr $index + 1]} $e1Addrs $e2Addrs $protocols"]
+            Func_INI::Log "info" $logfile [list  "$test $pair $chrscript"]
             
         };#if {$verbose == on}
         
@@ -305,6 +306,9 @@ proc Func_Chariot::GetPairResult {} {
     variable max
     variable chr_how_ended
     
+    # Save the test so we can show results later.
+    puts "Get the test result..."
+    update
     set chr_how_ended [chrTest get $test HOW_ENDED]
     
     if {$verbose == on} {
@@ -326,29 +330,39 @@ proc Func_Chariot::GetPairResult {} {
             Func_INI::Log "info" $logfile [list "tp_avg: $tp_avg" "min: $min" "max: $max"]
         };#if {$verbose == on}
         
-        # Save the test so we can show results later.
-        puts "Save the test..."
-        update
-         if {[catch {chrTest save $test}]} {
-            # pLogError $test $errorCode "chrTest save"
-            # GetErrmsg $errorCode
-            Func_INI::Log "info" $logfile [list "$test chrTest save"]
-        }
         
-        if {$verbose == on} {
-            Func_INI::Log "info" $logfile [list "$test chrTest save"]
-        };#if {$verbose == on}
         
     } else  {
         
         set tp_avg 0
     };#if {$how_ended == "NORMAL"}
 }
+
+proc Func_Chariot::SaveResult {} {
+    variable verbose
+    variable logfile
+    variable test
+    
+    # Save the test so we can show results later.
+    puts "Save the test..."
+    update
+    if {[catch {chrTest save $test}]} {
+        # pLogError $test $errorCode "chrTest save"
+        # GetErrmsg $errorCode
+        Func_INI::Log "info" $logfile [list "$test chrTest save"]
+    }
+    
+    if {$verbose == on} {
+        Func_INI::Log "info" $logfile [list "$test chrTest save"]
+    };#if {$verbose == on}
+
+}
+
 # Refer ChrLBSimple.tcl
 # (13)
 # Clean up used resources before exiting.
 # (Test will deallocate associated pairs automatically)
-proc  Func_Chariot::Close {} {
+proc  Func_Chariot::Terminate {} {
     variable verbose
     variable logfile
     variable test

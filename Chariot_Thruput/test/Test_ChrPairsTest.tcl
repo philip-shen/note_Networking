@@ -51,22 +51,15 @@ set Func_Chariot::verbose on;#on off
 ################################################################################
 
 # Setup Chariot test file name
-# set testChrfile_11ac_lan2wan "";#dut modelname ;#wlan client modelname \;#TX or RX ;#timestamp
-# if [info exist testChrfile_11ac_lan2wan] {unset testChrfile_11ac_lan2wan}
-# append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
-# [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
-# "11ac" "_" "LAN2WLAN" "_" \
-# [clock format [clock seconds] -format "%H:%M:%S_%m%d%Y"] ".tst"
-
 Func_INI::GenChariotTestFile_11ac
 # Set absoluate path
 if [info exist testChrfile_11ac_lan2wan] {unset testChrfile_11ac_lan2wan} 
-append testChrfile_11ac_lan2wan $log_path $Func_INI::testChrfile_11ac_lan2wan
+append testChrfile_11ac_lan2wan $log_path / $Func_INI::testChrfile_11ac_lan2wan
+
+set Func_Chariot::testFile $testChrfile_11ac_lan2wan
 
 # Create a new test.
 Func_Chariot::Initialize
-
-set Func_Chariot::testFile $testChrfile_11ac_lan2wan
 
 # Set the test filename for saving later.
 Func_Chariot::Test_Filename
@@ -85,7 +78,7 @@ set Func_Chariot::protocols [dict get $Func_INI::dict_Chariot_Param "protocols"]
 
 # Set absoluate path
 if [info exist Func_Chariot::chrscript] {unset Func_Chariot::chrscript}
-append Func_Chariot::chrscript $lib_path [dict get $Func_INI::dict_Chariot_Param "scripts"]
+append Func_Chariot::chrscript $lib_path / [dict get $Func_INI::dict_Chariot_Param "scripts"]
 
 # Define some pairs for the test.
 Func_Chariot::SetChrPair
@@ -93,11 +86,14 @@ Func_Chariot::SetChrPair
 # Excute test.
 Func_Chariot::RunTest_tillEnd
 
-# Save the test so we can show results later.
+# Get the test result.
 Func_Chariot::GetPairResult
 
+# Save the test so we can show results later.
+Func_Chariot::SaveResult
+
 # Clean up used resources before exiting.
-Func_Chariot::Close
+Func_Chariot::Terminate
 
 
 if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}

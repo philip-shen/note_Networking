@@ -17,6 +17,12 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 * [Tcl Windows API usage examples 2003](https://twapi.magicsplat.com/v1.1/examples.html)  
 * [TclCurl 5/2013](https://wiki.tcl-lang.org/page/TclCurl)  
 * [Tcl wrapper for Curl ](https://github.com/jdc8/tclcurl)  
+* [How to load a dll in Tcl? Aug 11, 2013](https://stackoverflow.com/questions/18171997/how-to-load-a-dll-in-tcl)  
+```
+I have this problem, too,couldn't load library "ChariotExt": invalid argument.
+
+And sovled it by change tcl version x64 to x86.
+```
 
 * []()  
 ![alt tag]()
