@@ -362,7 +362,7 @@ proc Func_Chariot::SaveResult {} {
 # (13)
 # Clean up used resources before exiting.
 # (Test will deallocate associated pairs automatically)
-proc  Func_Chariot::Terminate {} {
+proc Func_Chariot::Terminate {} {
     variable verbose
     variable logfile
     variable test
@@ -370,4 +370,34 @@ proc  Func_Chariot::Terminate {} {
     # Terminate a new test.
     puts "Terminate the test..."
     set test [chrTest delete $test force]
+}
+
+proc Func_Chariot::RunRoutine {} {
+    variable verbose
+    variable logfile
+    variable test
+    
+    # Create a new test.
+    Func_Chariot::Initialize
+    
+    # Set the test filename for saving later.
+    Func_Chariot::Test_Filename
+    
+    # Set test_duration
+    Func_Chariot::SetRunOpts
+    
+    # Define some pairs for the test.
+    Func_Chariot::SetChrPair
+    
+    # Excute test.
+    Func_Chariot::RunTest_tillEnd
+    
+    # Get the test result.
+    Func_Chariot::GetPairResult
+    
+    # Save the test so we can show results later.
+    Func_Chariot::SaveResult
+    
+    # Clean up used resources before exiting.
+    Func_Chariot::Terminate
 }
