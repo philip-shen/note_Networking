@@ -38,9 +38,13 @@ namespace eval Func_Chariot {
     variable pair    {}
     variable chr_done    {}
     variable chr_how_ended    {}
-    variable tp_avg    {}
-    variable tp_min    {}
-    variable tp_max    {}
+    variable allpairs_avg    {}
+    variable allpairs_min    {}
+    variable allpairs_max    {}
+    variable list_pair_avg    {}
+    variable list_pair_min    {}
+    variable list_pair_max    {}
+    
 }
 
 proc Func_Chariot::Initialize {} {
@@ -298,6 +302,7 @@ proc Func_Chariot::RunTest_tillEnd {} {
 }
 ################################################################################
 # http://www.voidcn.com/article/p-qozsbtna-bda.html
+# 
 # for { set i 0 } { $i < [llength $files] } { incr i } {
 #set long [llength $files]
 #puts "files $long"
@@ -349,10 +354,14 @@ proc Func_Chariot::GetPairResult {} {
     variable verbose
     variable logfile
     variable test
+    variable pairCount
     variable pair
-    variable tp_avg
-    variable tp_min
-    variable tp_max
+    variable allpairs_avg
+    variable allpairs_min
+    variable allpairs_max
+    variable list_pair_avg
+    variable list_pair_min
+    variable list_pair_max
     variable chr_how_ended
     
     # Save the test so we can show results later.
@@ -365,25 +374,59 @@ proc Func_Chariot::GetPairResult {} {
     };#if {$verbose == on}
     
     if {$chr_how_ended == "NORMAL"} {
-        # get the All Pairs token
-        set pair [chrTest getPair $test 0]
+        # prevent lats list to append
+        #if [info exist list_pair_avg] {unset list_pair_avg}
+        #if [info exist list_pair_min] {unset list_pair_min}
+        #if [info exist list_pair_max] {unset list_pair_max}
         
-        set throughput [list 0 0 0]
-        catch {set throughput [chrPairResults get $pair THROUGHPUT]}
+        # get each pair data
+        for {set index 0} {$index < $pairCount} {incr index} {
+            # get the each pair token
+            set pair [chrTest getPair $test $index]
+            
+            set throughput [list 0 0 0]
+            catch {set throughput [chrPairResults get $pair THROUGHPUT]}
+            
+            set pair_avg [format "%.4f" [lindex $throughput 0]]
+            set pair_min [format "%.4f" [lindex $throughput 1]]
+            set pair_max [format "%.4f" [lindex $throughput 2]]
+            
+            # Save the test so we can show results later.
+            puts "Get the test result..."
+            update
+            if {$verbose == on} {
+                Func_INI::Log "info" $logfile [list "$test $chr_how_ended chrPairResults get $pair THROUGHPUT"]
+                Func_INI::Log "info" $logfile [list "pair[expr $index + 1]_avg: $pair_avg" "pair[expr $index + 1]_min: $pair[expr $index + 1]_min" "pair_max: $pair_max"]
+            };#if {$verbose == on}
+            
+            # collect each pair thruput
+            lappend list_pair_avg $pair_avg
+            lappend list_pair_min $list_pair_min
+            lappend list_pair_max $list_pair_max
         
-        set tp_avg [format "%.3f" [lindex $throughput 0]]
-        set tp_min [format "%.3f" [lindex $throughput 1]]
-        set tp_max [format "%.3f" [lindex $throughput 2]]
+        };#for {set index 0}
         
-        # Save the test so we can show results later.
-        puts "Get the test result..."
-        update
+        ################################################################################
+        # What is the most elegant way to find the sum of all numbers in a string in TCL?
+        # https://stackoverflow.com/questions/34240206/what-is-the-most-elegant-way-to-find-the-sum-of-all-numbers-in-a-string-in-tcl?rq=1
+        #
+        # set sum [tcl::mathop::+ {*}[regexp -all -inline {-?\d+(?:\.\d+)(?:e[-+]?\d+)} $theString]]
+        #
+        # set sum [tcl::mathop::+ {*}[lmap tuple $theList {lindex $tuple 1}]]
+        # Requires Tcl 8.6
+        ################################################################################
+                
+        set allpairs_avg [tcl::mathop::+ {*}$list_pair_avg]
+        set allpairs_min [tcl::mathop::+ {*}$list_pair_min]
+        set allpairs_max [tcl::mathop::+ {*}$list_pair_max]
+        
+        set allpairs_avg [format "%.3f" $allpairs_avg]
+        set allpairs_min [format "%.3f" $allpairs_min]
+        set allpairs_max [format "%.3f" $allpairs_max]
+        
         if {$verbose == on} {
-            Func_INI::Log "info" $logfile [list "$test $chr_how_ended chrPairResults get $pair THROUGHPUT"]
-            Func_INI::Log "info" $logfile [list "tp_avg: $tp_avg" "tp_min: $tp_min" "tp_max: $tp_max"]
+            Func_INI::Log "info" $logfile [list "allpairs_avg: $allpairs_avg" "allpairs_min: $pair_min" "allpairs_max: $allpairs_max"]
         };#if {$verbose == on}
-        
-        
         
     } else  {
         

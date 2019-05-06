@@ -467,9 +467,9 @@ proc Log::LogList_level {level filename list_msg} {
     }
 }
 
-proc Log::LogOut {str_out logfname} {
+proc Log::LogOut {str_out path_logfile} {
     
-    set path_logfile [file join ".." "log" $logfname]
+    #set path_logfile [file join ".." "log" $logfname]
     # set clk [clock format [clock seconds] -format "%b%d%H%M%S%Y"]
     # append str_out;# "  ";append Str_Out $clk
     
