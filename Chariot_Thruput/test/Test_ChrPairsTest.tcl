@@ -36,6 +36,7 @@ source "$lib_path/API_Chariot.tcl"
 set retval_wlan_ep [Func_INI::ChkDUTalive [dict get $Func_INI::dict_TopologyIP "wlan_ep_ipaddr"]]
 set retval_dut_lan [Func_INI::ChkDUTalive [dict get $Func_INI::dict_TopologyIP "dut_lan_ipaddr"]]
 set retval_wan_ep [Func_INI::ChkDUTalive [dict get $Func_INI::dict_TopologyIP "wan_ep_ipaddr"]]
+set retval_lan_ep [Func_INI::ChkDUTalive [dict get $Func_INI::dict_TopologyIP "lan_ep_ipaddr"]]
 
 #***************************************************************
 #

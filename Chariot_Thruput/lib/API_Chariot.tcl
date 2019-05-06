@@ -39,8 +39,8 @@ namespace eval Func_Chariot {
     variable chr_done    {}
     variable chr_how_ended    {}
     variable tp_avg    {}
-    variable min    {}
-    variable max    {}
+    variable tp_min    {}
+    variable tp_max    {}
 }
 
 proc Func_Chariot::Initialize {} {
@@ -119,7 +119,7 @@ proc Func_Chariot::SetChrPair {} {
     
     for {set index 0} {$index < $pairCount} {incr index} {
         # Create a pair.
-        puts "Create a pair..."
+        puts "Create pair [expr $index + 1]..."
         update
         set pair [chrPair new]
         if {$verbose == on} {
@@ -301,9 +301,10 @@ proc Func_Chariot::GetPairResult {} {
     variable verbose
     variable logfile
     variable test
+    variable pair
     variable tp_avg
-    variable min
-    variable max
+    variable tp_min
+    variable tp_max
     variable chr_how_ended
     
     # Save the test so we can show results later.
@@ -320,14 +321,15 @@ proc Func_Chariot::GetPairResult {} {
         catch {set throughput [chrPairResults get $pair THROUGHPUT]}
         
         set tp_avg [format "%.3f" [lindex $throughput 0]]
-        set min [format "%.3f" [lindex $throughput 1]]
-        set max [format "%.3f" [lindex $throughput 2]]
+        set tp_min [format "%.3f" [lindex $throughput 1]]
+        set tp_max [format "%.3f" [lindex $throughput 2]]
         
         # Save the test so we can show results later.
         puts "Get the test result..."
         update
         if {$verbose == on} {
-            Func_INI::Log "info" $logfile [list "tp_avg: $tp_avg" "min: $min" "max: $max"]
+            Func_INI::Log "info" $logfile [list "$test $chr_how_ended chrPairResults get $pair THROUGHPUT"]
+            Func_INI::Log "info" $logfile [list "tp_avg: $tp_avg" "tp_min: $tp_min" "tp_max: $tp_max"]
         };#if {$verbose == on}
         
         
