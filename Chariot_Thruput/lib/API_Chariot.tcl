@@ -296,6 +296,54 @@ proc Func_Chariot::RunTest_tillEnd {} {
         Func_INI::Log "info" $logfile [list  "$test chrTest isStopped"]
     };#if {$verbose == on}
 }
+################################################################################
+# http://www.voidcn.com/article/p-qozsbtna-bda.html
+# for { set i 0 } { $i < [llength $files] } { incr i } {
+#set long [llength $files]
+#puts "files $long"
+#puts "work_dir_length $work_dir_length "
+# set tt [chrTest new]
+# set f [lindex $files $i]
+# set record_time [string range $f $work_dir_length [string length $f]]
+# set record_time [string range $record_time 0 38]
+# set script [string range $record_time 40 $work_dir_length]
+# puts -nonewline "$record_time, "
+# chrTest load $tt $f
+# chrTest getPairCount $tt
+# chrTest getPair $tt 0
+# set p1 [chrTest getPair $tt 0]
+#puts "Number of timing records = [chrPair getTimingRecordCount $p1]"
+# 提取MLR和DF文件
+# 根据不同的??需求，也可以?取吞吐量，?延，抖?，?包率等指?
+#set mlr [chrPairResults get $p1 MEDIA_LOSS_RATE ]
+#set df [chrPairResults get $p1 DELAY_FACTOR]
+# set th [chrPairResults get $p1 THROUGHPUT ]
+# puts "mlr, [lindex $mlr 0], [lindex $mlr 1], [lindex $mlr 2],\
+# df, [lindex $df 0], [lindex $df 1], [lindex $df 2]"
+# set avg [format "%.3f" [lindex $th 0]]
+#set min [format "%.3f" [lindex $th 1]]
+#set max [format "%.3f" [lindex $th 2]]
+#puts "$avg,$min,$max "
+###################################
+#chrTest getPair $tt 0
+# set p2 [chrTest getPair $tt 1]
+# set th2 [chrPairResults get $p2 THROUGHPUT ]
+# set avg1 [format "%.3f" [lindex $th2 0]]
+##################################
+# set p2 [chrTest getPair $tt 2]
+# set th2 [chrPairResults get $p2 THROUGHPUT ]
+# set avg2 [format "%.3f" [lindex $th2 0]]
+##################################################
+# set p2 [chrTest getPair $tt 3]
+# set th2 [chrPairResults get $p2 THROUGHPUT ]
+# set avg3 [format "%.3f" [lindex $th2 0]]
+##################################################
+# puts "$avg,$avg1,$avg2,$avg3"
+##################################################
+# chrTest delete $tt force
+# 
+# }
+################################################################################
 
 proc Func_Chariot::GetPairResult {} {
     variable verbose
@@ -317,6 +365,9 @@ proc Func_Chariot::GetPairResult {} {
     };#if {$verbose == on}
     
     if {$chr_how_ended == "NORMAL"} {
+        # get the All Pairs token
+        set pair [chrTest getPair $test 0]
+        
         set throughput [list 0 0 0]
         catch {set throughput [chrPairResults get $pair THROUGHPUT]}
         
