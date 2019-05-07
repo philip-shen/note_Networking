@@ -18,6 +18,10 @@ namespace eval Func_Chariot {
     ################################################################################
     global auto_index
     eval $auto_index(ChariotExt)
+    ################################################################################
+    # to calculate allpairs max/min result
+    ################################################################################
+    package require math::statistics
     
     # Define symbols for the errors we're interested in.
     variable CHR_OPERATION_FAILED "CHRAPI 108"
@@ -419,8 +423,10 @@ proc Func_Chariot::GetPairResult {} {
         ################################################################################
                 
         set allpairs_avg [tcl::mathop::+ {*}$list_pair_avg]
-        set allpairs_min [tcl::mathop::+ {*}$list_pair_min]
-        set allpairs_max [tcl::mathop::+ {*}$list_pair_max]
+        #set allpairs_min [tcl::mathop::+ {*}$list_pair_min]
+        #set allpairs_max [tcl::mathop::+ {*}$list_pair_max]
+        set allpairs_min [math::statistics::mean $list_pair_min]
+        set allpairs_max [math::statistics::mean $list_pair_max]
         
         set allpairs_avg [format "%.3f" $allpairs_avg]
         set allpairs_min [format "%.3f" $allpairs_min]
