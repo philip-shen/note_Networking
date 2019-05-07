@@ -126,11 +126,12 @@ append Func_Chariot::chrscript $lib_path / [dict get $Func_INI::dict_Chariot_Par
 Func_Chariot::RunRoutine
 
 
-if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
-Func_INI::GenChariotTestFile_11ac
+#if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
+#Func_INI::GenChariotTestFile_11ac
+ 
 # Set absoluate path
-if [info exist testChrfile_11ac_wlan2wan2wlan] {unset testChrfile_11ac_wlan2wan2wlan}
-append testChrfile_11ac_wlan2wan2wlan $log_path [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN2WLAN"]
+#if [info exist testChrfile_11ac_wlan2wan2wlan] {unset testChrfile_11ac_wlan2wan2wlan}
+#append testChrfile_11ac_wlan2wan2wlan $log_path [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN2WLAN"]
 #puts $testChrfile_11ac_lan2wan,$testChrfile_11ac_wlan2lan,$testChrfile_11ac_wlan2wan2wlan
 
 ################################################################################

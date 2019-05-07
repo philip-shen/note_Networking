@@ -384,3 +384,117 @@
 [13:58:45 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_135845_05072019.tst
 [13:58:59 05072019]  DD_1.05_A1_AC8260_11ac_WLAN2LAN_135516_05072019.tst
 [13:59:09 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_135909_05072019.tst
+[16:09:10 05072019]  scripts = High_Performance_Throughput.scr
+[16:09:10 05072019]  protocols = TCP
+[16:09:10 05072019]  chariot_path = D:\Program Files\Ixia\IxChariot
+[16:09:10 05072019]  timeout = 5
+[16:09:10 05072019]  test_duration = 10
+[16:09:10 05072019]  paircount = 4
+[16:09:10 05072019]  dut_modelname = DD
+[16:09:10 05072019]  dut_fwver = 1.05
+[16:09:10 05072019]  dut_hwver = A1
+[16:09:14 05072019]  192.168.1.1 failed
+[16:09:14 05072019]  dut_wan_ipaddr = 10.0.0.1
+[16:09:14 05072019]  wlan_ep_ipaddr = 192.168.0.101
+[16:09:14 05072019]  wan_ep_ipaddr = 10.0.0.2
+[16:09:14 05072019]  dut_lan_ipaddr = 192.168.0.1
+[16:09:14 05072019]  lan_ep_ipaddr = 192.168.0.102
+[16:09:14 05072019]  wlan_modelname = AC8260
+[16:09:14 05072019]  thruput_11ac_avg = 500
+[16:09:14 05072019]  thruput_11n_avg = 300
+[16:09:15 05072019]  192.168.0.101 alive
+[16:09:15 05072019]  192.168.0.1 alive
+[16:09:18 05072019]  10.0.0.2 failed
+[16:09:18 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_160918_05072019.tst
+[16:17:43 05072019]  scripts = High_Performance_Throughput.scr
+[16:17:43 05072019]  protocols = TCP
+[16:17:43 05072019]  chariot_path = D:\Program Files\Ixia\IxChariot
+[16:17:43 05072019]  timeout = 5
+[16:17:43 05072019]  test_duration = 10
+[16:17:43 05072019]  paircount = 4
+[16:17:43 05072019]  dut_modelname = DD
+[16:17:43 05072019]  dut_fwver = 1.05
+[16:17:43 05072019]  dut_hwver = A1
+[16:17:46 05072019]  192.168.1.1 failed
+[16:17:46 05072019]  dut_wan_ipaddr = 10.0.0.1
+[16:17:46 05072019]  wlan_ep_ipaddr = 192.168.0.101
+[16:17:46 05072019]  wan_ep_ipaddr = 10.0.0.2
+[16:17:46 05072019]  dut_lan_ipaddr = 192.168.0.1
+[16:17:46 05072019]  lan_ep_ipaddr = 192.168.0.102
+[16:17:46 05072019]  wlan_modelname = AC8260
+[16:17:46 05072019]  thruput_11ac_avg = 500
+[16:17:46 05072019]  thruput_11n_avg = 300
+[16:17:46 05072019]  192.168.0.101 alive
+[16:17:46 05072019]  192.168.0.1 alive
+[16:17:50 05072019]  10.0.0.2 failed
+[16:17:50 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_161750_05072019.tst
+[16:19:17 05072019]  scripts = High_Performance_Throughput.scr
+[16:19:17 05072019]  protocols = TCP
+[16:19:17 05072019]  chariot_path = D:\Program Files\Ixia\IxChariot
+[16:19:17 05072019]  timeout = 5
+[16:19:17 05072019]  test_duration = 10
+[16:19:17 05072019]  paircount = 4
+[16:19:17 05072019]  dut_modelname = DD
+[16:19:17 05072019]  dut_fwver = 1.05
+[16:19:17 05072019]  dut_hwver = A1
+[16:19:20 05072019]  192.168.1.1 failed
+[16:19:20 05072019]  dut_wan_ipaddr = 10.0.0.1
+[16:19:20 05072019]  wlan_ep_ipaddr = 192.168.0.101
+[16:19:20 05072019]  wan_ep_ipaddr = 10.0.0.2
+[16:19:20 05072019]  dut_lan_ipaddr = 192.168.0.1
+[16:19:20 05072019]  lan_ep_ipaddr = 192.168.0.102
+[16:19:20 05072019]  wlan_modelname = AC8260
+[16:19:20 05072019]  thruput_11ac_avg = 500
+[16:19:20 05072019]  thruput_11n_avg = 300
+[16:19:20 05072019]  192.168.0.101 alive
+[16:19:20 05072019]  192.168.0.1 alive
+[16:19:24 05072019]  10.0.0.2 failed
+[16:19:24 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_161924_05072019.tst
+[16:19:38 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_161924_05072019.tstDD_1.05_A1_AC8260_11ac_LAN2WLAN_161938_05072019.tst
+[16:23:06 05072019]  scripts = High_Performance_Throughput.scr
+[16:23:06 05072019]  protocols = TCP
+[16:23:06 05072019]  chariot_path = D:\Program Files\Ixia\IxChariot
+[16:23:06 05072019]  timeout = 5
+[16:23:06 05072019]  test_duration = 10
+[16:23:06 05072019]  paircount = 4
+[16:23:06 05072019]  dut_modelname = DD
+[16:23:06 05072019]  dut_fwver = 1.05
+[16:23:06 05072019]  dut_hwver = A1
+[16:23:09 05072019]  192.168.1.1 failed
+[16:23:09 05072019]  dut_wan_ipaddr = 10.0.0.1
+[16:23:09 05072019]  wlan_ep_ipaddr = 192.168.0.101
+[16:23:09 05072019]  wan_ep_ipaddr = 10.0.0.2
+[16:23:09 05072019]  dut_lan_ipaddr = 192.168.0.1
+[16:23:09 05072019]  lan_ep_ipaddr = 192.168.0.102
+[16:23:09 05072019]  wlan_modelname = AC8260
+[16:23:09 05072019]  thruput_11ac_avg = 500
+[16:23:09 05072019]  thruput_11n_avg = 300
+[16:23:09 05072019]  192.168.0.101 alive
+[16:23:09 05072019]  192.168.0.1 alive
+[16:23:13 05072019]  10.0.0.2 failed
+[16:23:13 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_162313_05072019.tst
+[16:23:27 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_162313_05072019.tstDD_1.05_A1_AC8260_11ac_LAN2WLAN_162327_05072019.tst
+[16:23:27 05072019]  DD_1.05_A1_AC8260_11ac_WLAN2LAN_162313_05072019.tstDD_1.05_A1_AC8260_11ac_WLAN2LAN_162327_05072019.tst
+[16:23:59 05072019]  scripts = High_Performance_Throughput.scr
+[16:23:59 05072019]  protocols = TCP
+[16:23:59 05072019]  chariot_path = D:\Program Files\Ixia\IxChariot
+[16:23:59 05072019]  timeout = 5
+[16:23:59 05072019]  test_duration = 10
+[16:23:59 05072019]  paircount = 4
+[16:23:59 05072019]  dut_modelname = DD
+[16:23:59 05072019]  dut_fwver = 1.05
+[16:23:59 05072019]  dut_hwver = A1
+[16:24:02 05072019]  192.168.1.1 failed
+[16:24:02 05072019]  dut_wan_ipaddr = 10.0.0.1
+[16:24:02 05072019]  wlan_ep_ipaddr = 192.168.0.101
+[16:24:02 05072019]  wan_ep_ipaddr = 10.0.0.2
+[16:24:02 05072019]  dut_lan_ipaddr = 192.168.0.1
+[16:24:02 05072019]  lan_ep_ipaddr = 192.168.0.102
+[16:24:02 05072019]  wlan_modelname = AC8260
+[16:24:02 05072019]  thruput_11ac_avg = 500
+[16:24:02 05072019]  thruput_11n_avg = 300
+[16:24:02 05072019]  192.168.0.101 alive
+[16:24:02 05072019]  192.168.0.1 alive
+[16:24:06 05072019]  10.0.0.2 failed
+[16:24:06 05072019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_162406_05072019.tst
+[16:24:17 05072019]  DD_1.05_A1_AC8260_11ac_WLAN2LAN_162406_05072019.tst

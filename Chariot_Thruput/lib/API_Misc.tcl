@@ -392,7 +392,7 @@ proc Func_INI::GenChariotTestFile_11ac_wlan2lan {} {
     variable testChrfile_11ac_wlan2lan
     
     set testChrfile_11ac_wlan2lan \
-    [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN"]
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wlan "WLAN2LAN"]
     
     if {$verbose == on} {
         Log "info" $logfile [list $testChrfile_11ac_wlan2lan]
@@ -406,7 +406,7 @@ proc Func_INI::GenChariotTestFile_11ac_wan2lan {} {
     variable testChrfile_11ac_wan2lan    
     
     set testChrfile_11ac_wan2lan \
-            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WAN2LAN"]
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wlan "WAN2LAN"]
     
     if {$verbose == on} {
         Log "info" $logfile [list $testChrfile_11ac_wan2lan]
@@ -420,7 +420,7 @@ proc Func_INI::GenChariotTestFile_11ac_wan2wlan {} {
     variable testChrfile_11ac_wan2wlan
     
     set testChrfile_11ac_wan2lan \
-            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WAN2WLAN"]
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wlan "WAN2WLAN"]
     
     if {$verbose == on} {
         Log "info" $logfile [list $testChrfile_11ac_wan2wlan]
