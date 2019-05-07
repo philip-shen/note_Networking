@@ -365,7 +365,7 @@ proc Func_Chariot::GetPairResult {} {
     variable chr_how_ended
     
     # Save the test so we can show results later.
-    puts "Get the test result..."
+    #puts "Get the test result..."
     update
     set chr_how_ended [chrTest get $test HOW_ENDED]
     
@@ -396,13 +396,15 @@ proc Func_Chariot::GetPairResult {} {
             update
             if {$verbose == on} {
                 Func_INI::Log "info" $logfile [list "$test $chr_how_ended chrPairResults get $pair THROUGHPUT"]
-                Func_INI::Log "info" $logfile [list "pair[expr $index + 1]_avg: $pair_avg" "pair[expr $index + 1]_min: $pair[expr $index + 1]_min" "pair_max: $pair_max"]
+                Func_INI::Log "info" $logfile [list "pair[expr $index + 1]_avg: $pair_avg" \
+                                                "pair[expr $index + 1]_min: $pair_min" \
+                                                "pair[expr $index + 1]_max: $pair_max"]
             };#if {$verbose == on}
             
             # collect each pair thruput
             lappend list_pair_avg $pair_avg
-            lappend list_pair_min $list_pair_min
-            lappend list_pair_max $list_pair_max
+            lappend list_pair_min $pair_min
+            lappend list_pair_max $pair_max
         
         };#for {set index 0}
         
