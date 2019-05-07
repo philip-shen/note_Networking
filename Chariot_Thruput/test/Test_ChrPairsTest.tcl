@@ -97,16 +97,17 @@ Func_Chariot::SaveResult
 Func_Chariot::Terminate
 
 # Creat thruput value to log CSV file
-if [info exist path_thruput_csvfile] {unset path_thruput_csvfile}
-append path_thruput_csvfile $log_path / "thruput.csv"
+if [info exist Func_Chariot::path_thruput_csvfile] {unset Func_Chariot::path_thruput_csvfile}
+append Func_Chariot::path_thruput_csvfile $log_path / "thruput.csv"
+Func_Chariot::LogResult2CSV
 
-if [info exist str_out] {unset str_out}
-append str_out $Func_Chariot::allpairs_avg "," \
-                $Func_Chariot::allpairs_max "," \
-                $Func_Chariot::allpairs_min "," \
-                $Func_Chariot::testFile
+#if [info exist str_out] {unset str_out}
+#append str_out $Func_Chariot::allpairs_avg "," \
+#                $Func_Chariot::allpairs_max "," \
+#                $Func_Chariot::allpairs_min "," \
+#                $Func_Chariot::testFile
 
-Log::LogOut $str_out $path_thruput_csvfile
+#Log::LogOut $str_out $path_thruput_csvfile
 
 if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
 Func_INI::GenChariotTestFile_11ac

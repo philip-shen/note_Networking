@@ -48,7 +48,7 @@ namespace eval Func_Chariot {
     variable list_pair_avg    {}
     variable list_pair_min    {}
     variable list_pair_max    {}
-    
+    variable path_thruput_csvfile    {}
 }
 
 proc Func_Chariot::Initialize {} {
@@ -93,7 +93,7 @@ proc Func_Chariot::Test_Filename {} {
     variable errmsg
     
     # Set the test filename for saving later.
-    puts "Set test filename..."
+    puts "Set test filename: $testFile..."
     update
     if {$verbose == on} {
         Func_INI::Log "info" $logfile [list "$test chrTest $testFile"]
@@ -379,9 +379,9 @@ proc Func_Chariot::GetPairResult {} {
     
     if {$chr_how_ended == "NORMAL"} {
         # prevent lats list to append
-        #if [info exist list_pair_avg] {unset list_pair_avg}
-        #if [info exist list_pair_min] {unset list_pair_min}
-        #if [info exist list_pair_max] {unset list_pair_max}
+        if [info exist list_pair_avg] {unset list_pair_avg}
+        if [info exist list_pair_min] {unset list_pair_min}
+        if [info exist list_pair_max] {unset list_pair_max}
         
         # get each pair data
         for {set index 0} {$index < $pairCount} {incr index} {
@@ -473,7 +473,26 @@ proc Func_Chariot::Terminate {} {
     
     # Terminate a new test.
     puts "Terminate the test..."
+    update
     set test [chrTest delete $test force]
+}
+
+proc Func_Chariot::LogResult2CSV {} {
+    variable verbose
+    variable logfile
+    variable path_thruput_csvfile
+    
+    if [info exist str_out] {unset str_out}
+    append str_out $Func_Chariot::allpairs_avg "," \
+            $Func_Chariot::allpairs_max "," \
+            $Func_Chariot::allpairs_min "," \
+            $Func_Chariot::testFile
+    
+    # Log thruput result to CSV file.
+    puts "Log Avg/Max/Min Thruput to thruput.csv..."
+    update
+    Log::LogOut $str_out $path_thruput_csvfile
+    
 }
 
 proc Func_Chariot::RunRoutine {} {
@@ -501,6 +520,9 @@ proc Func_Chariot::RunRoutine {} {
     
     # Save the test so we can show results later.
     Func_Chariot::SaveResult
+    
+    # Log thruput result to CSV file.
+    Func_Chariot::LogResult2CSV
     
     # Clean up used resources before exiting.
     Func_Chariot::Terminate

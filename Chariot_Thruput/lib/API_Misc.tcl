@@ -21,8 +21,16 @@ namespace eval Func_INI {
     variable dict_Criteria    {}
     variable list_DUT    {}
     variable dict_DUT    {}
-    variable testChrfile_11ac_lan2wan    {}
-    variable testChrfile_11n_lan2wan    {}
+    
+    variable testChrfile_11ac_lan2wlan    {}
+    variable testChrfile_11ac_wlan2lan    {}
+    variable testChrfile_11ac_wan2lan    {}
+    variable testChrfile_11ac_wan2wlan    {}
+    
+    variable testChrfile_11n_lan2wlan    {}
+    variable testChrfile_11n_wlan2lan    {}
+    variable testChrfile_11n_wan2lan    {}
+    variable testChrfile_11n_wan2wlan    {}
 }
 proc Func_INI::GetSections {inifname} {
     variable list_sections
@@ -360,12 +368,12 @@ proc Func_INI::ChkDUTalive {strIPAddr} {
     set retval [Ping_igp $strIPAddr]
     return $retval
 }
-proc Func_INI::GenChariotTestFile_11ac {} {
+proc Func_INI::GenChariotTestFile_11ac_lan2wlan {} {
     variable verbose
     variable logfile
-    variable testChrfile_11ac_lan2wan
+    variable testChrfile_11ac_lan2wlan
     
-    append testChrfile_11ac_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
+    append testChrfile_11ac_lan2wlan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
             [dict get $Func_INI::dict_DUT "dut_fwver"] "_" \
             [dict get $Func_INI::dict_DUT "dut_hwver"] "_" \
             [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
@@ -373,16 +381,58 @@ proc Func_INI::GenChariotTestFile_11ac {} {
             [clock format [clock seconds] -format "%H%M%S_%m%d%Y"] ".tst"
     
     if {$verbose == on} {
-        Log "info" $logfile [list $testChrfile_11ac_lan2wan]
+        Log "info" $logfile [list $testChrfile_11ac_lan2wlan]
     }
 }
 
-proc Func_INI::GenChariotTestFile_11n {} {
+proc Func_INI::GenChariotTestFile_11ac_wlan2lan {} {
     variable verbose
     variable logfile
-    variable testChrfile_11n_lan2wan
+    variable testChrfile_11ac_lan2wlan
+    variable testChrfile_11ac_wlan2lan
     
-    append testChrfile_11n_lan2wan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
+    set testChrfile_11ac_wlan2lan \
+    [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN"]
+    
+    if {$verbose == on} {
+        Log "info" $logfile [list $testChrfile_11ac_wlan2lan]
+    }
+}
+
+proc Func_INI::GenChariotTestFile_11ac_wan2lan {} {
+    variable verbose
+    variable logfile
+    variable testChrfile_11ac_lan2wlan
+    variable testChrfile_11ac_wan2lan    
+    
+    set testChrfile_11ac_wan2lan \
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WAN2LAN"]
+    
+    if {$verbose == on} {
+        Log "info" $logfile [list $testChrfile_11ac_wan2lan]
+    }
+}
+
+proc Func_INI::GenChariotTestFile_11ac_wan2wlan {} {
+    variable verbose
+    variable logfile
+    variable testChrfile_11ac_lan2wlan
+    variable testChrfile_11ac_wan2wlan
+    
+    set testChrfile_11ac_wan2lan \
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WAN2WLAN"]
+    
+    if {$verbose == on} {
+        Log "info" $logfile [list $testChrfile_11ac_wan2wlan]
+    }
+}
+
+proc Func_INI::GenChariotTestFile_11n_lan2wlan {} {
+    variable verbose
+    variable logfile
+    variable testChrfile_11n_lan2wlan
+    
+    append testChrfile_11n_lan2wlan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
             [dict get $Func_INI::dict_DUT "dut_fwver"] "_" \
             [dict get $Func_INI::dict_DUT "dut_hwver"] "_" \
             [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
@@ -390,9 +440,50 @@ proc Func_INI::GenChariotTestFile_11n {} {
             [clock format [clock seconds] -format "%H%M%S_%m%d%Y"] ".tst"
             
     if {$verbose == on} {
-        Log "info" $logfile [list $testChrfile_11n_lan2wan]
+        Log "info" $logfile [list $testChrfile_11n_lan2wlan]
     }
     
+}
+proc Func_INI::GenChariotTestFile_11n_wlan2lan {} {
+    variable verbose
+    variable logfile
+    variable testChrfile_11n_lan2wlan
+    variable testChrfile_11n_wlan2lan
+    
+    set testChrfile_11n_wlan2lan \
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11n_lan2wlan "WLAN2LAN"]
+    
+    if {$verbose == on} {
+        Log "info" $logfile [list $testChrfile_11n_wlan2lan]
+    }
+    
+}
+
+proc Func_INI::GenChariotTestFile_11n_wan2lan {} {
+    variable verbose
+    variable logfile
+    variable testChrfile_11n_lan2wlan
+    variable testChrfile_11n_wan2lan
+    
+    set testChrfile_11n_wan2lan \
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11n_lan2wlan "WAN2LAN"]
+    
+    if {$verbose == on} {
+        Log "info" $logfile [list $testChrfile_11n_wan2lan]
+    }
+}
+proc Func_INI::GenChariotTestFile_11n_wan2wlan {} {
+    variable verbose
+    variable logfile
+    variable testChrfile_11n_lan2wlan
+    variable testChrfile_11n_wan2wlan
+    
+    set testChrfile_11n_wan2wlan \
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11n_lan2wlan "WAN2WLAN"]
+    
+    if {$verbose == on} {
+        Log "info" $logfile [list $testChrfile_11n_wan2wlan]
+    }
 }
 ########################################
 # Define a simple custom logproc

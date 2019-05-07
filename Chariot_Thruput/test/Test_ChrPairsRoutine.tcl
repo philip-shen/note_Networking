@@ -50,25 +50,66 @@ set Func_Chariot::verbose on;#on off
 # Thruput 11AC
 ################################################################################
 
+# LAN-->WLAN
+################################################################################
 # Setup Chariot test file name
-Func_INI::GenChariotTestFile_11ac
+Func_INI::GenChariotTestFile_11ac_lan2wlan
 # Set absoluate path
-if [info exist testChrfile_11ac_lan2wan] {unset testChrfile_11ac_lan2wan} 
-append testChrfile_11ac_lan2wan $log_path / $Func_INI::testChrfile_11ac_lan2wan
+if [info exist testChrfile_11ac_lan2wlan] {unset testChrfile_11ac_lan2wlan} 
+append testChrfile_11ac_lan2wlan $log_path / $Func_INI::testChrfile_11ac_lan2wlan
 
-set Func_Chariot::testFile $testChrfile_11ac_lan2wan
+set Func_Chariot::testFile $testChrfile_11ac_lan2wlan
 
 # Set test duration
 set Func_Chariot::test_duration [dict get $Func_INI::dict_Chariot_Param "test_duration"]
 
 # Set chariot related parameters
-# 
-# LAN-->WLAN
 ################################################################################# 
 set Func_Chariot::pairCount [dict get $Func_INI::dict_Chariot_Param "paircount"]
 set Func_Chariot::e1Addrs [dict get $Func_INI::dict_TopologyIP  "lan_ep_ipaddr"]
 set Func_Chariot::e2Addrs [dict get $Func_INI::dict_TopologyIP  "wlan_ep_ipaddr"]
 set Func_Chariot::protocols [dict get $Func_INI::dict_Chariot_Param "protocols"]
+
+# Set absoluate path
+if [info exist Func_Chariot::chrscript] {unset Func_Chariot::chrscript}
+append Func_Chariot::chrscript $lib_path / [dict get $Func_INI::dict_Chariot_Param "scripts"]
+
+# Log thruput value to CSV file
+if [info exist Func_Chariot::path_thruput_csvfile] {unset Func_Chariot::path_thruput_csvfile}
+append Func_Chariot::path_thruput_csvfile $log_path / "thruput.csv"
+
+# Create a new test.
+# Set the test filename for saving later.
+# Set test_duration
+# Define some pairs for the test.
+# Excute test.
+# Get the test result.
+# Save the test so we can show results later.
+# Clean up used resources before exiting.
+Func_Chariot::RunRoutine
+
+
+# WLAN-->LAN
+################################################################################
+
+# Setup Chariot test file name
+Func_INI::GenChariotTestFile_11ac_wlan2lan
+
+#if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
+#Func_INI::GenChariotTestFile_11ac
+# Set absoluate path
+if [info exist testChrfile_11ac_wlan2lan] {unset testChrfile_11ac_wlan2lan}
+append testChrfile_11ac_wlan2lan $log_path / $Func_INI::testChrfile_11ac_wlan2lan
+        
+
+set Func_Chariot::testFile $testChrfile_11ac_wlan2lan
+
+# Set chariot related parameters
+#################################################################################
+#set Func_Chariot::pairCount [dict get $Func_INI::dict_Chariot_Param "paircount"]
+set Func_Chariot::e1Addrs [dict get $Func_INI::dict_TopologyIP  "wlan_ep_ipaddr"]
+set Func_Chariot::e2Addrs [dict get $Func_INI::dict_TopologyIP  "lan_ep_ipaddr"]
+#set Func_Chariot::protocols [dict get $Func_INI::dict_Chariot_Param "protocols"]
 
 # Set absoluate path
 if [info exist Func_Chariot::chrscript] {unset Func_Chariot::chrscript}
@@ -84,12 +125,6 @@ append Func_Chariot::chrscript $lib_path / [dict get $Func_INI::dict_Chariot_Par
 # Clean up used resources before exiting.
 Func_Chariot::RunRoutine
 
-
-if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
-Func_INI::GenChariotTestFile_11ac
-# Set absoluate path
-if [info exist testChrfile_11ac_wlan2lan] {unset testChrfile_11ac_wlan2lan}
-append testChrfile_11ac_wlan2lan $log_path [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wan "WLAN2LAN"]
 
 if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
 Func_INI::GenChariotTestFile_11ac
