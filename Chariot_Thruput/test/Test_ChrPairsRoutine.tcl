@@ -52,6 +52,8 @@ set Func_Chariot::verbose on;#on off
 
 # LAN-->WLAN
 ################################################################################
+# Prevent duplicate string
+if [info exist Func_INI::testChrfile_11ac_lan2wlan] {unset Func_INI::testChrfile_11ac_lan2wlan}
 # Setup Chariot test file name
 Func_INI::GenChariotTestFile_11ac_lan2wlan
 # Set absoluate path
@@ -91,6 +93,8 @@ Func_Chariot::RunRoutine
 
 # WLAN-->LAN
 ################################################################################
+# Prevent duplicate string
+if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
 
 # Setup Chariot test file name
 Func_INI::GenChariotTestFile_11ac_wlan2lan

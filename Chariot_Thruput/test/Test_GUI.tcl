@@ -30,8 +30,19 @@ Func_INI::_GetCriteria $inifile
 # source Chariot related API
 set path_chariot [dict get $Func_INI::dict_Chariot_Param "chariot_path"];#get chariot directory
 lappend auto_path $path_chariot
-#source "$lib_path/API_Chariot.tcl"
+source "$lib_path/API_Chariot.tcl"
 
+set Func_Chariot::pairCount [dict get $Func_INI::dict_Chariot_Param "paircount"]
+
+# Set chariot related parameters for testing
+set TestGUI::maxretry $Func_Chariot::pairCount
+
+set TestGUI::verbose on
+set TestGUI::log_path $log_path
+# set timeout interval unit:second
+set TestGUI::timeout_interval    1
+
+set TestGUI::logfile $Func_INI::logfile
 ################################################################################
 # GUI Procedure
 ################################################################################
@@ -61,9 +72,7 @@ proc sendMessageToLog {level} {
     ${::mylogger}::$level $::logmessage
 }
 
-proc createGUI {str_title str_args list_csvrow list_cpe_testconds_log_dslaminfo_relaybdptnum \
-            list_414ELenCoeff list_410ALooplenCoeff list_410AGPIBCmdSet \
-            list_noise_pathfname list_dslamprofile} {
+proc createGUI {str_title} {
     global mylogger
     global logwidget
     
@@ -92,11 +101,8 @@ proc createGUI {str_title str_args list_csvrow list_cpe_testconds_log_dslaminfo_
     ### a little compose window for entering messages
     labelframe .compose -text "Function Button"
     frame .compose.levels
-    button .compose.levels.run -command [list main $str_args $list_csvrow \
-            $list_cpe_testconds_log_dslaminfo_relaybdptnum \
-            $list_414ELenCoeff $list_410ALooplenCoeff $list_410AGPIBCmdSet \
-            $list_noise_pathfname $list_dslamprofile] -text "Run"
-            button .compose.levels.exit -command [list exit] -text "Exit"
+    button .compose.levels.run -command [list TestGUI::showinfo] -text "Run Test"
+    button .compose.levels.exit -command [list exit] -text "Exit"
     lappend buttons .compose.levels.exit .compose.levels.run
     eval grid $buttons -sticky ew -padx 20 -pady 5
     # grid .compose.logmessage -sticky ew
@@ -107,9 +113,9 @@ proc createGUI {str_title str_args list_csvrow list_cpe_testconds_log_dslaminfo_
     # a fixed font for the first two columns, so they stay nicely lined up
     # a proportional font for the message as it is probably better to read
     #
-    font create logger::timefont -family {Courier} -size 8
-    font create logger::levelfont -family {Courier} -size 8
-    font create logger::msgfont -family {Arial} -size 10
+    font create logger::timefont -family {Courier} -size 10;#8
+    font create logger::levelfont -family {Courier} -size 10;#8
+    font create logger::msgfont -family {Arial} -size 12;#10
     $logwidget tag configure logger::time -font logger::timefont
     $logwidget tag configure logger::level -font logger::levelfont
     $logwidget tag configure logger::message -font logger::msgfont
@@ -136,13 +142,9 @@ proc insertLogLine {level txt} {
     $logwidget configure -state disabled
 }
 
-proc GUIRun {str_title str_args list_csvrow list_cpe_testconds_log_dslaminfo_relaybdptnum \
-            list_414ELenCoeff list_410ALooplenCoeff list_410AGPIBCmdSet \
-            list_noise_pathfname list_dslamprofile} {
+proc GUIRun {str_title} {
     createLogger
-    createGUI $str_title $str_args $list_csvrow $list_cpe_testconds_log_dslaminfo_relaybdptnum \
-            $list_414ELenCoeff $list_410ALooplenCoeff $list_410AGPIBCmdSet \
-            $list_noise_pathfname $list_dslamprofile
+    createGUI $str_title
 }
 
 ################################################################################
@@ -167,37 +169,10 @@ array set pref [list \
         openTypeText	[list {"Text Files" {.txt .csv .tab .tsv .dat}} {"All Files" *}] \
         ]
 
-################################################################################
-#Get test condition parameter from INI File.
-################################################################################
-set timeout 10;set looptimes 1
-
-#############################################
-# Get MultiDSLAMs parameters.
-#############################################
-set procom_inifile "dslam.ini"
-
-###########################
-#DUT modem setting
-###########################
-set modem_passwd "1234";#"1234"
 
 ################################################################################
 # Run Here
 ################################################################################
 append  str_title $pref(appname) " " Version ":" $VERSION
-
-if [info exist str_args] {unset str_args}
-append str_args $looptimes ";" $modem_passwd ";" $procom_inifile ";" $timeout
-# $waituptimes ";" $timeout ";" $errorsec_duration ";" $adslreset_iniopt
-
-set list_target_testcasesid []
-set list_cpe_testconds_log_dslaminfo_relaybdptnum []
-set list_414ELenCoeff []; set list_410ALoopLen []
-set list_410ACmdSet []; set list_noise_pathfname []
-set list_dslamprofile []
         
-GUIRun $str_title $str_args $list_target_testcasesid \
-        $list_cpe_testconds_log_dslaminfo_relaybdptnum \
-        $list_414ELenCoeff $list_410ALoopLen $list_410ACmdSet \
-        $list_noise_pathfname $list_dslamprofile
+GUIRun $str_title

@@ -33,6 +33,7 @@ namespace eval Func_Chariot {
     variable test    {}
     variable testFile    {}
     variable errmsg    {}
+    variable pairCount    {}
     variable e1Addrs    {}
     variable e2Addrs    {}
     variable protocols    {}

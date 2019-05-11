@@ -164,3 +164,89 @@ proc Statusbar::update {} {
     set var(time) "Time : C"
     set var(row) "Rows : D"
 }
+
+namespace eval TestGUI {} {
+    variable verbose off
+    variable log_path
+    variable logfile
+    variable timeout_interval
+    variable maxretry
+}
+proc TestGUI::showinfo {} {
+    variable log_path
+    variable maxretry
+    
+    for {set retry 0} {$retry < $maxretry} {incr retry} {
+        # LAN-->WLAN
+        ################################################################################
+        # Prevent duplicate string
+        if [info exist Func_INI::testChrfile_11ac_lan2wlan] {unset Func_INI::testChrfile_11ac_lan2wlan}
+        # Setup Chariot test file name
+        Func_INI::GenChariotTestFile_11ac_lan2wlan
+        
+        # Set absoluate path
+        if [info exist testChrfile_11ac_lan2wlan] {unset testChrfile_11ac_lan2wlan}
+        append testChrfile_11ac_lan2wlan $log_path / $Func_INI::testChrfile_11ac_lan2wlan
+        
+        set Func_Chariot::testFile $testChrfile_11ac_lan2wlan
+        
+        # show log header on widget
+        insertLogLine info $Func_Chariot::testFile
+        
+        # Break timer
+        TestGUI::Timer
+        
+        # WLAN-->LAN
+        ################################################################################
+        
+        # Prevent duplicate string
+        if [info exist Func_INI::testChrfile_11ac_lan2wan] {unset Func_INI::testChrfile_11ac_lan2wan}
+        # Setup Chariot test file name
+        Func_INI::GenChariotTestFile_11ac_wlan2lan
+        
+        # Set absoluate path
+        if [info exist testChrfile_11ac_wlan2lan] {unset testChrfile_11ac_wlan2lan}
+        append testChrfile_11ac_wlan2lan $log_path / $Func_INI::testChrfile_11ac_wlan2lan
+                
+        set Func_Chariot::testFile $testChrfile_11ac_wlan2lan
+        
+        # show log header on widget
+        insertLogLine notice $Func_Chariot::testFile
+    }
+}
+proc TestGUI::Timer {} {
+    variable verbose
+    variable logfile
+    variable timeout_interval
+    variable maxretry
+    
+    # set retrytimes 0
+    # set strmsg "maxretry=$maxretry; timeout_interval=$timeout_interval; $strinfo"
+    # Log::LogList_level "info" $logfile [list $strmsg]
+    set retrytimes 1   
+    
+    # while {1} {
+        # incr retrytimes
+        ##Check retry times to break
+        # if {$retrytimes > $maxretry} { break }
+        
+        set timeout_duration [expr $timeout_interval * $retrytimes]
+        # set strmsg "Waiting $timeout_duration seconds. $strinfo. MaxRetry=$maxretry; \
+                # Retrytimes=$retrytimes."
+        
+        set strmsg "Waiting $timeout_duration seconds."
+        
+        insertLogLine critical $strmsg
+        
+        if {$verbose == on} {
+            Log::LogList_level "info" $logfile [list $strmsg]
+        };#if {$verbose == on}
+        
+        # Log::LogList_level "info" "$csv_logfname.csv" [list $strmsg]
+        
+        after [expr $timeout_interval * 1000]; update
+        
+    # };#while {1}
+    
+    return true
+}

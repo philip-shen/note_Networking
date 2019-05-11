@@ -378,6 +378,7 @@ proc Func_INI::GenChariotTestFile_11ac_lan2wlan {} {
             [dict get $Func_INI::dict_DUT "dut_hwver"] "_" \
             [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
             "11ac" "_" "LAN2WLAN" "_" \
+            "$Func_Chariot::pairCount" "Pair(s)" "_" \
             [clock format [clock seconds] -format "%H%M%S_%m%d%Y"] ".tst"
     
     if {$verbose == on} {
@@ -437,6 +438,7 @@ proc Func_INI::GenChariotTestFile_11n_lan2wlan {} {
             [dict get $Func_INI::dict_DUT "dut_hwver"] "_" \
             [dict get $Func_INI::dict_WLAN_ClientModelName "wlan_modelname"] "_" \
             "11n" "_" "LAN2WLAN" "_" \
+            "$Func_Chariot::pairCount" "Pair(s)" "_" \
             [clock format [clock seconds] -format "%H%M%S_%m%d%Y"] ".tst"
             
     if {$verbose == on} {
