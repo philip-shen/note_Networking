@@ -2,15 +2,20 @@
 Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 
 # Table of Contents  
-[]()  
-[]()  
-[]()  
-[]()  
-[]()  
+[Topology](#topology)  
+[Setup Procedure](#setup-procedure)  
+    [*Installation version of Tcl/Tk is x86 not x64, even on Win 10.*](#installation-version-of-tcltk-is-x86-not-x64-even-on-win-10)  
+    [Git clone this project](#git-clone-this-project)  
+    [Files Directory](#files-directory)  
+    [Edit setup.ini to meet your testing topology](#edit-setupini-to-meet-your-testing-topology)  
+    [Debug Mode Enable/Disable setting](#debug-mode-enabledisable-setting)  
+    [Double Click test_chariot_gui.tcl](#double-click-test_chariot_guitcl)  
+    [Click Button on Widget](#click-button-on-widget)  
+    [Check Log Folder for Result](#check-log-folder-for-result)  
 
 # Topology  
 ## WLAN-->LAN-->WLAN \n Chariot Thruput Test  
-![alt tag](https://i.imgur.com/hkKDpW6.jpg)
+![alt tag](https://i.imgur.com/hkKDpW6.jpg)  
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
 ## WAN-->W/LAN-->WAN \n Chariot Thruput Test  
@@ -89,7 +94,7 @@ set Func_Chariot::verbose on;#on off
 ## Double Click test_chariot_gui.tcl  
 ![alt tag](https://i.imgur.com/QuC7xZL.jpg)
 
-## Click Button on Widget_ 
+## Click Button on Widget 
 ![alt tag](https://i.imgur.com/h3aT4ze.jpg)  
 
 ##  Check Log Folder for Result  
