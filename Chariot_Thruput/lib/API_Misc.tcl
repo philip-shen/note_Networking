@@ -8,6 +8,9 @@ namespace eval Func_INI {
     
     variable verbose off
     variable logfile "../log/inifile.log"
+    variable currPath    {}
+    variable log_Path    {}
+    variable lib_Path    {}
     variable list_sections {}
     variable list_keys {}
     variable list_values {}
@@ -347,14 +350,20 @@ proc Func_INI::Ping_igp {host} {
     
     if { [regexp "0% "  $result]} {;#"0% loss"
         set logstr "$host alive"
+        # show info on widget
+        insertLogLine notice $logstr
         #puts $logstr
+        
         if {$verbose == on} {
             Log "info" $logfile [list $logstr]
         }
         return true
     } else {
         set logstr "$host failed"
+        # show info on widget
+        insertLogLine critical $logstr
         #puts $logstr
+        
         if {$verbose == on} {
             Log "info" $logfile [list $logstr]
         }
@@ -368,10 +377,33 @@ proc Func_INI::ChkDUTalive {strIPAddr} {
     set retval [Ping_igp $strIPAddr]
     return $retval
 }
+proc Func_INI::ChkTopologyalive {} {
+    set strmsg "Check WLAN_EP_IPAddr Status"
+    insertLogLine critical $strmsg
+    set retval_wlan_ep [Func_INI::ChkDUTalive [dict get $Func_INI::dict_TopologyIP "wlan_ep_ipaddr"]]
+    
+    set strmsg "Check DUT_LAN_IPAddr Status"
+    insertLogLine critical $strmsg
+    set retval_dut_lan [Func_INI::ChkDUTalive [dict get $Func_INI::dict_TopologyIP "dut_lan_ipaddr"]]
+    
+    #check topology status
+    if {($retval_wlan_ep == "true") && ($retval_dut_lan == "true")} {
+        set strmsg "Check Topology Status Alive!"
+        insertLogLine critical $strmsg
+        return true
+    } else  {
+        set strmsg "Check Topology Status not Available!"
+        insertLogLine critical $strmsg
+        return false
+    }
+}
 proc Func_INI::GenChariotTestFile_11ac_lan2wlan {} {
     variable verbose
     variable logfile
     variable testChrfile_11ac_lan2wlan
+    
+    # Prevent duplicate string
+    if [info exist Func_INI::testChrfile_11ac_lan2wlan] {unset Func_INI::testChrfile_11ac_lan2wlan}
     
     append testChrfile_11ac_lan2wlan [dict get $Func_INI::dict_DUT "dut_modelname"] "_" \
             [dict get $Func_INI::dict_DUT "dut_fwver"] "_" \
@@ -392,25 +424,16 @@ proc Func_INI::GenChariotTestFile_11ac_wlan2lan {} {
     variable testChrfile_11ac_lan2wlan
     variable testChrfile_11ac_wlan2lan
     
+    # Prevent duplicate string
+    if [info exist Func_INI::testChrfile_11ac_lan2wlan] {unset Func_INI::testChrfile_11ac_lan2wlan}
+    # Creat a new test filename
+    Func_INI::GenChariotTestFile_11ac_lan2wlan
+    # Regsub string
     set testChrfile_11ac_wlan2lan \
             [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wlan "WLAN2LAN"]
     
     if {$verbose == on} {
         Log "info" $logfile [list $testChrfile_11ac_wlan2lan]
-    }
-}
-
-proc Func_INI::GenChariotTestFile_11ac_wan2lan {} {
-    variable verbose
-    variable logfile
-    variable testChrfile_11ac_lan2wlan
-    variable testChrfile_11ac_wan2lan    
-    
-    set testChrfile_11ac_wan2lan \
-            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wlan "WAN2LAN"]
-    
-    if {$verbose == on} {
-        Log "info" $logfile [list $testChrfile_11ac_wan2lan]
     }
 }
 
@@ -420,11 +443,35 @@ proc Func_INI::GenChariotTestFile_11ac_wan2wlan {} {
     variable testChrfile_11ac_lan2wlan
     variable testChrfile_11ac_wan2wlan
     
-    set testChrfile_11ac_wan2lan \
+    # Prevent duplicate string
+    if [info exist Func_INI::testChrfile_11ac_lan2wlan] {unset Func_INI::testChrfile_11ac_lan2wlan}
+    # Creat a new test filename
+    Func_INI::GenChariotTestFile_11ac_lan2wlan
+    # Regsub string
+    set testChrfile_11ac_wan2wlan \
             [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wlan "WAN2WLAN"]
     
     if {$verbose == on} {
         Log "info" $logfile [list $testChrfile_11ac_wan2wlan]
+    }
+}
+
+proc Func_INI::GenChariotTestFile_11ac_wan2lan {} {
+    variable verbose
+    variable logfile
+    variable testChrfile_11ac_lan2wlan
+    variable testChrfile_11ac_wan2lan
+    
+    # Prevent duplicate string
+    if [info exist Func_INI::testChrfile_11ac_lan2wlan] {unset Func_INI::testChrfile_11ac_lan2wlan}
+    # Creat a new test filename
+    Func_INI::GenChariotTestFile_11ac_lan2wlan
+    # Regsub string
+    set testChrfile_11ac_wan2lan \
+            [regsub -all "LAN2WLAN" $Func_INI::testChrfile_11ac_lan2wlan "WAN2LAN"]
+            
+    if {$verbose == on} {
+        Log "info" $logfile [list $testChrfile_11ac_wan2lan]
     }
 }
 

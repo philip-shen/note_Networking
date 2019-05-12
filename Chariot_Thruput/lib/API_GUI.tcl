@@ -176,6 +176,38 @@ proc TestGUI::showinfo {} {
     variable log_path
     variable maxretry
     
+    # Read variables from INI file
+    set inifile [file join $Func_INI::currPath setup.ini]
+    Func_INI::_GetChariot_Param $inifile
+    Func_INI::_GetDUT $inifile
+    Func_INI::_GetTopologyIP $inifile
+    Func_INI::_GetWLAN_ClientModelName $inifile
+    Func_INI::_GetCriteria $inifile
+    
+    # Set chariot related parameters
+    set Func_Chariot::pairCount [dict get $Func_INI::dict_Chariot_Param "paircount"]
+    set Func_Chariot::reTest [dict get $Func_INI::dict_Chariot_Param "retest"]
+    
+    # Set chariot related parameters for testing
+    set TestGUI::maxretry $Func_Chariot::reTest
+    
+    set TestGUI::verbose on
+    set TestGUI::log_path $Func_INI::log_Path
+    # set timeout interval unit:second
+    set TestGUI::timeout_interval    1
+    
+    set TestGUI::logfile $Func_INI::logfile
+    # Check Topology Status
+    set retval [Func_INI::ChkTopologyalive]
+    if {$retval == "false"} {
+        set strmsg "********** Please Double Check Topology Status! **********"
+        
+        insertLogLine critical $strmsg
+        return 
+    } else  {
+        update
+    };#if {$retval == "false"}
+    
     for {set retry 0} {$retry < $maxretry} {incr retry} {
         # LAN-->WLAN
         ################################################################################

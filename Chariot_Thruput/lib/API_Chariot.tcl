@@ -40,6 +40,7 @@ namespace eval Func_Chariot {
     variable chrscript    {}
     variable runOpts    {}
     variable test_duration    {}
+    variable reTest    {}
     variable pair    {}
     variable chr_done    {}
     variable chr_how_ended    {}
@@ -58,7 +59,9 @@ proc Func_Chariot::Initialize {} {
     variable test
     
     # Create a new test.
-    puts "Create the test..."
+    set strmsg "Create the test..."
+    puts $strmsg
+    insertLogLine info $strmsg
     update
     
     set test [chrTest new]
@@ -94,8 +97,11 @@ proc Func_Chariot::Test_Filename {} {
     variable errmsg
     
     # Set the test filename for saving later.
-    puts "Set test filename: $testFile..."
+    set strmsg "Set test filename: $testFile..."
+    puts $strmsg
+    insertLogLine info $strmsg
     update
+    
     if {$verbose == on} {
         Func_INI::Log "info" $logfile [list "$test chrTest $testFile"]
     };#if {$verbose == on}
@@ -128,16 +134,22 @@ proc Func_Chariot::SetChrPair {} {
     
     for {set index 0} {$index < $pairCount} {incr index} {
         # Create a pair.
-        puts "Create pair [expr $index + 1]..."
+        set strmsg "Create pair [expr $index + 1]..."
+        puts $strmsg
+        insertLogLine info $strmsg
         update
+        
         set pair [chrPair new]
         if {$verbose == on} {
             Func_INI::Log "info" $logfile [list "$pair chrPair new"]
         };#if {$verbose == on}
         
         # Set pair attributes from our lists.
-        puts "Set pair atttributes..."
+        set strmsg "Set pair atttributes..."
+        puts $strmsg
+        insertLogLine info $strmsg
         update
+        
         chrPair set $pair COMMENT "Pair [expr $index + 1]"
         chrPair set $pair E1_ADDR $e1Addrs
         chrPair set $pair E2_ADDR $e2Addrs
@@ -163,8 +175,11 @@ proc Func_Chariot::SetChrPair {} {
         
         
         # Add the pair to the test.
-        puts "Add the pair to the test..."
+        set strmsg "Add the pair to the test..."
+        puts $strmsg
+        insertLogLine info $strmsg
         update
+        
         if {[catch {chrTest addPair $test $pair}]} {
             # pLogError $test $errorCode "chrTest addPair"
             GetErrmsg $errorCode
@@ -196,11 +211,18 @@ proc Func_Chariot::SetChrPair_reverse {} {
     
     for {set index 0} {$index < $pairCount} {incr index} {
         # Create a pair.
-        puts "Create a pair..."
+        set strmsg "Create a pair..."
+        puts $strmsg
+        insertLogLine info $strmsg
+        
         set pair [chrPair new]
         
         # Set pair attributes from our lists.
-        puts "Set pair atttributes..."
+        set strmsg "Set pair atttributes..."
+        puts $strmsg
+        insertLogLine info $strmsg
+        update
+        
         chrPair set $pair COMMENT "Pair_Reverse [expr $index + 1]"
         chrPair set $pair E1_ADDR $e2Addrs
         chrPair set $pair E2_ADDR $e1Addrs
@@ -220,7 +242,11 @@ proc Func_Chariot::SetChrPair_reverse {} {
         }
         
         # Add the pair to the test.
-        puts "Add the pair to the test..."
+        set strmsg "Add the pair to the test..."
+        puts $strmsg
+        insertLogLine info $strmsg
+        update
+        
         if {[catch {chrTest addPair $test $pair}]} {
             # pLogError $test $errorCode "chrTest addPair"
             if {$verbose == on} {
@@ -247,8 +273,11 @@ proc Func_Chariot::SetRunOpts {} {
         Func_INI::Log "info" $logfile [list  "$test,$runOpts "]
     };#if {$verbose == on}
     
-    puts "Set test duration..."
+    set strmsg "Set test duration..."
+    puts $strmsg
+    insertLogLine info $strmsg
     update
+    
     if {[catch {chrRunOpts set $runOpts TEST_END FIXED_DURATION}]} {
         GetErrmsg $errorCode
         Func_INI::Log "info" $logfile [list $test $errmsg "chrTest Test_End Fixed_Duration"]
@@ -278,10 +307,14 @@ proc Func_Chariot::RunTest_tillEnd {} {
     variable test
     variable pair
     variable chr_done
+    variable test_duration
     
     # The test is complete, so now we can run it.
-    puts "Run the test..."
+    set strmsg "Run the test Test_Duration: $test_duration sec(s)..."
+    puts $strmsg
+    insertLogLine info $strmsg
     update
+    
     if {[catch {chrTest start $test}]} {
         # pLogError $test $errorCode "chrTest start"
         # GetErrmsg $errorCode
@@ -397,8 +430,11 @@ proc Func_Chariot::GetPairResult {} {
             set pair_max [format "%.4f" [lindex $throughput 2]]
             
             # Save the test so we can show results later.
-            puts "Get the test result..."
+            set strmsg "Get the test result..."
+            puts $strmsg
+            insertLogLine info $strmsg
             update
+            
             if {$verbose == on} {
                 Func_INI::Log "info" $logfile [list "$test $chr_how_ended chrPairResults get $pair THROUGHPUT"]
                 Func_INI::Log "info" $logfile [list "pair[expr $index + 1]_avg: $pair_avg" \
@@ -449,8 +485,11 @@ proc Func_Chariot::SaveResult {} {
     variable test
     
     # Save the test so we can show results later.
-    puts "Save the test..."
+    set strmsg "Save the test..."
+    puts $strmsg
+    insertLogLine info $strmsg
     update
+    
     if {[catch {chrTest save $test}]} {
         # pLogError $test $errorCode "chrTest save"
         # GetErrmsg $errorCode
@@ -473,8 +512,11 @@ proc Func_Chariot::Terminate {} {
     variable test
     
     # Terminate a new test.
-    puts "Terminate the test..."
+    set strmsg "Terminate the test..."
+    puts $strmsg
+    insertLogLine critical $strmsg
     update
+    
     set test [chrTest delete $test force]
 }
 
@@ -490,8 +532,11 @@ proc Func_Chariot::LogResult2CSV {} {
             $Func_Chariot::testFile
     
     # Log thruput result to CSV file.
-    puts "Log Avg/Max/Min Thruput to thruput.csv..."
+    set strmsg "Log Avg/Max/Min Thruput to thruput.csv..."
+    puts $strmsg
+    insertLogLine info $strmsg    
     update
+    
     Log::LogOut $str_out $path_thruput_csvfile
     
 }
@@ -527,4 +572,173 @@ proc Func_Chariot::RunRoutine {} {
     
     # Clean up used resources before exiting.
     Func_Chariot::Terminate
+}
+################################################################################
+# For GUI Widget purpose
+################################################################################
+
+proc Func_Chariot::RunRoutine_11ac_lan2wlan {} {
+    variable verbose
+    variable logfile
+    variable test
+    variable chrscript
+    variable maxretry
+    variable path_thruput_csvfile
+    
+    # Read variables from INI file
+    set inifile [file join $Func_INI::currPath setup.ini]
+    Func_INI::_GetChariot_Param $inifile
+    Func_INI::_GetDUT $inifile
+    Func_INI::_GetTopologyIP $inifile
+    Func_INI::_GetWLAN_ClientModelName $inifile
+    Func_INI::_GetCriteria $inifile
+    
+    set Func_Chariot::reTest [dict get $Func_INI::dict_Chariot_Param "retest"]
+    
+    # Set chariot related parameters for testing
+    set maxretry $Func_Chariot::reTest
+    
+    # Check Topology Status
+    set retval [Func_INI::ChkTopologyalive]
+    if {$retval == "false"} {
+        set strmsg "********** Please Double Check Topology Status! **********"
+        
+        insertLogLine critical $strmsg
+        return
+    } else  {
+        set strmsg "********** Start 11AC LAN2WLAN chariot Thruput Test! **********"
+        
+        insertLogLine notice $strmsg
+        update
+    };#if {$retval == "false"}
+    
+    for {set retry 0} {$retry < $maxretry} {incr retry} {
+        
+        # LAN-->WLAN
+        ################################################################################
+        
+        # Set test duration
+        set Func_Chariot::test_duration [dict get $Func_INI::dict_Chariot_Param "test_duration"]
+        
+        # Set chariot related parameters
+        #################################################################################
+        set Func_Chariot::pairCount [dict get $Func_INI::dict_Chariot_Param "paircount"]
+        set Func_Chariot::e1Addrs [dict get $Func_INI::dict_TopologyIP  "lan_ep_ipaddr"]
+        set Func_Chariot::e2Addrs [dict get $Func_INI::dict_TopologyIP  "wlan_ep_ipaddr"]
+        set Func_Chariot::protocols [dict get $Func_INI::dict_Chariot_Param "protocols"]
+        
+        # Prevent duplicate string
+        #if [info exist Func_INI::testChrfile_11ac_lan2wlan] {unset Func_INI::testChrfile_11ac_lan2wlan}
+         
+        # Setup Chariot test file name
+        Func_INI::GenChariotTestFile_11ac_lan2wlan
+        # Set absoluate path
+        if [info exist testChrfile_11ac_lan2wlan] {unset testChrfile_11ac_lan2wlan}
+        append testChrfile_11ac_lan2wlan $Func_INI::log_Path / $Func_INI::testChrfile_11ac_lan2wlan
+        
+        set Func_Chariot::testFile $testChrfile_11ac_lan2wlan
+        
+        # Set test duration
+        set Func_Chariot::test_duration [dict get $Func_INI::dict_Chariot_Param "test_duration"]
+        
+        # Set absoluate path
+        if [info exist Func_Chariot::chrscript] {unset Func_Chariot::chrscript}
+        append Func_Chariot::chrscript $Func_INI::lib_Path / [dict get $Func_INI::dict_Chariot_Param "scripts"]
+        
+        # Log thruput value to CSV file
+        if [info exist Func_Chariot::path_thruput_csvfile] {unset Func_Chariot::path_thruput_csvfile}
+        append Func_Chariot::path_thruput_csvfile $Func_INI::log_Path / "thruput.csv"
+        
+        # Create a new test.
+        # Set the test filename for saving later.
+        # Set test_duration
+        # Define some pairs for the test.
+        # Excute test.
+        # Get the test result.
+        # Save the test so we can show results later.
+        # Clean up used resources before exiting.
+        Func_Chariot::RunRoutine
+    
+    };#for {set retry 0} {$retry < $maxretry} {incr retry}
+    
+}
+
+proc Func_Chariot::RunRoutine_11ac_wlan2lan {} {
+    variable verbose
+    variable logfile
+    variable test
+    variable chrscript
+    variable maxretry
+    variable path_thruput_csvfile
+    
+    # Read variables from INI file
+    set inifile [file join $Func_INI::currPath setup.ini]
+    Func_INI::_GetChariot_Param $inifile
+    Func_INI::_GetDUT $inifile
+    Func_INI::_GetTopologyIP $inifile
+    Func_INI::_GetWLAN_ClientModelName $inifile
+    Func_INI::_GetCriteria $inifile
+    
+    set Func_Chariot::reTest [dict get $Func_INI::dict_Chariot_Param "retest"]
+    
+    # Set chariot related parameters for testing
+    set maxretry $Func_Chariot::reTest
+    
+    # Check Topology Status
+    set retval [Func_INI::ChkTopologyalive]
+    if {$retval == "false"} {
+        set strmsg "********** Please Double Check Topology Status! **********"
+        
+        insertLogLine critical $strmsg
+        return
+    } else  {
+        set strmsg "********** Start 11AC WLAN2LAN chariot Thruput Test! **********"
+        
+        insertLogLine notice $strmsg
+        update
+    };#if {$retval == "false"}
+    
+    for {set retry 0} {$retry < $maxretry} {incr retry} {
+        # WLAN-->LAN
+        ################################################################################
+        
+        # Set test duration
+        set Func_Chariot::test_duration [dict get $Func_INI::dict_Chariot_Param "test_duration"]
+        
+        # Set chariot related parameters
+        #################################################################################
+        set Func_Chariot::pairCount [dict get $Func_INI::dict_Chariot_Param "paircount"]
+        set Func_Chariot::e1Addrs [dict get $Func_INI::dict_TopologyIP  "wlan_ep_ipaddr"]
+        set Func_Chariot::e2Addrs [dict get $Func_INI::dict_TopologyIP  "lan_ep_ipaddr"]
+        set Func_Chariot::protocols [dict get $Func_INI::dict_Chariot_Param "protocols"]
+        
+        # Creat Chariot test file name
+        Func_INI::GenChariotTestFile_11ac_wlan2lan
+        
+        # Set absoluate path
+        if [info exist testChrfile_11ac_wlan2lan] {unset testChrfile_11ac_wlan2lan}
+        append testChrfile_11ac_wlan2lan $Func_INI::log_Path / $Func_INI::testChrfile_11ac_wlan2lan
+                
+        set Func_Chariot::testFile $testChrfile_11ac_wlan2lan               
+        
+        # Set absoluate path
+        if [info exist Func_Chariot::chrscript] {unset Func_Chariot::chrscript}
+        append Func_Chariot::chrscript $Func_INI::lib_Path / [dict get $Func_INI::dict_Chariot_Param "scripts"]
+        
+        # Log thruput value to CSV file
+        if [info exist Func_Chariot::path_thruput_csvfile] {unset Func_Chariot::path_thruput_csvfile}
+        append Func_Chariot::path_thruput_csvfile $Func_INI::log_Path / "thruput.csv"
+        
+        # Create a new test.
+        # Set the test filename for saving later.
+        # Set test_duration
+        # Define some pairs for the test.
+        # Excute test.
+        # Get the test result.
+        # Save the test so we can show results later.
+        # Clean up used resources before exiting.
+        Func_Chariot::RunRoutine
+        
+    
+    };#for {set retry 0} {$retry < $maxretry} {incr retry}
 }

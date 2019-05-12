@@ -119,6 +119,10 @@ set Func_Chariot::e2Addrs [dict get $Func_INI::dict_TopologyIP  "lan_ep_ipaddr"]
 if [info exist Func_Chariot::chrscript] {unset Func_Chariot::chrscript}
 append Func_Chariot::chrscript $lib_path / [dict get $Func_INI::dict_Chariot_Param "scripts"]
 
+# Log thruput value to CSV file
+if [info exist Func_Chariot::path_thruput_csvfile] {unset Func_Chariot::path_thruput_csvfile}
+append Func_Chariot::path_thruput_csvfile $log_path / "thruput.csv"
+
 # Create a new test.
 # Set the test filename for saving later.
 # Set test_duration

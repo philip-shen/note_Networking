@@ -1,5 +1,6 @@
 ################################################################################
-#  May01-2019 Initailization.
+# May012019 Initailization.
+# May122019 for Chariot thruput test.
 ################################################################################
 package require Tcl 8.4
 package require Tk 8.4
@@ -38,12 +39,12 @@ source "$lib_path/API_Chariot.tcl"
 # Set chariot related parameters for testing
 #set TestGUI::maxretry $Func_Chariot::reTest
 
-#set TestGUI::verbose on
-#set TestGUI::log_path $Func_INI::log_Path
+set TestGUI::verbose on
+set TestGUI::log_path $Func_INI::log_Path
 # set timeout interval unit:second
 #set TestGUI::timeout_interval    1
 
-#set TestGUI::logfile $Func_INI::logfile
+set TestGUI::logfile $Func_INI::logfile
 ################################################################################
 # GUI Procedure
 ################################################################################
@@ -102,9 +103,15 @@ proc createGUI {str_title } {
     ### a little compose window for entering messages
     labelframe .compose -text "Function Button"
     frame .compose.levels
-    button .compose.levels.run -command [list TestGUI::showinfo] -text "Run Test"
+    button .compose.levels.run_11ac_lan2wlan -command [list Func_Chariot::RunRoutine_11ac_lan2wlan] \
+                                                -text "Run 11AC_LAN2WLAN  Test"
+    button .compose.levels.run_11ac_wlan2lan -command [list Func_Chariot::RunRoutine_11ac_wlan2lan] \
+                                                -text "Run 11AC_WLAN2LAN  Test"
     button .compose.levels.exit -command [list exit] -text "Exit"
-    lappend buttons .compose.levels.exit .compose.levels.run
+    
+    lappend buttons .compose.levels.exit .compose.levels.run_11ac_lan2wlan \
+                                            .compose.levels.run_11ac_wlan2lan
+                                            
     eval grid $buttons -sticky ew -padx 20 -pady 5
     # grid .compose.logmessage -sticky ew
     grid .compose.levels -sticky ew

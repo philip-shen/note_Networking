@@ -2,15 +2,98 @@
 Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 
 # Table of Contents  
+[]()  
+[]()  
+[]()  
+[]()  
+[]()  
 
 # Topology  
-![alt tag]()
+## WLAN-->LAN-->WLAN \n Chariot Thruput Test  
+![alt tag](https://i.imgur.com/hkKDpW6.jpg)
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
+
+## WAN-->W/LAN-->WAN \n Chariot Thruput Test  
+![alt tag](https://i.imgur.com/RiAvpgf.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
 # Setup Procedure  
 ## Installation version of Tcl/Tk is x86 not x64, even on Win 10.
 [How to load a dll in Tcl? Aug 11, 2013](https://stackoverflow.com/questions/18171997/how-to-load-a-dll-in-tcl)  
 
+## Git clone this project 
+[philip-shen/note_Networking](https://github.com/philip-shen/note_Networking)  
+
+## Files Directory  
+```  
+Chariot_Thruput
+│
+main--->Main Scripts for production test.
+│
+lib--->The library folder inculdes Chariot scripts.
+│
+log--->Test rsults and log infos.
+│
+test--->Test scripts for development.
+│
+```  
+
 ## Edit setup.ini to meet your testing topology  
+```  
+; --------------------------------------
+; Chariot Thruput test case variables
+; -------------------------------------
+[DUT]
+DUT_ModelName= DD
+DUT_FWVer= 1.05
+DUT_HWVer= A1
+
+[WLAN_Client]
+;WLAN_ModelName= ASUS PCE-AC88
+;WLAN_ModelName= DWA-192A1
+WLAN_ModelName= AC8260
+;WLAN_ModelName= ASUS PCE-AC66
+
+[Topology]
+WAN_EP_IPAddr=10.0.0.2
+DUT_WAN_IPAddr=10.0.0.1
+DUT_LAN_IPAddr=192.168.1.1
+
+WLAN_EP_IPAddr=127.0.0.1
+;LAN_EP_IPAddr=127.0.0.1
+
+;WLAN_EP_IPAddr=192.168.1.106
+LAN_EP_IPAddr=192.168.0.102
+
+[Criteria]
+Thruput_11N_Avg= 300
+Thruput_11AC_Avg= 500
+
+[Chariot_Param]
+Chariot_Path= C:\Program Files (x86)\Ixia\IxChariot
+;Chariot_Path= D:\Program Files\Ixia\IxChariot
+Scripts= High_Performance_Throughput.scr
+Protocols= TCP
+PairCount= 2
+ReTest=    1
+;unit:sec
+Timeout= 5
+Test_duration= 2
+```  
+## Debug Mode Enable/Disable setting
+```  
+set Func_INI::verbose on;#on off
+
+set Func_Chariot::verbose on;#on off
+```  
+## Double Click test_chariot_gui.tcl  
+![alt tag](https://i.imgur.com/QuC7xZL.jpg)
+
+## Click Button on Widget_ 
+![alt tag](https://i.imgur.com/h3aT4ze.jpg)  
+
+##  Check Log Folder for Result  
+![alt tag](https://i.imgur.com/LZllH9N.jpg)
 
 # Troubleshooting  
 
@@ -27,7 +110,23 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 I have this problem, too,couldn't load library "ChariotExt": invalid argument.
 
 And sovled it by change tcl version x64 to x86.
-```
+```  
+
+```  
+Title: WLAN-->LAN-->WLAN \n Chariot Thruput Test
+WLAN_EP_IPAddr->DUT_LAN:
+DUT_LAN->LAN_EP_IPAddr:
+LAN_EP_IPAddr->DUT_LAN:
+DUT_LAN->WLAN_EP_IPAddr:
+```  
+
+```  
+Title: WAN-->W/LAN-->WAN \n Chariot Thruput Test
+WAN_EP_IPAddr->DUT_WAN_IPAddr:
+DUT_WAN_IPAddr-->DUT_LAN_IPAddr:
+DUT_LAN_IPAddr-->W/LAN_EP_IPAddr(DMZ):
+W/LAN_EP_IPAddr(DMZ)->WAN_EP_IPAddr:
+```  
 
 * []()  
 ![alt tag]()
