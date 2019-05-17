@@ -8,8 +8,8 @@ package require tile
 package require Tktable
 
 set currpath [file dirname [file normalize [info script]]];#[file dirname [info script]]
-set lib_path [regsub -all "test" $currpath "lib"];#[file join  ".." "lib"]
-set log_path  [regsub -all "test" $currpath "log"]
+set lib_path [regsub -all "main" $currpath "lib"];#[file join  ".." "lib"]
+set log_path  [regsub -all "main" $currpath "log"]
 lappend auto_path $lib_path
 source "$lib_path/API_Misc.tcl"
 source "$lib_path/API_GUI.tcl"

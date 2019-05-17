@@ -475,7 +475,10 @@ proc Func_Chariot::GetPairResult {} {
         
     } else  {
         
-        set tp_avg 0
+        set allpairs_avg 0
+        set allpairs_min 0
+        set allpairs_max 0
+        
     };#if {$how_ended == "NORMAL"}
 }
 
@@ -529,7 +532,7 @@ proc Func_Chariot::LogResult2CSV {} {
     append str_out $Func_Chariot::allpairs_avg "," \
             $Func_Chariot::allpairs_max "," \
             $Func_Chariot::allpairs_min "," \
-            $Func_Chariot::testFile
+            [file tail $Func_Chariot::testFile]
     
     # Log thruput result to CSV file.
     set strmsg "Log Avg/Max/Min Thruput to thruput.csv..."

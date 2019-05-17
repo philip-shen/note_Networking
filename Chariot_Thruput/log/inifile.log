@@ -444,3 +444,17 @@
 [20:05:05 05122019]  192.168.1.1 alive
 [20:05:05 05122019]  DD_1.05_A1_AC8260_11ac_LAN2WLAN_2Pair(s)_200505_05122019.tst
 [20:05:05 05122019]  DD_1.05_A1_AC8260_11ac_WLAN2LAN_2Pair(s)_200505_05122019.tst
+[22:46:48 05172019]  scripts = High_Performance_Throughput.scr
+[22:46:48 05172019]  protocols = TCP
+[22:46:48 05172019]  chariot_path = C:\Program Files (x86)\Ixia\IxChariot
+[22:46:48 05172019]  timeout = 5
+[22:46:48 05172019]  retest = 1
+[22:46:48 05172019]  test_duration = 2
+[22:46:48 05172019]  paircount = 2
+[22:50:25 05172019]  scripts = High_Performance_Throughput.scr
+[22:50:25 05172019]  protocols = TCP
+[22:50:25 05172019]  chariot_path = C:\Program Files (x86)\Ixia\IxChariot
+[22:50:25 05172019]  timeout = 5
+[22:50:25 05172019]  retest = 1
+[22:50:25 05172019]  test_duration = 2
+[22:50:25 05172019]  paircount = 2
