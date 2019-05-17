@@ -39,13 +39,13 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 ```  
 Chariot_Thruput
 │
-main--->Main Scripts for production test.
+main--->Main Tcl Scripts for production test.
 │
 lib--->The library folder inculdes Chariot scripts.
 │
 log--->Test rsults and log infos.
 │
-test--->Test scripts for development.
+test--->Tcl Test scripts for development.
 │
 ```  
 
