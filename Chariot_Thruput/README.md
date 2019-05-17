@@ -15,11 +15,11 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
     [Check Log Folder for Result](#check-log-folder-for-result)  
 
 # Topology  
-## WLAN-->LAN-->WLAN\n  Chariot Thruput Test  
+## WLAN-->LAN-->WLAN  Chariot Thruput Test  
 ![alt tag](https://i.imgur.com/hkKDpW6.jpg)  
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
-## WAN-->W/LAN-->WAN\n  Chariot Thruput Test  
+## WAN-->W/LAN-->WAN  Chariot Thruput Test  
 ![alt tag](https://i.imgur.com/RiAvpgf.jpg)  
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
