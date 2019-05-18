@@ -16,6 +16,8 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
     [Click Button on Widget](#click-button-on-widget)  
     [Check Log Folder for Result](#check-log-folder-for-result)  
 
+[Reference](#reference)  
+
 # Topology  
 ## WLAN-->LAN-->WLAN  Chariot Thruput Test  
 ![alt tag](https://i.imgur.com/hkKDpW6.jpg)  
@@ -26,9 +28,10 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
 # PreTest Environment  
-## ixChariot 6.7  
-## Win7 32bit, 64bit  
-## Win10 64bit  
+### ixChariot 6.7  
+### Win7 32bit, 64bit  
+### Win10 64bit  
+*The utility recommends to host on end point of LAN side*   
 
 # Setup Procedure  
 ## Installation version of Tcl/Tk is x86 not x64, even on Win 10.
