@@ -4,11 +4,12 @@ Take note of Firewall related stuff
 # Table of Contents  
 
 
-# Troubleshooting
+# iptables Processing Flowchart
+[iptables Processing Flowchart (Updated Often) 2019-04-30](https://stuffphilwrites.com/2014/09/iptables-processing-flowchart/?fbclid=IwAR2989xeRLAkhGYfMOiu9GIJN5kfGFa26OIw_2-Xol1iYx9-MuZXiDx9_Hs)  
+![alt tag](https://stuffphilwrites.com/wp-content/uploads/2014/09/FW-IDS-iptables-Flowchart-v2019-04-30-1-768x978.png)
 
 
 # Reference
-* [iptables Processing Flowchart (Updated Often) 2019-04-30](https://stuffphilwrites.com/2014/09/iptables-processing-flowchart/?fbclid=IwAR2989xeRLAkhGYfMOiu9GIJN5kfGFa26OIw_2-Xol1iYx9-MuZXiDx9_Hs)
 
 * [Linux防火牆iptables基本使用方法 2017-09-06](https://stackoverflow.max-everyday.com/2017/09/linux-firewall-iptables/)
 * [CentOS Linux 7 以firewalld 指令設定防火牆規則教學- G. T. Wang 2017/12/26](https://blog.gtwang.org/linux/centos-7-firewalld-command-setup-tutorial/)
@@ -21,7 +22,7 @@ Take note of Firewall related stuff
 
 ```  
 
-* []()
+* []()  
 ![alt tag]()
 
 # h1 size
