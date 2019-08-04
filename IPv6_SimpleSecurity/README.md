@@ -3,24 +3,24 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
 
 # Table of Contents  
 
-[3. Detailed Recommendations]()
-[3.1.  Stateless Filters]()
+[3. Detailed Recommendations]()  
+[3.1.  Stateless Filters]()  
 
-[3.2. Connection-Free Filters]()
-[3.2.1. Internet Control and Management]()
-[3.2.2. Upper-Layer Transport Protocols]()
-[3.2.3. UDP Filters]()
-[3.2.4. IPsec and Internet Key Exchange (IKE)]()
-[3.2.5. Mobility Support in IPv6]()
+[3.2. Connection-Free Filters]()  
+[3.2.1. Internet Control and Management]()  
+[3.2.2. Upper-Layer Transport Protocols]()  
+[3.2.3. UDP Filters]()  
+[3.2.4. IPsec and Internet Key Exchange (IKE)]()  
+[3.2.5. Mobility Support in IPv6]()  
 
-[3.3. Connection-Oriented Filters]()
-[3.3.1. TCP Filters]()
-[3.3.2. SCTP Filters]()
-[3.3.3. DCCP Filters]()
-[3.3.4. Level 3 Multihoming Shim Protocol for IPv6 (Shim6)]()
+[3.3. Connection-Oriented Filters]()  
+[3.3.1. TCP Filters]()  
+[3.3.2. SCTP Filters]()  
+[3.3.3. DCCP Filters]()  
+[3.3.4. Level 3 Multihoming Shim Protocol for IPv6 (Shim6)]()  
 
-[3.4. Passive Listeners]()
-[3.5. Management Applications]()
+[3.4. Passive Listeners]()  
+[3.5. Management Applications]()  
 
 # 3.  Detailed Recommendations  
 ## 3.1.  Stateless Filters  
