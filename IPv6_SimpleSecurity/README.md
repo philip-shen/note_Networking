@@ -3,26 +3,67 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
 
 # Table of Contents  
 
-[3. Detailed Recommendations]()  
-* [3.1.  Stateless Filters]()  
+[3. Detailed Recommendations](#3--detailed-recommendations)  
+* [3.1.  Stateless Filters](#31--stateless-filters)  
+[REC-1:](#rec-1)  
+[REC-2:](#rec-2)  
+[REC-3:](#rec-3)  
+[REC-4:](#rec-4)  
+[REC-5:](#rec-5)  
+[REC-6:](#rec-6)  
+[REC-7:](#rec-7)  
+[REC-8:](#rec-8)  
+[REC-9:](#rec-9)  
 
-* [3.2. Connection-Free Filters]()  
+* [3.2. Connection-Free Filters](#32-connection-free-filters)  
 
-[3.2.1. Internet Control and Management]()  
-[3.2.2. Upper-Layer Transport Protocols]()  
-[3.2.3. UDP Filters]()  
-[3.2.4. IPsec and Internet Key Exchange (IKE)]()  
-[3.2.5. Mobility Support in IPv6]()  
+[3.2.1. Internet Control and Management](#321-internet-control-and-management)  
+[REC-10:](#rec-10)  
+[3.2.2. Upper-Layer Transport Protocols](#322-upper-layer-transport-protocols)  
+[REC-11:](#rec-11)  
+[REC-12:](#rec-12)  
+[REC-13:](#rec-13)  
+[3.2.3. UDP Filters](#323-udp-filters)  
+[REC-14:](#rec-14)  
+[REC-15:](#rec-15)  
+[REC-16:](#rec-16)  
+[REC-17:](#rec-17)  
+[REC-18:](#rec-18)  
+[REC-19:](#rec-19)  
+[REC-20:](#rec-20)  
+[3.2.4. IPsec and Internet Key Exchange (IKE)](#324-ipsec-and-internet-key-exchange-ike)  
+[REC-21:](#rec-21)  
+[REC-22:](#rec-22)  
+[REC-23:](#rec-23)  
+[REC-24:](#rec-24)  
+[REC-25:](#rec-25)  
+[REC-26:](#rec-26)  
+[3.2.5. Mobility Support in IPv6](#325-mobility-support-in-ipv6)  
+[REC-27:](#rec-27)  
+[REC-28:](#rec-28)  
+[REC-29:](#rec-29)  
+[REC-30:](#rec-30)  
 
-* [3.3. Connection-Oriented Filters]()  
+* [3.3. Connection-Oriented Filters](#33-connection-oriented-filters)  
 
-[3.3.1. TCP Filters]()  
-[3.3.2. SCTP Filters]()  
-[3.3.3. DCCP Filters]()  
-[3.3.4. Level 3 Multihoming Shim Protocol for IPv6 (Shim6)]()  
+[3.3.1. TCP Filters](#331-tcp-filters)  
+[REC-31:](#rec-30)  
+[REC-32:](#rec-30)  
+[REC-33:](#rec-30)  
+[REC-34:](#rec-30)  
+[REC-35:](#rec-30)  
+[REC-36:](#rec-30)  
+[REC-37:](#rec-30)  
+[3.3.2. SCTP Filters](#332-sctp-filters)  
+[3.3.3. DCCP Filters](#333-dccp-filters)  
+[3.3.4. Level 3 Multihoming Shim Protocol for IPv6 (Shim6)](#334-level-3-multihoming-shim-protocol-for-ipv6-shim6)  
 
-* [3.4. Passive Listeners]()  
-* [3.5. Management Applications]()  
+* [3.4. Passive Listeners](#34-passive-listeners)  
+[REC-48:](#rec-48)  
+[REC-49:](#rec-49)  
+
+* [3.5. Management Applications](#35-management-applications)  
+[REC-50:](#rec-50)  
 
 # 3.  Detailed Recommendations  
 ## 3.1.  Stateless Filters  
@@ -35,18 +76,20 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
 #### REC-2: 
 ``` 
    Packets bearing multicast destination addresses in their outer IPv6 headers of equal or narrower scope 
-   (see "IPv6 Scoped Address Architecture" [RFC4007]) than the configured scope boundary level of the gateway 
-   MUST NOT be forwarded in any direction.  The DEFAULT scope boundary level SHOULD be organization-local scope, 
+   (see "IPv6 Scoped Address Architecture" [RFC4007]) than the configured scope boundary level of 
+   the gateway MUST NOT be forwarded in any direction.  
+   The DEFAULT scope boundary level SHOULD be organization-local scope, 
    and it SHOULD be configurable by the network administrator.
 ``` 
 
 #### REC-3: 
 ``` 
    Packets bearing source and/or destination addresses forbidden to appear in the outer headers of packets 
-   transmitted over the public Internet MUST NOT be forwarded.  In particular, site-local addresses are deprecated 
-   by [RFC3879], and [RFC5156] explicitly forbids the use of address blocks of types IPv4-Mapped Addresses, 
-   IPv4-Compatible
-   Addresses, Documentation Prefix, and Overlay Routable Cryptographic Hash IDentifiers (ORCHID).
+   transmitted over the public Internet MUST NOT be forwarded.  
+   In particular, site-local addresses are deprecated by [RFC3879], and [RFC5156] 
+   explicitly forbids the use of address blocks of types IPv4-Mapped Addresses, 
+   IPv4-Compatible Addresses, Documentation Prefix, and 
+   Overlay Routable Cryptographic Hash IDentifiers (ORCHID).
 ``` 
 
 #### REC-4: 
@@ -98,13 +141,14 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
 
 #### REC-10: 
 ``` 
-   IPv6 gateways SHOULD NOT forward ICMPv6 "Destination Unreachable" and "Packet Too Big" messages containing IP headers 
+   IPv6 gateways SHOULD NOT forward ICMPv6 "Destination Unreachable" and 
+   "Packet Too Big" messages containing IP headers 
    that do not match generic upper-layer transport state records.
 ``` 
 ### 3.2.2. Upper-Layer Transport Protocols  
 ``` 
-   One key aspect of how a packet filter behaves is the way it evaluates the exterior address of an endpoint 
-   when applying a filtering rule.
+   One key aspect of how a packet filter behaves is the way it evaluates the exterior address of 
+   an endpoint when applying a filtering rule.
    A gateway is said to have "endpoint-independent filtering" behavior
    when the exterior address is not evaluated when matching a packet with a flow.  
    A gateway is said to have "address-dependent filtering" behavior
@@ -123,7 +167,7 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
    without service-provider management.
 ``` 
 
-### REC-12:  
+#### REC-12:  
 ``` 
    Filter state records for generic upper-layer transport protocols MUST NOT 
    be deleted or recycled until an idle timer not less than two minutes has expired 
@@ -131,7 +175,7 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
    By DEFAULT, the idle timer for such state records is five minutes.
 ``` 
 
-### REC-13:  
+#### REC-13:  
 ``` 
    Residential IPv6 gateways SHOULD provide a convenient means to update their firmware securely, 
    for the installation of security patches and other manufacturer-recommended changes.
@@ -149,7 +193,7 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
    after an idle period of some time.
 ``` 
 
-### REC-14:  
+#### REC-14:  
 ``` 
    A state record for a UDP flow where both source and destination ports are outside the well-known 
    port range (ports 0-1023) MUST NOT expire in less than two minutes of idle time.
@@ -157,21 +201,22 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
    The DEFAULT is five minutes.
 ``` 
 
-### REC-15:  
+#### REC-15:  
 ``` 
-   A state record for a UDP flow where one or both of the source and destination ports are in the well-known 
-   port range (ports 0-1023) MAY expire after a period of idle time shorter than two minutes to
-   facilitate the operation of the IANA-registered service assigned to the port in question.
+   A state record for a UDP flow where one or both of the source and destination ports 
+   are in the well-known port range (ports 0-1023) MAY expire after a period of idle time 
+   shorter than two minutes to facilitate the operation of the IANA-registered service 
+   assigned to the port in question.
 ``` 
 
-### REC-16: 
+#### REC-16: 
 ``` 
    A state record for a UDP flow MUST be refreshed when a packet
    is forwarded from the interior to the exterior, and it MAY be
    refreshed when a packet is forwarded in the reverse direction.
 ``` 
 
-### REC-17:  
+#### REC-17:  
 ``` 
    If application transparency is most important, then a stateful packet filter SHOULD 
    have "endpoint-independent filtering" behavior for UDP.  
@@ -186,7 +231,7 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
    without service-provider management.
 ``` 
 
-### REC-18:  
+#### REC-18:  
 ``` 
    If a gateway forwards a UDP flow, it MUST also forward ICMPv6 "Destination Unreachable" and 
    "Packet Too Big" messages containing UDP headers that match the flow state record.
@@ -438,6 +483,7 @@ Take notes for Recommended Simple Security Capabilities in Customer Premises Equ
    configuration option that permits a "transparent mode" of operation that 
    forwards all unsolicited flows regardless of forwarding direction, i.e., 
    not to use the IPv6 simple security capabilities of the gateway.  
+   
    The transparent mode of operation MAY be the default configuration.
 ``` 
 ### 3.5. Management Applications  
