@@ -261,6 +261,9 @@ Reference
 * [[PMTU] "Path MTU Discovery for IP version 6", RFC 8201, July 2017](https://tools.ietf.org/html/rfc8201)
 * [[IPv6-DISC]  "Neighbor Discovery for IP Version 6 (IPv6)", RFC 4861, September 2007.](https://tools.ietf.org/html/rfc4861)
 
+* [ICMPv6 Message Types](https://www.ipv6.com/general/icmpv6-tech-details-advantages/)  
+![alt tag](https://www.ipv6.com/wp-content/uploads/2017/06/ICMPv6_2.gif)
+
 * []()
 ![alt tag]()
 ```
