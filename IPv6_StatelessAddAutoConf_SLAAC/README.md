@@ -295,5 +295,16 @@ Reference
 
 * [dhcpv6 - stateful VS stateless, what is difference between it? Feb 9, 2018](https://networkengineering.stackexchange.com/questions/47829/dhcpv6-stateful-vs-stateless-what-is-difference-between-it)
 
+* [SLAAC (Stateless Address Autoconfiguration) ](https://slideplayer.com/slide/5266411/)
+![alt tag](https://images.slideplayer.com/17/5266411/slides/slide_4.jpg)
+
+* [IPv6 學習筆記 001 – 入門筆記  2013-12-19](https://lihan.cc/2013/12/903/)
+```
+ IPv4 先用 ARP 廣播，然後取得對方 MAC，這樣就搭建好區域網路內的通訊基礎。
+ IPv6 採用 SLAAC( Stateless Address Autoconfiguration )，路由器會定期用 multicast發公告，稱為RA (Router Advertisement) ，基本上就是Network ID + 閘道器訊息。
+ 用戶端收到 Network ID，搭配自動產生的 Host ID，形成完整 IPv6，而路由核發出訊息後，就不再管這個位址的實際使用。
+
+```
+
 * []()
 ![alt tag]()
