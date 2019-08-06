@@ -26,6 +26,8 @@
 [5.6. Configuration Consistency](#56--configuration-consistency)  
 [5.7. Retaining Configured Addresses for Stability](#57--retaining-configured-addresses-for-stability)  
 
+[Reference](#reference)
+
 # 1.  Introduction
 This document specifies the steps a host takes in deciding how to autoconfigure its interfaces in IP version 6 (IPv6).
 The autoconfiguration process includes:
