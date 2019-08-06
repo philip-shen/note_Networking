@@ -1,3 +1,31 @@
+# Table of Contents  
+[1. Introduction](#1--introduction)  
+[2. Terminology](#2--terminology)  
+[3. Design Goals](#3--design-goals)  
+[4. Protocol Overview](#4--protocol-overview)  
+[4.1. Site Renumbering](#41--site-renumbering)  
+
+[5. Protocol Specification](#5--protocol-specification)  
+[5.1. Node Configuration Variables](#51--node-configuration-variables)  
+[5.2. Autoconfiguration-Related Structures](#52--autoconfiguration-related-structures)  
+[5.3. Creation of Link-Local Addresses](#53--creation-of-link-local-addresses)  
+
+[5.4. Duplicate Address Detection](#54--duplicate-address-detection)  
+[5.4.1. Message Validation](#541--message-validation)  
+[5.4.2. Sending Neighbor Solicitation Messages](#542--sending-neighbor-solicitation-messages)  
+[5.4.3. Receiving Neighbor Solicitation Messages](#543--receiving-neighbor-solicitation-messages)  
+[5.4.4. Receiving Neighbor Advertisement Messages](#544--receiving-neighbor-advertisement-messages)  
+[5.4.5. When Duplicate Address Detection Fails](#545--when-duplicate-address-detection-fails)  
+
+[5.5. Creation of Global Addresses](#55--creation-of-global-addresses)  
+[5.5.1. Soliciting Router Advertisements](#551--soliciting-router-advertisements)  
+[5.5.2. Absence of Router Advertisements](#552--absence-of-router-advertisements)  
+[5.5.3. Router Advertisement Processing](#553--router-advertisement-processing)  
+[5.5.4. Address Lifetime Expiry](#554--address-lifetime-expiry)  
+
+[5.6. Configuration Consistency](#56--configuration-consistency)  
+[5.7. Retaining Configured Addresses for Stability](#57--retaining-configured-addresses-for-stability)  
+
 # 1.  Introduction
 This document specifies the steps a host takes in deciding how to autoconfigure its interfaces in IP version 6 (IPv6).
 The autoconfiguration process includes:
@@ -128,14 +156,17 @@ An interface may become enabled after any of the following events:
 ```
    -  The interface is initialized at system startup time.
 
-   -  The interface is reinitialized after a temporary interface failure or after being temporarily disabled by system management.
+   -  The interface is reinitialized after a temporary interface failure or 
+      after being temporarily disabled by system management.
       
-   -  The interface attaches to a link for the first time.  This includes the case where the attached link is dynamically changed      
+   -  The interface attaches to a link for the first time.  
+      This includes the case where the attached link is dynamically changed      
       due to a change of the access point of wireless networks.
       
    -  The interface becomes enabled by system management after having been administratively disabled.      
 ```
-A link-local address is formed by combining the well-known link-local prefix FE80::0 [RFC4291] (of appropriate length) with an interface identifier as follows:
+A link-local address is formed by combining the well-known link-local prefix FE80::0 [RFC4291] (of appropriate length) 
+with an interface identifier as follows:
 ```
    1.  The left-most 'prefix length' bits of the address are those of the link-local prefix.
 
@@ -153,36 +184,52 @@ with the following exceptions:
 ```
    -  An interface whose DupAddrDetectTransmits variable is set to zero does not perform Duplicate Address Detection.
 
-   -  Duplicate Address Detection MUST NOT be performed on anycast addresses (note that anycast addresses cannot syntactically be
-      distinguished from unicast addresses).
+   -  Duplicate Address Detection MUST NOT be performed on anycast addresses (note that anycast addresses cannot 
+      syntactically be distinguished from unicast addresses).
 
    -  Each individual unicast address SHOULD be tested for uniqueness.
-      Note that there are implementations deployed that only perform Duplicate Address Detection for the link-local address and skip
+      Note that there are implementations deployed that only perform Duplicate Address Detection for 
+      the link-local address and skip
       the test for the global address that uses the same interface identifier as that of the link-local address.
 ```
 The procedure for detecting duplicate addresses uses Neighbor Solicitation and Advertisement messages as described below.
 
-An address on which the Duplicate Address Detection procedure is applied is said to be tentative until the procedure has completed successfully.  A tentative address is not considered "assigned to an interface" in the traditional sense.
-That is, the interface must accept Neighbor Solicitation and Advertisement messages containing the tentative address in the Target Address field, but processes such packets differently from those whose Target Address matches an address assigned to the interface.
+An address on which the Duplicate Address Detection procedure is applied is said to be tentative 
+until the procedure has completed successfully.  A tentative address is not considered "assigned to an interface" in the traditional sense.
+That is, the interface must accept Neighbor Solicitation and Advertisement messages containing the tentative address 
+in the Target Address field, but processes such packets differently from those whose Target Address matches an address 
+assigned to the interface.
 
-It should also be noted that Duplicate Address Detection must be performed prior to assigning an address to an interface in order to prevent multiple nodes from using the same address simultaneously.
+It should also be noted that Duplicate Address Detection must be performed prior to assigning an address to an interface 
+in order to prevent multiple nodes from using the same address simultaneously.
 
 # 5.4.1.  Message Validation
-A node MUST silently discard any Neighbor Solicitation or Advertisement message that does not pass the validity checks specified in [RFC4861].  A Neighbor Solicitation or Advertisement message that passes these validity checks is called a valid solicitation or valid advertisement, respectively.
+A node MUST silently discard any Neighbor Solicitation or Advertisement message that does not pass the validity 
+checks specified in [RFC4861].  A Neighbor Solicitation or Advertisement message that passes these validity checks 
+is called a valid solicitation or valid advertisement, respectively.
 
 # 5.4.2.  Sending Neighbor Solicitation Messages
-Before sending a Neighbor Solicitation, an interface MUST join the all-nodes multicast address and the solicited-node multicast address of the tentative address.
+Before sending a Neighbor Solicitation, an interface MUST join the all-nodes multicast address and the solicited-node 
+multicast address of the tentative address.
 
-To check an address, a node sends DupAddrDetectTransmits Neighbor Solicitations, each separated by RetransTimer milliseconds.  The solicitation's Target Address is set to the address being checked, the IP source is set to the unspecified address, and the IP destination is set to the solicited-node multicast address of the target address.
+To check an address, a node sends DupAddrDetectTransmits Neighbor Solicitations, each separated by RetransTimer milliseconds.  
+The solicitation's Target Address is set to the address being checked, the IP source is set to the unspecified address, 
+and the IP destination is set to the solicited-node multicast address of the target address.
 
-If the Neighbor Solicitation is going to be the first message sent from an interface after interface (re)initialization, the node SHOULD delay joining the solicited-node multicast address by a random delay between 0 and MAX_RTR_SOLICITATION_DELAY as specified in [RFC4861].
+If the Neighbor Solicitation is going to be the first message sent from an interface after interface (re)initialization, 
+the node SHOULD delay joining the solicited-node multicast address by a random delay between 0 and MAX_RTR_SOLICITATION_DELAY as specified in [RFC4861].
 This serves to alleviate congestion when many nodes start up on the link at the same time, such as after a power failure,
 
 Even if the Neighbor Solicitation is not going to be the first message sent, the node SHOULD delay joining the solicited-node multicast address by a random delay between 0 and MAX_RTR_SOLICITATION_DELAY if the address being checked is configured by a router advertisement message sent to a multicast address.
 
-Note that when a node joins a multicast address, it typically sends a Multicast Listener Discovery (MLD) report message [RFC2710] [RFC3810]  for the multicast address.  In the case of Duplicate Address  Detection, the MLD report message is required in order to inform MLD-snooping switches, rather than routers, to forward multicast packets.
+Note that when a node joins a multicast address, it typically sends a Multicast Listener Discovery (MLD) report message 
+[RFC2710] [RFC3810]  for the multicast address.  In the case of Duplicate Address  Detection, the MLD report message 
+is required in order to inform MLD-snooping switches, rather than routers, to forward multicast packets.
 
-In order to improve the robustness of the Duplicate Address Detection algorithm, an interface MUST receive and process datagrams sent to the all-nodes multicast address or solicited-node multicast address of the tentative address during the delay period.  This does not  necessarily conflict with the requirement that joining the multicast group be delayed.
+In order to improve the robustness of the Duplicate Address Detection algorithm, an interface MUST receive and 
+process datagrams sent to the all-nodes multicast address or solicited-node multicast address of the tentative address 
+during the delay period.  This does not  necessarily conflict with the requirement that joining 
+the multicast group be delayed.
 
 # 5.4.3.  Receiving Neighbor Solicitation Messages
 On receipt of a valid Neighbor Solicitation message on an interface, node behavior depends on whether or not the target address is tentative.  
@@ -215,7 +262,9 @@ On receipt of a valid Neighbor Advertisement message on an interface, node behav
 ```
 
 # 5.4.5.  When Duplicate Address Detection Fails
- If the address is a link-local address formed from an interface identifier based on the hardware address, which is supposed to be uniquely assigned (e.g., EUI-64 for an Ethernet interface), IP operation on the interface SHOULD be disabled.  By disabling IP operation, the node will then:
+ If the address is a link-local address formed from an interface identifier based on the hardware address, 
+ which is supposed to be uniquely assigned (e.g., EUI-64 for an Ethernet interface), IP operation on the interface 
+ SHOULD be disabled.  By disabling IP operation, the node will then:
 ```
    -  not send any IP packets from the interface,
 
@@ -226,7 +275,10 @@ On receipt of a valid Neighbor Advertisement message on an interface, node behav
 ```
 
 # 5.5.  Creation of Global Addresses
-Global addresses are formed by appending an interface identifier to a prefix of appropriate length.  Prefixes are obtained from Prefix Information options contained in Router Advertisements.  Creation of global addresses as described in this section SHOULD be locally configurable.  However, the processing described below MUST be enabled by default.
+Global addresses are formed by appending an interface identifier to a prefix of appropriate length.  
+Prefixes are obtained from Prefix Information options contained in Router Advertisements.  Creation of 
+global addresses as described in this section SHOULD be locally configurable.  However, the processing 
+described below MUST be enabled by default.
 
 # 5.5.1.  Soliciting Router Advertisements
 Router Advertisements are sent periodically to the all-nodes multicast address.
@@ -245,12 +297,13 @@ For each Prefix-Information option in the Router Advertisement:
 
     b)  If the prefix is the link-local prefix, silently ignore the Prefix Information option.
 
-    c)  If the preferred lifetime is greater than the valid lifetime, silently ignore the Prefix Information option.  A node MAY wish to
-      log a system management error in this case.
+    c)  If the preferred lifetime is greater than the valid lifetime, silently ignore the Prefix Information option.  
+      A node MAY wish to log a system management error in this case.
 
-    d)  If the prefix advertised is not equal to the prefix of an address configured by stateless autoconfiguration already in the
-      list of addresses associated with the interface (where "equal" means the two prefix lengths are the same and the first prefix-
-      length bits of the prefixes are identical), and if the Valid Lifetime is not 0, form an address (and add it to the list) by
+    d)  If the prefix advertised is not equal to the prefix of an address configured by stateless autoconfiguration 
+      already in the list of addresses associated with the interface (where "equal" means the two prefix lengths are 
+      the same and the first prefix-length bits of the prefixes are identical), and if the Valid Lifetime is not 0, 
+      form an address (and add it to the list) by
       combining the advertised prefix with an interface identifier of the link as follows:
 
       |            128 - N bits               |       N bits           |
@@ -258,15 +311,17 @@ For each Prefix-Information option in the Router Advertisement:
       |            link prefix                |  interface identifier  |
       +----------------------------------------------------------------+
 
-    e)  If the advertised prefix is equal to the prefix of an address configured by stateless autoconfiguration in the list, the
-      preferred lifetime of the address is reset to the Preferred Lifetime in the received advertisement.
+    e)  If the advertised prefix is equal to the prefix of an address configured by stateless autoconfiguration in the list, 
+      the preferred lifetime of the address is reset to the Preferred Lifetime in the received advertisement.
       We call the remaining time "RemainingLifetime" in the  following discussion:
-      1.  If the received Valid Lifetime is greater than 2 hours or greater than RemainingLifetime, set the valid lifetime of the
-          corresponding address to the advertised Valid Lifetime.
 
-      2.  If RemainingLifetime is less than or equal to 2 hours, ignore the Prefix Information option with regards to the valid
-          lifetime, unless the Router Advertisement from which this option was obtained has been authenticated (e.g., via Secure
-          Neighbor Discovery [RFC3971]).  If the Router Advertisement was authenticated, the valid lifetime of the corresponding
+      1.  If the received Valid Lifetime is greater than 2 hours or greater than RemainingLifetime, set the valid lifetime 
+         of the corresponding address to the advertised Valid Lifetime.
+
+      2.  If RemainingLifetime is less than or equal to 2 hours, ignore the Prefix Information option with regards to 
+         the valid lifetime, unless the Router Advertisement from which this option was obtained has been authenticated 
+         (e.g., via Secure Neighbor Discovery [RFC3971]).  
+         If the Router Advertisement was authenticated, the valid lifetime of the corresponding
           address should be set to the Valid Lifetime in the received option.
 
       3.  Otherwise, reset the valid lifetime of the corresponding address to 2 hours.      
@@ -277,11 +332,14 @@ A preferred address becomes deprecated when its preferred lifetime expires.
 An address (and its association with an interface) becomes invalid when its valid lifetime expires.
 
 # 5.6.  Configuration Consistency
-It is possible for hosts to obtain address information using both stateless autoconfiguration and DHCPv6 since both may be enabled at the same time.
-An implementation that has stable storage may want to retain addresses in the storage when the addresses were acquired using stateless address autoconfiguration.
+It is possible for hosts to obtain address information using both stateless autoconfiguration and DHCPv6 
+since both may be enabled at the same time.
+An implementation that has stable storage may want to retain addresses in the storage 
+when the addresses were acquired using stateless address autoconfiguration.
 
 # 5.7.  Retaining Configured Addresses for Stability
-An implementation that has stable storage may want to retain addresses in the storage when the addresses were acquired using stateless address autoconfiguration.
+An implementation that has stable storage may want to retain addresses in the storage 
+when the addresses were acquired using stateless address autoconfiguration.
 
 Reference
 ==============================
