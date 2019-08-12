@@ -193,8 +193,8 @@ ff02::9 | RIP routers
 ff02::a | EIGRP routers
 ff02::d | PIM routers
 ff02::16 | MLDv2 reports (defined in RFC 3810)
-ff02::1:2 | All DHCP servers and relay agents on the local network segment (defined in RFC 3315)
-ff02::1:3 | All LLMNR hosts on the local network segment (defined in RFC 4795)
+ff02::1:2 | All DHCP servers and relay agents on the local network segment (defined in [RFC 3315](https://tools.ietf.org/html/rfc3315))
+ff02::1:3 | All LLMNR hosts on the local network segment (defined in [RFC 4795](https://tools.ietf.org/html/rfc4795))
 ff05::1:3 | All DHCP servers on the local network site (defined in RFC 3315)
 ff0x::c | Simple Service Discovery Protocol
 ff0x::fb | Multicast DNS
