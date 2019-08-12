@@ -181,6 +181,7 @@ Neighbor Discovery makes use of a number of different addresses defined in [ADDR
 # Multicast address  
 [Multicast address](https://en.wikipedia.org/wiki/Multicast_address)  
 **Well-known IPv6 multicast addresses**  
+
 Address | Description
 ------------------------------------ | ---------------------------------------------
 ff02::1 | All nodes on the local network segment
@@ -201,7 +202,7 @@ ff0x::101 | Network Time Protocol
 ff0x::108 | Network Information Service
 ff0x::181 | Precision Time Protocol (PTP) version 2 messages (Sync, Announce, etc.) except peer delay measurement
 ff02::6b | Precision Time Protocol (PTP) version 2 peer delay measurement messages
-ff0x::114 | Used for experiments 
+ff0x::114 | Used for experiments
 
 # 3.  Protocol Overview
 This protocol solves a set of problems related to the interaction between nodes attached to the same link.
