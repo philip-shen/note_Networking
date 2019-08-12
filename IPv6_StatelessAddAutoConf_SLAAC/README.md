@@ -67,20 +67,46 @@ unicast address
 multicast address
 anycast address
 solicited-node multicast address
-link-layer address -  a link-layer identifier for an interface. Examples include IEEE 802 addresses for Ethernet links
-link-local address -  an address having link-only scope that can be used to reach neighboring nodes attached to the same link.
-global address -  an address with unlimited scope.
+link-layer address 
+                  -  a link-layer identifier for an interface. 
+                     Examples include IEEE 802 addresses for Ethernet links
+
+link-local address 
+                  -  an address having link-only scope that can be used to reach neighboring nodes 
+                     attached to the same link.
+
+global address 
+                  -  an address with unlimited scope.
 communication -  Examples are a TCP connection or a UDP request-response.
-tentative address -  an address whose uniqueness on a link is being verified, prior to its assignment to an interface.
-preferred address -  an address assigned to an interface whose use by upper-layer protocols is unrestricted.
-deprecated address -  An address assigned to an interface whose use is discouraged, but not forbidden.
-valid address -  a preferred or deprecated address.  A valid address may appear as the source or destination address of a packet,
-invalid address -  an address that is not assigned to any interface. A valid address becomes invalid when its valid lifetime expires.
-preferred lifetime -  the length of time that a valid address is preferred (i.e., the time until deprecation).
-valid lifetime -  the length of time an address remains in the valid state (i.e., the time until invalidation).
-interface identifier -  a link-dependent identifier for an interface that is (at least) unique per link [RFC4291].  Stateless address
-      autoconfiguration combines an interface identifier with a prefix to form an address.  From address autoconfiguration's
-      perspective, an interface identifier is a bit string of known length.
+tentative address 
+                  -  an address whose uniqueness on a link is being verified, 
+                     prior to its assignment to an interface.
+
+preferred address 
+                  -  an address assigned to an interface whose use by upper-layer protocols is unrestricted.
+
+deprecated address 
+                  -  An address assigned to an interface whose use is discouraged, but not forbidden.
+
+valid address 
+                  -  a preferred or deprecated address.  
+                     A valid address may appear as the source or destination address of a packet,
+
+invalid address 
+                  -  an address that is not assigned to any interface. 
+                     A valid address becomes invalid when its valid lifetime expires.
+
+preferred lifetime 
+                  -  the length of time that a valid address is preferred 
+                     (i.e., the time until deprecation).
+
+valid lifetime 
+                  -  the length of time an address remains in the valid state (i.e., the time until invalidation).
+
+interface identifier 
+                  -  a link-dependent identifier for an interface that is (at least) unique per link [RFC4291].             Stateless address autoconfiguration combines an interface identifier with a prefix to 
+                      form an address.  From address autoconfiguration's perspective, 
+                      an interface identifier is a bit string of known length.
 ```
 # 3.  Design Goals
 ```
