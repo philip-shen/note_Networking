@@ -77,7 +77,8 @@ link-local address
 
 global address 
                   -  an address with unlimited scope.
-communication -  Examples are a TCP connection or a UDP request-response.
+communication 
+                  -  Examples are a TCP connection or a UDP request-response.
 tentative address 
                   -  an address whose uniqueness on a link is being verified, 
                      prior to its assignment to an interface.
