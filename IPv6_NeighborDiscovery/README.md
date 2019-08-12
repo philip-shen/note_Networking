@@ -1,3 +1,31 @@
+# Table of Content  
+[1. Introduction](#1--introduction)  
+[2. Terminology](#2--terminology)  
+[2.1. General](#21--general)  
+[2.2. Link Types](#22--link-types)  
+[2.3. Addresses](#23--addresses)  
+[Multicast address](#multicast-address)  
+[3. Protocol Overview](#3--protocol-overview)  
+[4. Message Formats](#4--message-formats)  
+[4.1. Router Solicitation Message Format](#41--router-solicitation-message-format)  
+[4.2. Router Advertisement Message Format](#42--router-advertisement-message-format)  
+[4.3. Neighbor Solicitation Message Format](#43--neighbor-solicitation-message-format)  
+[4.4. Neighbor Advertisement Message Format](#44--neighbor-advertisement-message-format)  
+[4.5. Redirect Message Format](#45--redirect-message-format)  
+[4.6. Option Formats](#46--option-formats)  
+[4.6.1. Source/Target Link-layer Address](#461--sourcetarget-link-layer-address)  
+[4.6.2. Prefix Information](#462--prefix-information)  
+[4.6.3. Redirected Header](#463--redirected-header)  
+[4.6.4. MTU](#464--mtu)  
+[6. Router and Prefix Discovery](#6--router-and-prefix-discovery)  
+[]()  
+[]()  
+[]()  
+[]()  
+[]()  
+[]()  
+[Reference](#reference)  
+
 # 1.  Introduction
 Nodes (hosts and routers) use Neighbor Discovery to determine the link-layer addresses for neighbors known to reside on attached links and to quickly purge cached values that become invalid.
 Hosts also use Neighbor Discovery to find neighboring routers that are willing to forward packets on their behalf.
@@ -134,19 +162,46 @@ Neighbor Discovery makes use of a number of different addresses defined in [ADDR
                - the link-local scope address to reach all routers, FF02::2. 
 
    solicited-node multicast address
-               - a link-local scope multicast address that is computed as a function of the solicited target's address.  The
-                 function is described in [ADDR-ARCH].
+               - a link-local scope multicast address that is computed as a function of 
+                  the solicited target's address.  The function is described in [ADDR-ARCH].
                  
    link-local address
-               - a unicast address having link-only scope that can be used to reach neighbors.  All interfaces on routers
-                 MUST have a link-local address.  Also, [ADDRCONF] requires that interfaces on hosts have a link-local address.
+               - a unicast address having link-only scope that can be used to reach neighbors.  
+                  All interfaces on routers MUST have a link-local address.  
+                  Also, [ADDRCONF] requires that interfaces on hosts have a link-local address.
                  
    unspecified address
-               - a reserved address value that indicates the lack of an address (e.g., the address is unknown).  It is never
-                 used as a destination address, but may be used as a source address if the sender does not (yet) know its
-                 own address (e.g., while verifying an address is unused during stateless address autoconfiguration [ADDRCONF]).
-                 The unspecified address has a value of 0:0:0:0:0:0:0:0.                
+               - a reserved address value that indicates the lack of an address 
+                  (e.g., the address is unknown).  
+                  It is never used as a destination address, but may be used as a source address 
+                  if the sender does not (yet) know its own address 
+                  (e.g., while verifying an address is unused during stateless address autoconfiguration [ADDRCONF]).
+                  The unspecified address has a value of 0:0:0:0:0:0:0:0.                
 ```
+# Multicast address  
+[Multicast address](https://en.wikipedia.org/wiki/Multicast_address)  
+**Well-known IPv6 multicast addresses**  
+Address | Description
+------------------------------------ | ---------------------------------------------
+ff02::1 | All nodes on the local network segment
+ff02::2 | All routers on the local network segment
+ff02::5 | OSPFv3 All SPF routers
+ff02::6 | OSPFv3 All DR routers
+ff02::8 | IS-IS for IPv6 routers
+ff02::9 | RIP routers
+ff02::a | EIGRP routers
+ff02::d | PIM routers
+ff02::16 | MLDv2 reports (defined in RFC 3810)
+ff02::1:2 | All DHCP servers and relay agents on the local network segment (defined in RFC 3315)
+ff02::1:3 | All LLMNR hosts on the local network segment (defined in RFC 4795)
+ff05::1:3 | All DHCP servers on the local network site (defined in RFC 3315)
+ff0x::c | Simple Service Discovery Protocol
+ff0x::fb | Multicast DNS
+ff0x::101 | Network Time Protocol
+ff0x::108 | Network Information Service
+ff0x::181 | Precision Time Protocol (PTP) version 2 messages (Sync, Announce, etc.) except peer delay measurement
+ff02::6b | Precision Time Protocol (PTP) version 2 peer delay measurement messages
+ff0x::114 | Used for experiments 
 
 # 3.  Protocol Overview
 This protocol solves a set of problems related to the interaction between nodes attached to the same link.
