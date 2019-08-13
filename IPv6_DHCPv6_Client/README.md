@@ -1,15 +1,66 @@
 # Table of Contents  
+[Multicast Address](#multicast-address)
+
 [Statefull DHCPv6 Client](#statefull-dhcpv6-client)  
+[01 Link-Local Address Creation](#01-link-local-address-creation)  
+[02 Statefull DHCPv6 Procedure](#02-statefull-dhcpv6-procedure)  
+[03 Duplicate Address Detection(DAD) Solicited-node Multicast Address](#03-duplicate-address-detectiondad-solicited-node-multicast-address)  
+[04 Address Resolution and Neighbor Unreachability Detection](#04-address-resolution-and-neighbor-unreachability-detection)  
+
+# Multicast Address
+[Multicast address](https://en.wikipedia.org/wiki/Multicast_address)  
+**Well-known IPv6 multicast addresses**  
+
+Address | Description
+------------------------------------ | ---------------------------------------------
+ff02::1 | All nodes on the local network segment
+ff02::2 | All routers on the local network segment
+ff02::5 | OSPFv3 All SPF routers
+ff02::6 | OSPFv3 All DR routers
+ff02::8 | IS-IS for IPv6 routers
+ff02::9 | RIP routers
+ff02::a | EIGRP routers
+ff02::d | PIM routers
+ff02::16 | MLDv2 reports (defined in RFC 3810)
+ff02::1:2 | All DHCP servers and relay agents on the local network segment (defined in [RFC 3315](https://tools.ietf.org/html/rfc3315))
+ff02::1:3 | All LLMNR hosts on the local network segment (defined in [RFC 4795](https://tools.ietf.org/html/rfc4795))
+ff05::1:3 | All DHCP servers on the local network site (defined in RFC 3315)
+ff0x::c | Simple Service Discovery Protocol
+ff0x::fb | Multicast DNS
+ff0x::101 | Network Time Protocol
+ff0x::108 | Network Information Service
+ff0x::181 | Precision Time Protocol (PTP) version 2 messages (Sync, Announce, etc.) except peer delay measurement
+ff02::6b | Precision Time Protocol (PTP) version 2 peer delay measurement messages
+ff0x::114 | Used for experiments
+
+[Multicast DNS mDNS](https://en.wikipedia.org/wiki/Multicast_DNS)    
+**Packet structure**  
+UDP port 5353  
+
+IPv4 | IPv6
+------------------------------------ | ---------------------------------------------
+MAC: 01:00:5E:00:00:FB |  MAC: 33:33:00:00:00:FB(IPv6mcast_16)
+224.0.0.251 | ff02::fb
+
+[Solicited-node Multicast Address FF02::1:FF00:::/104](https://github.com/philip-shen/note_Networking/tree/master/IPv6_StatelessAddAutoConf_SLAAC#solicited-node-multicast-address-ff021ff00104)  
 
 # Statefull DHCPv6 Client  
 ### 01 Link-Local Address Creation  
-![alt tag](https://i.imgur.com/XzCbV7M.jpg)  
+![alt tag](https://i.imgur.com/lFvkgp1.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
+
 ### 02 Statefull DHCPv6 Procedure  
-![alt tag](https://i.imgur.com/gaifNLy.jpg)  
+![alt tag](https://i.imgur.com/Z0qFeqi.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
+
 ### 03 Duplicate Address Detection(DAD) Solicited-node Multicast Address  
-![alt tag](https://i.imgur.com/1UK5cYY.jpg)  
+![alt tag](https://i.imgur.com/SOkd2V5.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
+
 ### 04 Address Resolution and Neighbor Unreachability Detection  
-![alt tag](https://i.imgur.com/YrjF9A6.jpg)  
+![alt tag](https://i.imgur.com/A1JhQnB.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
+
 ```
 test@ubuntu:~$ 
 # interfaces(5) file used by ifup(8) and ifdown(8)
