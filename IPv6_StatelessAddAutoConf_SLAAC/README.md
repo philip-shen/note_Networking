@@ -309,6 +309,43 @@ On receipt of a valid Neighbor Advertisement message on an interface, node behav
 ![alt tag](https://i.imgur.com/KbQqfi6.jpg)  
 ![alt tag](https://i.imgur.com/slAE7tv.gif)
 
+## Multicast Address FF02::1:FF00:1  
+[Solicited-node multicast address](https://en.wikipedia.org/wiki/Solicited-node_multicast_address)  
+[Understanding IPv6: What Is Solicited-Node Multicast? Sep 15, 2014](https://www.networkcomputing.com/networking/understanding-ipv6-what-solicited-node-multicast)  
+```
+Guess what? Solicited-node multicast has all those things, too.
+
+Solicited-node multicast is also local to the wire.
+
+Each device joins a solicited-node multicast group address by just "deciding to listen" to the IPv6 solicited-node multicast address and then to the corresponding MAC address for that multicast IPv6 group.
+
+Devices that join a specific solicited-node multicast address share a common interest
+```
+![alt tag](https://img.deusm.com/networkcomputing/2014/09/1315703/solicited-node-pyramid.png)  
+```
+Let's do these introductions properly. As RFC 4291 section 2.7.1 states:
+
+Solicited-node multicast address are computed as a function of a node's unicast and anycast addresses. A solicited-node multicast address is formed by taking the low-order 24 bits of an address (unicast or anycast) and appending those bits to the prefix FF02:0:0:0:0:1:FF00::/104 resulting in a multicast address in the range
+
+FF02:0:0:0:0:1:FF00:0000
+to
+FF02:0:0:0:0:1:FFFF:FFFF
+
+For example, the solicited-node multicast address corresponding to the IPv6 address 4037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. IPv6 addresses that differ only in the high-order bits (e.g., due to multiple high-order prefixes associated with different aggregations) will map to the same solicited-node address, thereby reducing the number of multicast addresses a node must join.
+```
+```
+Compute
+"A solicited-node multicast address is formed by taking the low-order 24 bits of an address (unicast or anycast) and appending those bits to the prefix FF02:0:0:0:0:1:FF00::/104 resulting in a multicast address."
+
+The compute is two steps -- simple enough.
+
+Low-order 24 bits for the IPv6 link-local unicast address FE80::1 is ::1. That was easy.
+Append ::1 to FF02:0:0:0:0:1:FF00::/104, and we get FF02:0:0:0:0:1:FF00:1 or FF02::1:FF00:1.
+Join
+RouterA is now supposed to "join" this IPv6 solicited-node multicast group (FF02::1:FF00:1) on the corresponding interface gig1/0/1. As we can see below, RouterA does join the associated IPv6 solicited-node multicast group (FF02::1:FF00:1) for IPv6 unicast address FE80::1.
+```
+![alt tag](https://img.deusm.com/networkcomputing/2014/09/1315703/join-text.png)  
+
 # 5.5.  Creation of Global Addresses
 Global addresses are formed by appending an interface identifier to a prefix of appropriate length.  
 Prefixes are obtained from Prefix Information options contained in Router Advertisements.  Creation of 
@@ -399,5 +436,5 @@ Reference
  用戶端收到 Network ID，搭配自動產生的 Host ID，形成完整 IPv6，而路由核發出訊息後，就不再管這個位址的實際使用。
 ```
 
-* []()
+* []()  
 ![alt tag]()  
