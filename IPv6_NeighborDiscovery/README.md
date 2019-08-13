@@ -204,6 +204,15 @@ ff0x::181 | Precision Time Protocol (PTP) version 2 messages (Sync, Announce, et
 ff02::6b | Precision Time Protocol (PTP) version 2 peer delay measurement messages
 ff0x::114 | Used for experiments
 
+[Multicast DNS mDNS](https://en.wikipedia.org/wiki/Multicast_DNS)    
+**Packet structure**  
+UDP port 5353  
+
+IPv4 | IPv6
+------------------------------------ | ---------------------------------------------
+MAC: 01:00:5E:00:00:FB |  MAC: 33:33:00:00:00:FB(IPv6mcast_16)
+224.0.0.251 | ff02::fb
+
 # 3.  Protocol Overview
 This protocol solves a set of problems related to the interaction between nodes attached to the same link.
 
