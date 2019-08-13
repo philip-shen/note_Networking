@@ -1,6 +1,84 @@
-# Purpose
+# Table of Contents  
+[Statefull DHCPv6 Client](#statefull-dhcpv6-client)  
 
+# Statefull DHCPv6 Client  
+### 01 Link-Local Address Creation  
+![alt tag](https://i.imgur.com/XzCbV7M.jpg)  
+### 02 Statefull DHCPv6 Procedure  
+![alt tag](https://i.imgur.com/gaifNLy.jpg)  
+### 03 Duplicate Address Detection(DAD) Solicited-node Multicast Address  
+![alt tag](https://i.imgur.com/1UK5cYY.jpg)  
+### 04 Address Resolution and Neighbor Unreachability Detection  
+![alt tag](https://i.imgur.com/YrjF9A6.jpg)  
+```
+test@ubuntu:~$ 
+# interfaces(5) file used by ifup(8) and ifdown(8)
+#auto lo ens33
+#iface ens33 inet dhcp
+auto lo
+iface lo inet loopback
+auto eth0
+iface eth0 inet static
+ address 192.168.0.110
+ gateway 192.168.0.1
+ netmask 255.255.255.0
+ network 192.168.0.0
+ broadcast 192.168.0.255
+auto eth0
+iface eth0 inet6 dhcp
+```
 
+```
+test@ubuntu:~$ ip add sh
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 1000
+    link/ether 00:0c:29:be:e6:8e brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.110/24 brd 192.168.0.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 3000:aaaa:bbbb:cccc:1111:2222:0:2/128 scope global
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:febe:e68e/64 scope link
+       valid_lft forever preferred_lft forever
+```
+```
+test@ubuntu:~$ ip add sh
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 1000
+    link/ether 00:0c:29:ed:0a:c8 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.120/24 brd 192.168.0.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 3000:aaaa:bbbb:cccc:1111:2222:0:3/128 scope global
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:feed:ac8/64 scope link
+       valid_lft forever preferred_lft forever
+```
+```
+test@ubuntu:~$ ip add sh
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 1000
+    link/ether 00:0c:29:0a:3b:c6 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.130/24 brd 192.168.0.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 3000:aaaa:bbbb:cccc:1111:2222:0:4/128 scope global
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fe0a:3bc6/64 scope link
+       valid_lft forever preferred_lft forever
+```
 
 [20141210 - Client端IPv6自動取得的流程](http://gienmin.blogspot.com/2014/12/20141210-clientipv6.html)
 ```  
