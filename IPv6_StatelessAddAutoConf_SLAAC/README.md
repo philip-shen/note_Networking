@@ -17,7 +17,7 @@
 [5.4.4. Receiving Neighbor Advertisement Messages](#544--receiving-neighbor-advertisement-messages)  
 [5.4.5. When Duplicate Address Detection Fails](#545--when-duplicate-address-detection-fails)  
 
-[Multicast Address ff02::1:ff03:3]()  
+[Multicast Address ff02::1:ff03:3](#multicast-address-ff021ff033)  
 
 [5.5. Creation of Global Addresses](#55--creation-of-global-addresses)  
 [5.5.1. Soliciting Router Advertisements](#551--soliciting-router-advertisements)  
