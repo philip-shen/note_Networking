@@ -427,6 +427,68 @@ Reference
 * [SLAAC (Stateless Address Autoconfiguration) ](https://slideplayer.com/slide/5266411/)
 ![alt tag](https://images.slideplayer.com/17/5266411/slides/slide_4.jpg)
 
+* [IPv6 and online privacy and security](https://networkengineering.stackexchange.com/questions/36578/ipv6-and-online-privacy-and-security)  
+
+Here is your ordinary RFC 1918 address.
+
+```
+    inet6 2001:db8:8301:424c:71a2:70f2:6b1d:a9af/64 scope global temporary deprecated dynamic 
+       valid_lft 2120sec preferred_lft 0sec
+    inet6 2001:db8:8301:424c:3caa:9ce6:65ef:1f15/64 scope global temporary deprecated dynamic 
+       valid_lft 2120sec preferred_lft 0sec
+```
+Next we get to global IPv6 addresses. These are routable on the public Internet, and subject to firewall rules, bidirectional communication is possible. That means that anyone (with IPv6) can initiate a connection to this system. Because NAT is not in use, the connection is direct, without any need for port forwarding hackery. But a host or network firewall may still prohibit the connection.
+
+But these IPv6 addresses are also RFC 4941 privacy addresses. These addresses are created at configurable intervals, and then the previous privacy address is deprecated. Once an address is deprecated it is no longer used for new outgoing connections. After another configurable interval, the deprecated address is automatically removed from the interface, and no communication is possible at all.
+
+Privacy addresses are meant to protect the privacy of the end host, especially as it moves from one network to another. SLAAC addresses configured using modified EUI-64 always have the same last 64 bits, regardless of what network they connect to, so a host (such as a laptop) could be tracked as it moved across networks by correlating these. Privacy addresses eliminate this problem.
+
+```
+inet6 2001:db8:8301:424c:8e6e:e3b8:ce7e:aff8/64 scope global mngtmpaddr noprefixroute dynamic 
+       valid_lft 2120sec preferred_lft 2120sec
+```
+This is a fun one. It's also a global address, but it's an RFC 7217 stable privacy address. These are not simply random, as with RFC 4941 addresses, but generated using a PRNG fed a secret key combined with host-specific information and the assigned IPv6 prefix. They are still unpredictable, but once created, they remain the same for any given IPv6 prefix.
+
+Ordinary privacy addresses have the problem that a host using them has no fixed address at which it can be reached when it is on a given network. So incoming connections are impossible. This wasn't really the point, but more of a side effect (RFC 4941 section 2.4 discusses this in detail.). If you want incoming connections, but still want privacy when the host moves around, then stable privacy addresses come to the rescue. The host will get a different interface identifier when it moves to another network, but when it goes back to its original network, it will get the same interface identifier it had previously.
+
+So, on this system, outgoing connections use the RFC 4941 privacy addresses, which are rotated at intervals, while incoming connections use the stable privacy address, which is published in the global DNS.
+
+```
+   inet6 fda8:75f3:eca7:0:3caa:9ce6:65ef:1f15/64 scope global temporary deprecated dynamic 
+       valid_lft 442822sec preferred_lft 0sec
+    inet6 fda8:75f3:eca7:0:d05b:6572:c01c:107/64 scope global temporary deprecated dynamic 
+       valid_lft 357022sec preferred_lft 0sec
+    inet6 fda8:75f3:eca7:0:81e4:b3f8:bb92:5fa5/64 scope global temporary deprecated dynamic 
+       valid_lft 271224sec preferred_lft 0sec
+```
+Here we have unique local addresses, as defined in RFC 4193. These are routable across subnets, and even across wide area networks, but they are not allowed on the public Internet. This makes them usable as private addresses for any network from the smallest home network to the largest global enterprises.
+
+A ULA prefix is always a /48 within fd00::/8 (technically fc00::/7 but the other half is meant to be assigned by IANA) and is meant to be constructed by an algorithm given in RFC 4193, but can be done randomly. It must not be assigned from zero or in any other pattern. If a /48 is not large enough, or two companies merge and need to connect their networks, multiple /48s can be used and the appropriate routes created. The 2^40 space of possible subnets is 256 times the number of possible IPv4 addresses, making collisions extremely unlikely if the ULA prefix is generated properly.
+
+The three addresses shown above are deprecated RFC 4941 privacy addresses.
+
+```
+ inet6 fda8:75f3:eca7:0:71a2:70f2:6b1d:a9af/64 scope global temporary dynamic 
+       valid_lft 528621sec preferred_lft 9621sec
+```
+Here is the currently valid RFC 4941 privacy address
+```
+ inet6 fda8:75f3:eca7:0:3014:2169:37ba:ebd1/64 scope global mngtmpaddr noprefixroute 
+       valid_lft forever preferred_lft forever
+```
+Here is a unique local address which is also an RFC 7217 stable privacy address. You can see that its interface identifier is different from the interface identifier of the global stable privacy address.
+```
+ inet6 fda8:75f3:eca7::2e4/128 scope global 
+       valid_lft forever preferred_lft forever
+```
+And this unique local address was assigned via DHCPv6.
+
+```
+inet6 fe80::6ef0:f0b6:9b0d:26c6/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+Finally, this is a link-local address. It is not routable, and can be reached only on the same layer 2 network. Because this host is using RFC 7217 stable privacy addresses, it too is a stable privacy address.
+
 * [IPv6 學習筆記 001 – 入門筆記  2013-12-19](https://lihan.cc/2013/12/903/)
 ```
  IPv4 先用 ARP 廣播，然後取得對方 MAC，這樣就搭建好區域網路內的通訊基礎。
