@@ -7,6 +7,8 @@
 [03 Duplicate Address Detection(DAD) Solicited-node Multicast Address](#03-duplicate-address-detectiondad-solicited-node-multicast-address)  
 [04 Address Resolution and Neighbor Unreachability Detection](#04-address-resolution-and-neighbor-unreachability-detection)  
 
+[Reference](#reference)  
+
 # Multicast Address
 [Multicast address](https://en.wikipedia.org/wiki/Multicast_address)  
 **Well-known IPv6 multicast addresses**  
@@ -150,6 +152,19 @@ test@ubuntu:~$ ip add sh
 ```  
 
 # Reference
+* [IPv6 only works after pinging the default gateway. Feb 11 '13](https://serverfault.com/questions/477471/ipv6-only-works-after-pinging-the-default-gateway)
+```  
+Now, my problem is that my IPv6 isn't working properly. If I try to ping an IPv6 address e.g. ping6 ipv6.google.com. I get: "Destination unreachable: Address unreachable"
+```  
+```  
+answered Feb 23 '13 
+
+I gave the whole problem another try today, a couple of weeks later. And what can I say, I fixed it. Can someone please explain me why adding a ipv6 loopback fixed my problem? Here is what I've added to my /etc/network/interfaces file:
+
+iface lo inet6 loopback
+
+I have no ideas why I've forgot to add it in the first place!^^ Thank you all for your responses!
+```  
 
 
 * []()
