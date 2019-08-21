@@ -7,6 +7,10 @@
 [03 Duplicate Address Detection(DAD) Solicited-node Multicast Address](#03-duplicate-address-detectiondad-solicited-node-multicast-address)  
 [04 Address Resolution and Neighbor Unreachability Detection](#04-address-resolution-and-neighbor-unreachability-detection)  
 
+[Traceroute6 LAN_PCtoWAN_PC](#traceroute6-lan_pctowan_pc)  
+[Topology](#topology)  
+[Traffic Flow](#traffic-flow)  
+
 [Reference](#reference)  
 
 # Multicast Address
@@ -133,6 +137,14 @@ test@ubuntu:~$ ip add sh
        valid_lft forever preferred_lft forever
 ```
 
+# Traceroute6 LAN_PCtoWAN_PC  
+## Topology  
+![alt tag](https://i.imgur.com/xBYpa0S.png)
+## Traffic Flow  
+![alt tag](https://i.imgur.com/265drzk.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
+
+
 [20141210 - Client端IPv6自動取得的流程](http://gienmin.blogspot.com/2014/12/20141210-clientipv6.html)
 ```  
 1. 首先Client會被設定要以哪種方式取得IPv6，StateLess還是Stateful。而StateLess還可分成要啟動DHCPv6的和不用的。所以總共有三種方式
@@ -168,25 +180,26 @@ I have no ideas why I've forgot to add it in the first place!^^ Thank you all fo
 
 ```  
 Title: Tracetroute6 LAN_PC to WAN_PC
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
-DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): ICMPv6\n (IPv6 Src: 2003:0:0:b::a, Dst: 2003:0:0:b::1\n Type: Time Exceeded (3)\n Code: 0 (hop limit exceeded in transit))
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
-DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): ICMPv6\n (IPv6 Src: 2003:0:0:a::d, Dst: 2003:0:0:b::1\n Type: Destination Unreachable (1)\n Code: 4 (Port unreachable))
+Note left of Vmware_bee68e(LAN_PC): Vmware_bee68e, IPv6: 2003:0:0:b::1\n DLink_1712a2, IPv6:  2003:0:0:b::a\n Vmware_7bb4e8, IPv6: 2003:0:0:a::d\n DLink_f4675d, IPv6: 2003:0:0:a::e\n DLink_1712a3, IPv6: 2003:0:0:a::a
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+DLink_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): ICMPv6\n (IPv6 Src: 2003:0:0:b::a, Dst: 2003:0:0:b::1\n Type: Time Exceeded (3)\n Code: 0 (hop limit exceeded in transit))
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+DLink_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): ICMPv6\n (IPv6 Src: 2003:0:0:a::d, Dst: 2003:0:0:b::1\n Type: Destination Unreachable (1)\n Code: 4 (Port unreachable))
 
-Vmware_7bb4e8(WAN_PC)->DLinkIn_f4675d\n(DUT2 LAN):ICMPv6\n (IPv6 Src: 2003:0:0:a::d, Dst: 2003:0:0:b::1\n Type: Destination Unreachable (1)\n Code: 4 (Port unreachable))
-Vmware_7bb4e8(WAN_PC)->DLinkIn_f4675d\n(DUT2 LAN):NS\n (IPv6 Src: fe80::20c:29ff:fe7b:b4e8,\n Dst: 2003:0:0:a::e)
-DLinkIn_f4675d\n(DUT2 LAN)->Vmware_7bb4e8(WAN_PC):NA\n (IPv6 Src: 2003:0:0:a::e,\n Dst: fe80::20c:29ff:fe7b:b4e8)
-DLinkIn_1712a3\n(DUT WAN)->Vmware_7bb4e8(WAN_PC):NS\n (IPv6 Src: fe80::eead:e0ff:fe17:12a3,\n Dst: 2003:0:0:a::e)
-Vmware_7bb4e8(WAN_PC)->DLinkIn_1712a3\n(DUT WAN):NA\n (IPv6 Src: 2003:0:0:a::d,\n Dst: fe80::eead:e0ff:fe17:12a3)
+Vmware_7bb4e8(WAN_PC)->DLink_f4675d\n(DUT2 LAN):ICMPv6\n (IPv6 Src: 2003:0:0:a::d, Dst: 2003:0:0:b::1\n Type: Destination Unreachable (1)\n Code: 4 (Port unreachable))
+Vmware_7bb4e8(WAN_PC)->DLink_f4675d\n(DUT2 LAN):NS\n (IPv6 Src: fe80::20c:29ff:fe7b:b4e8,\n Dst: 2003:0:0:a::e)
+DLink_f4675d\n(DUT2 LAN)->Vmware_7bb4e8(WAN_PC):NA\n (IPv6 Src: 2003:0:0:a::e,\n Dst: fe80::20c:29ff:fe7b:b4e8)
+DLink_1712a3\n(DUT WAN)->Vmware_7bb4e8(WAN_PC):NS\n (IPv6 Src: fe80::eead:e0ff:fe17:12a3,\n Dst: 2003:0:0:a::e)
+Vmware_7bb4e8(WAN_PC)->DLink_1712a3\n(DUT WAN):NA\n (IPv6 Src: 2003:0:0:a::d,\n Dst: fe80::eead:e0ff:fe17:12a3)
 
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NS\n (IPv6 Src: fe80::20c:29ff:febe:e68e, Dst: 2003:0:0:b::a\n for 2003:0:0:b::a from Vmware_bee68e(LAN_PC))
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NS\n (IPv6 Src: fe80::20c:29ff:febe:e68e, Dst: 2003:0:0:b::a\n for 2003:0:0:b::a from Vmware_bee68e(LAN_PC))
-DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): NS\n (IPv6 Src: fe80::eead:e0ff:fe17:12a2, Dst: 2003:0:0:b::1\n for 2003:0:0:b::1 from DLinkIn_1712a2\n(LAN))
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NA\n (IPv6 Src: 2003:0:0:b::1, Dst: fe80::eead:e0ff:fe17:12a2\n 2003:0:0:b::1 (sol))
-Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NA\n (IPv6 Src: 2003:0:0:b::1, Dst: fe80::eead:e0ff:fe17:12a2\n 2003:0:0:b::1 (sol))
-DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): NA\n (IPv6 Src: 2003:0:0:b::a, Dst: fe80::20c:29ff:febe:e68e\n 2003:0:0:b::a (rtr, sol))
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): NS\n (IPv6 Src: fe80::20c:29ff:febe:e68e, Dst: 2003:0:0:b::a\n for 2003:0:0:b::a from Vmware_bee68e(LAN_PC))
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): NS\n (IPv6 Src: fe80::20c:29ff:febe:e68e, Dst: 2003:0:0:b::a\n for 2003:0:0:b::a from Vmware_bee68e(LAN_PC))
+DLink_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): NS\n (IPv6 Src: fe80::eead:e0ff:fe17:12a2, Dst: 2003:0:0:b::1\n for 2003:0:0:b::1 from DLink_1712a2\n(LAN))
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): NA\n (IPv6 Src: 2003:0:0:b::1, Dst: fe80::eead:e0ff:fe17:12a2\n 2003:0:0:b::1 (sol))
+Vmware_bee68e(LAN_PC)->DLink_1712a2\n(LAN): NA\n (IPv6 Src: 2003:0:0:b::1, Dst: fe80::eead:e0ff:fe17:12a2\n 2003:0:0:b::1 (sol))
+DLink_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): NA\n (IPv6 Src: 2003:0:0:b::a, Dst: fe80::20c:29ff:febe:e68e\n 2003:0:0:b::a (rtr, sol))
 ```  
 
 
