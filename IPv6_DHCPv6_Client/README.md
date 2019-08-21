@@ -166,6 +166,29 @@ iface lo inet6 loopback
 I have no ideas why I've forgot to add it in the first place!^^ Thank you all for your responses!
 ```  
 
+```  
+Title: Tracetroute6 LAN_PC to WAN_PC
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): ICMPv6\n (IPv6 Src: 2003:0:0:b::a, Dst: 2003:0:0:b::1\n Type: Time Exceeded (3)\n Code: 0 (hop limit exceeded in transit))
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): UDP\n (IPv6 Src: 2003:0:0:b::1, Dst: 2003:0:0:a::d)
+DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): ICMPv6\n (IPv6 Src: 2003:0:0:a::d, Dst: 2003:0:0:b::1\n Type: Destination Unreachable (1)\n Code: 4 (Port unreachable))
+
+Vmware_7bb4e8(WAN_PC)->DLinkIn_f4675d\n(DUT2 LAN):ICMPv6\n (IPv6 Src: 2003:0:0:a::d, Dst: 2003:0:0:b::1\n Type: Destination Unreachable (1)\n Code: 4 (Port unreachable))
+Vmware_7bb4e8(WAN_PC)->DLinkIn_f4675d\n(DUT2 LAN):NS\n (IPv6 Src: fe80::20c:29ff:fe7b:b4e8,\n Dst: 2003:0:0:a::e)
+DLinkIn_f4675d\n(DUT2 LAN)->Vmware_7bb4e8(WAN_PC):NA\n (IPv6 Src: 2003:0:0:a::e,\n Dst: fe80::20c:29ff:fe7b:b4e8)
+DLinkIn_1712a3\n(DUT WAN)->Vmware_7bb4e8(WAN_PC):NS\n (IPv6 Src: fe80::eead:e0ff:fe17:12a3,\n Dst: 2003:0:0:a::e)
+Vmware_7bb4e8(WAN_PC)->DLinkIn_1712a3\n(DUT WAN):NA\n (IPv6 Src: 2003:0:0:a::d,\n Dst: fe80::eead:e0ff:fe17:12a3)
+
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NS\n (IPv6 Src: fe80::20c:29ff:febe:e68e, Dst: 2003:0:0:b::a\n for 2003:0:0:b::a from Vmware_bee68e(LAN_PC))
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NS\n (IPv6 Src: fe80::20c:29ff:febe:e68e, Dst: 2003:0:0:b::a\n for 2003:0:0:b::a from Vmware_bee68e(LAN_PC))
+DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): NS\n (IPv6 Src: fe80::eead:e0ff:fe17:12a2, Dst: 2003:0:0:b::1\n for 2003:0:0:b::1 from DLinkIn_1712a2\n(LAN))
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NA\n (IPv6 Src: 2003:0:0:b::1, Dst: fe80::eead:e0ff:fe17:12a2\n 2003:0:0:b::1 (sol))
+Vmware_bee68e(LAN_PC)->DLinkIn_1712a2\n(LAN): NA\n (IPv6 Src: 2003:0:0:b::1, Dst: fe80::eead:e0ff:fe17:12a2\n 2003:0:0:b::1 (sol))
+DLinkIn_1712a2\n(LAN)->Vmware_bee68e(LAN_PC): NA\n (IPv6 Src: 2003:0:0:b::a, Dst: fe80::20c:29ff:febe:e68e\n 2003:0:0:b::a (rtr, sol))
+```  
+
 
 * []()
 ![alt tag]()
