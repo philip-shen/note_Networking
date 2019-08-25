@@ -16,6 +16,9 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
     [Click Button on Widget](#click-button-on-widget)  
     [Check Log Folder for Result](#check-log-folder-for-result)  
 
+[QoS Test](#qos-test)  
+[Topology](#topology-1)  
+
 [Reference](#reference)  
 
 # Topology  
@@ -110,6 +113,11 @@ set Func_Chariot::verbose on;#on off
 
 ##  Check Log Folder for Result  
 ![alt tag](https://i.imgur.com/LZllH9N.jpg)
+
+# QoS Test  
+## Topology  
+![alt tag](https://i.imgur.com/Up4Dtwk.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
 # Troubleshooting  
 
