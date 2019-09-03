@@ -15,10 +15,10 @@ The primary benefits of Multicast DNS names are that
 [3.  Multicast DNS Names](#3--multicast-dns-names)  
 [4.  Reverse Address Mapping](#4--reverse-address-mapping)  
 [5.  Querying](#5--querying)  
-[6.  Responding]() 
-[7.  Traffic Reduction ]() 
-[8.  Probing and Announcing on Startup]() 
-[9.  Conflict Resolution]() 
+[6.  Responding](#6--responding)  
+[7.  Traffic Reduction](#7--traffic-reduction)  
+[8.  Probing and Announcing on Startup]()  
+[9.  Conflict Resolution]()  
 
 # 1.  Introduction  
 Multicast DNS and its companion technology DNS-Based Service Discovery [RFC6763](https://tools.ietf.org/html/rfc6763) 
@@ -107,10 +107,93 @@ Determining when no further responses are required depends on the type of operat
 performed.
 
 ## 5.3.  Multiple Questions per Query  
+Multicast DNS allows a querier to place multiple questions in the Question Section of 
+a single Multicast DNS query message.
+
+The semantics of a Multicast DNS query message containing multiple questions is identical 
+to a series of individual DNS query messages containing one question each.  
+Combining multiple questions into a single message is purely an efficiency 
+optimization and has no other
 ## 5.4.  Questions Requesting Unicast Responses  
+Sending Multicast DNS responses via multicast has the benefit that all the other 
+hosts on the network get to see those responses, enabling them to keep their caches 
+up to date and detect conflicting responses.  
+
+However, there are situations where all the other hosts on the network don't 
+need to see every response.  Some examples are a laptop computer waking from sleep, 
+the Ethernet cable being connected to a running machine, or a previously inactive 
+interface being activated through a configuration change.  
+As a new participant on the network, it has no idea whether the exact same questions 
+may have been asked and answered just seconds ago.  In this case, triggering a large 
+sudden flood of multicast responses may impose an unreasonable burden on the network.  
+
+To avoid large floods of potentially unnecessary responses in these cases, Multicast DNS 
+defines the top bit in the class field of a DNS question as the unicast-response bit.  
+When this bit is set in a question, it indicates that the querier is willing to accept 
+unicast replies in response to this specific query, as well as the usual multicast responses.  
+These questions requesting unicast responses are referred to as "QU" questions, 
+to distinguish them from the more usual questions requesting multicast responses ("QM" questions).  
+A Multicast DNS querier sending its initial batch of questions immediately on wake from sleep or 
+interface activation SHOULD set the unicast-response bit in those questions.  
+
+When a question is retransmitted (as described in Section 5.2), the unicast-response bit 
+SHOULD NOT be set in subsequent retransmissions of that question.  
+Subsequent retransmissions SHOULD be usual "QM" questions.  
+After the first question has received its responses, the querier should have a large 
+Known-Answer list (Section 7.1) so that subsequent queries should elicit few, if any, further responses.
+In addition, the unicast-response bit SHOULD be set only for questions 
+that are active and ready to be sent the moment of wake from sleep or interface activation.  
+New questions created by local clients afterwards should be treated as normal "QM" questions
+and SHOULD NOT have the unicast-response bit set on the first question of the series.
+
+When receiving a question with the unicast-response bit set, a responder SHOULD usually respond 
+with a unicast packet directed back to the querier.  However, if the responder has not multicast that 
+record recently (within one quarter of its TTL), then the responder SHOULD instead multicast the response 
+so as to keep all the peer caches up to date, and to permit passive conflict detection.
+
+Unicast replies are subject to all the same packet generation rules as multicast replies, 
+including the cache-flush bit (Section 10.2) and (except when defending a unique name against 
+a probe from another host) randomized delays to reduce network collisions (Section 6).  
+
 ## 5.5.  Direct Unicast Queries to Port 5353
+In specialized applications there may be rare situations where it makes sense for 
+a Multicast DNS querier to send its query via unicast to a specific machine.  
+When a Multicast DNS responder receives a query via direct unicast, it SHOULD respond 
+as it would for "QU" questions, as described above in Section 5.4.  
+Since it is possible for a unicast query to be received from a machine outside the local link, 
+responders SHOULD check that the source address in the query packet matches the local subnet 
+for that link (or, in the case of IPv6, the source address has an on-link prefix) and 
+silently ignore the packet if not.
 
 # 6.  Responding  
+When a Multicast DNS responder constructs and sends a Multicast DNS response message, 
+the Resource Record Sections of that message must contain only records for which 
+that responder is explicitly authoritative.  
+These answers may be generated because the record answers a question received in a Multicast 
+DNS query message, or at certain other times that the responder determines than an unsolicited
+announcement is warranted.  
+A Multicast DNS responder MUST NOT place records from its cache, which have been learned 
+from other responders on the network, in the Resource Record Sections of outgoing response messages.  
+Only an authoritative source for a given record is allowed to issue responses containing that record.
+
+The determination of whether a given record answers a given question is made using 
+the standard DNS rules: the record name must match the question name, 
+the record rrtype must match the question qtype unless the qtype is "ANY" (255) or 
+the rrtype is "CNAME" (5), and the record rrclass must match the question qclass unless 
+the qclass is "ANY" (255).  
+As with Unicast DNS, generally only DNS class 1 ("Internet") is used, but should client software 
+use classes other than 1, the matching rules described above MUST be used.  
+
+A Multicast DNS responder MUST only respond when it has a positive, non-null response to send, 
+or it authoritatively knows that a particular record does not exist.  For unique records, 
+where the host has already established sole ownership of the name, it MUST return negative answers 
+to queries for records that it knows not to exist.  
+For example, a host with no IPv6 address, that has claimed sole ownership of the name "host.local." 
+for all rrtypes, MUST respond to AAAA queries for "host.local." by sending a negative answer 
+indicating that no AAAA records exist for that name.  See Section 6.1, "Negative Responses".  
+
+
+
 ## 6.1.  Negative Responses  
 ## 6.2.  Responding to Address Queries  
 ## 6.3.  Responding to Multiquestion Queries  
