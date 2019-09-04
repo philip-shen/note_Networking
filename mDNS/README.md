@@ -192,13 +192,46 @@ For example, a host with no IPv6 address, that has claimed sole ownership of the
 for all rrtypes, MUST respond to AAAA queries for "host.local." by sending a negative answer 
 indicating that no AAAA records exist for that name.  See Section 6.1, "Negative Responses".  
 
-
-
 ## 6.1.  Negative Responses  
+In the early design of Multicast DNS it was assumed that explicit negative responses would 
+never be needed.  A host can assert the existence of the set of records that it claims to exist, 
+and the union of all such sets on a link is the set of Multicast DNS records that exist on that link.  
+Asserting the nonexistence of every record in the complement of that set -- i.e., 
+all possible Multicast DNS records that could exist on this link but do not at this moment --
+was felt to be impractical and unnecessary.
+
+However, operational experience showed that explicit negative responses can sometimes be valuable.  
+One such example is when a querier is querying for a AAAA record, and the host name in question
+has no associated IPv6 addresses.
+
+Any time a responder receives a query for a name for which it has verified exclusive ownership, 
+for a type for which that name has no records, the responder MUST (except as allowed in (a) below) 
+respond asserting the nonexistence of that record using a DNS NSEC record [RFC4034].  
+
+On receipt of a question for a particular name, rrtype, and rrclass, for which a responder does 
+have one or more unique answers, the responder MAY also include an NSEC record in the Additional Record
+Section indicating the nonexistence of other rrtypes for that name and rrclass.
+
 ## 6.2.  Responding to Address Queries  
+When a Multicast DNS responder sends a Multicast DNS response  containing its own address records, 
+it MUST include all addresses that are valid on the interface on which it is sending the message,
+and MUST NOT include addresses that are not valid on that interface (such as addresses that 
+may be configured on the host's other interfaces).
+
+When a Multicast DNS responder places an IPv4 or IPv6 address record (rrtype "A" or "AAAA") into 
+a response message, it SHOULD also place any records of the other address type with 
+the same name into the additional section, if there is space in the message.
+
 ## 6.3.  Responding to Multiquestion Queries  
+Multicast DNS responders MUST correctly handle DNS query messages containing more than one question, 
+by answering any or all of the questions to which they have answers.
+
 ## 6.4.  Response Aggregation  
 ## 6.5.  Wildcard Queries (qtype "ANY" and qclass "ANY")  
+When responding to queries using qtype "ANY" (255) and/or qclass "ANY" (255), a Multicast DNS responder 
+MUST respond with *ALL* of its records that match the query.  This is subtly different from how 
+qtype "ANY" and qclass "ANY" work in Unicast DNS.
+
 ## 6.6.  Cooperating Multicast DNS Responders  
 ## 6.7.  Legacy Unicast Responses  
 
