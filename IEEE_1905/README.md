@@ -35,12 +35,15 @@ If an AP Enrollee is dual-band (2.4 GHz and 5Ghz) capable, the auto-configuratio
 
 # Sequence Flow  
 *Msg type* *Msg id*  
+* 1  
 ![alt tag](https://i.imgur.com/yn2mYrs.jpg)  
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
+* 2  
 ![alt tag](https://i.imgur.com/u0ZqPKN.jpg)  
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
+* 3  
 ![alt tag](https://i.imgur.com/0WIVINg.jpg)  
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
