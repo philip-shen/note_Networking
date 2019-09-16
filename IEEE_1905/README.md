@@ -4,6 +4,8 @@
 [Topology](#topology)  
 [AP auto-configuration](#ap-auto-configuration)  
 
+[Sequence Flow](#sequence-flow) 
+
 # Topology  
 [IEEE 1905](https://en.wikipedia.org/wiki/IEEE_1905)  
 ```
@@ -31,13 +33,38 @@ A specific 1905.1 CMDU frame (Message type 0x0009) is used to transport WPS mess
 If an AP Enrollee is dual-band (2.4 GHz and 5Ghz) capable, the auto-configuration procedure may be executed twice. 
 ```
 
-# Troubleshooting
+# Sequence Flow  
+*Msg type* *Msg id*  
+![alt tag](https://i.imgur.com/yn2mYrs.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
+![alt tag](https://i.imgur.com/u0ZqPKN.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
+
+![alt tag](https://i.imgur.com/0WIVINg.jpg)  
+(Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
 # Reference
+```
+Destination: IEEE-1905.1-Control (01:80:c2:00:00:13)
+
+Message type: Topology discovery (0x0000)
+Message type: Topology notification (0x0001)
+Message type: AP Metrics Response (0x800c)
+Message type: Topology query (0x0002)
+Message type: Topology response (0x0003)
+
+Message type: Vendor specific (0x0004)
+Message type: AP autoconfiguration search (0x0007)
+Message type: AP autoconfiguration response (0x0008)
+
+Message type: AP Capability Query (0x8001)
+
+Message type: AP Capability Report (0x8002)
+```
 
 ```
-Title: IEEE 1905.1a
+Title: IEEE 1905.1a flow
 Note left of Elecom_dfe3ed: Elecom_dfe3ed(Repeater)\n(bc:5c:4c:df:e3:ed)\n Elecom_dfe3f9(Router)\n(bc:5c:4c:df:e3:f9)\n IEEE-1905.1-Control\n(01:80:c2:00:00:13)
 Elecom_dfe3ed->IEEE_1905.1_Control:Msg type: Topology discovery (0x0000)\nMsg id: 0x032e
 Elecom_dfe3ed->IEEE_1905.1_Control:Msg type: Topology discovery (0x0000)\nMsg id: 0x032f
@@ -73,7 +100,9 @@ Elecom_dfe3f9->Elecom_dfe3ed:Msg type: Topology query (0x0002)\nMsg id: 0x0007
 Elecom_dfe3f9->Elecom_dfe3ed:Msg type: Topology query (0x0002)\nMsg id: 0x0008
 Elecom_dfe3f9->Elecom_dfe3ed:Msg type: Topology notification (0x0001)\nMsg id: 0x0009
 
-Elecom_dfe3f9->Elecom_dfe3ed:Msg type: Topology response (0x0003)\nMsg id: 0x0343\nSupported service: 0x00, Multi-AP Controller
+Elecom_dfe3f9->Elecom_dfe3ed:Msg type: Topology response (0x0003)\nMsg id: 0x0343
+
+Note left of Elecom_dfe3ed:Supported service: 0x00 \nMulti-AP Controller
 
 Elecom_dfe3f9->Elecom_dfe3ed:Msg type: Topology query (0x0002)\nMsg id: 0x000a
 
@@ -230,8 +259,7 @@ Elecom_dfe3ed->Elecom_dfe3f9:Msg type: Topology query (0x0002)\nMsg id: 0x035d
 
 Elecom_dfe3f9->Elecom_dfe3ed:Msg type: Topology response (0x0003)\nMsg id: 0x035b
 
-Note left of Elecom_dfe3ed: \n1905 device information type\nDevice bridging capability\n1905 neighbor device\n1905 neighbor device\nSearched service information\n(Searched service count: 1, Searched service: 0x00, Multi-AP Controller) 
-
+Note left of Elecom_dfe3ed: \n1905 device information type\nDevice bridging capability\n1905 neighbor device\n1905 neighbor device\nSearched service information\n(Searched service count: 1, Searched service: 0x00, Multi-AP Controller)
 
 ```
 
