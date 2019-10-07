@@ -6,6 +6,8 @@ Take note of Web releated Service, IFTTT("If This, Then That")
 [IFTTT related stuffs](#ifttt-related-stuffs)
 [スマホのボタンを押してLINEメッセージ送信](#%E3%82%B9%E3%83%9E%E3%83%9B%E3%81%AE%E3%83%9C%E3%82%BF%E3%83%B3%E3%82%92%E6%8A%BC%E3%81%97%E3%81%A6line%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E9%80%81%E4%BF%A1)  
 
+[Reference](#reference)
+
 # IFTTT related stuffs  
 [IFTTTについて調べる Mar 02, 2019](https://qiita.com/bonk/items/f2a3ea14c05b1c34db05)  
 
@@ -68,6 +70,8 @@ Googleの連携使えば秒で終わります。
 ![alt tag](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.amazonaws.com%2F0%2F188272%2Fed4fbcd1-e9ea-6d87-e7a2-ac026be65a0b.png?ixlib=rb-1.2.2&auto=compress%2Cformat&gif-q=60&s=0e6806012ca080af319beea16c545789)
 
 # Reference
+* [新しい Google サイトで IFTTT の Webhooks をしてページ遷移が起こらないようにする May 17, 2019](https://qiita.com/doki_k/items/777585b9fdb3c0e2c61e)
+* [IoTを活用して、ただいまと言ったらおかえりが返ってくる仕組みを作る Jun 26, 2019](https://qiita.com/sksk_go/items/1519d26f6d587afd0158)
 
 
 * []()
