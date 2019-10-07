@@ -3,6 +3,8 @@ Take note of Web releated Service, IFTTT("If This, Then That")
 
 
 # Tables of Contents  
+[IFTTT related stuffs](#ifttt-related-stuffs)
+[スマホのボタンを押してLINEメッセージ送信](#%E3%82%B9%E3%83%9E%E3%83%9B%E3%81%AE%E3%83%9C%E3%82%BF%E3%83%B3%E3%82%92%E6%8A%BC%E3%81%97%E3%81%A6line%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E9%80%81%E4%BF%A1)  
 
 # IFTTT related stuffs  
 [IFTTTについて調べる Mar 02, 2019](https://qiita.com/bonk/items/f2a3ea14c05b1c34db05)  
