@@ -87,6 +87,7 @@ FF02::1:FF00:0/104 | 要請ノードマルチキャスト
 ２．再生したい動画ファイルを追加し、「ストリーム再生」をクリック  
 ![alt tag](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F264860%2F47eb337f-6bd9-ae44-2b8a-ed8578d940d5.png?ixlib=rb-1.2.2&auto=compress%2Cformat&gif-q=60&s=706965f5ad579ca903803ca1c305e6a0)  
 ３．「次へ」をクリック  
+![alt tag](https://i.imgur.com/abqb0yg.jpg)  
 ![alt tag](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F264860%2F97c5e524-e8fb-666a-30f1-02f113fc7c5a.png?ixlib=rb-1.2.2&auto=compress%2Cformat&gif-q=60&s=8990ba2c7116ae4039f5b29631aefa66)   
 ４．新しい出力先から「ＲＴＳＰ」を選択し、「追加」をクリック  
 ![alt tag](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F264860%2Fdb1d1c9c-003b-742b-c50f-3c413a5f8ccf.png?ixlib=rb-1.2.2&auto=compress%2Cformat&gif-q=60&s=39c2ba22ecb088fa60faa0fd5f3662d6)  
@@ -129,7 +130,6 @@ ffmpeg -i "rtsp://127.0.0.1:8554/" -f segment -segment_time "60" -segment_format
 * d:\temp\sample_%Y-%m-%d_%H-%M-%S.mp4：ファイルの保存先
 
 
-![alt tag]()  
 ![alt tag]()  
 
 
