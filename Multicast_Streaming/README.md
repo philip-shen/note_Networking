@@ -112,6 +112,11 @@ FF02::1:FF00:0/104 | 要請ノードマルチキャスト
 ３．ストリーミング配信を受信  
 ![alt tag](https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F264860%2F113ae2ce-6674-9812-07a0-b81bf308f518.png?ixlib=rb-1.2.2&auto=compress%2Cformat&gif-q=60&s=05726f34bb3b5f7207f69a58942eb1d8)  
 4．RTP and RTSP ストリーミング配信を受信  
+```  
+IPv4, rtp://224.10.20.30:5004/
+IPv6, rtp://[ff1e::1]:5006/
+rtsp://@:8554/
+```  
 ![alt tag](https://i.imgur.com/LsWYsjS.jpg)  
 
 ## ffmpegを実行してストリーミング配信を保存  
