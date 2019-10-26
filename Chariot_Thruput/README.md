@@ -31,10 +31,37 @@ Throuput Test(LAN<--->WLAN; WLAN<--->WAN; WLAN<--->WAN) via Chariot by Tcl
 (Diagram made with [js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))  
 
 # PreTest Environment  
-### ixChariot 6.7  
-### Win7 32bit, 64bit  
-### Win10 64bit  
+## ixChariot 6.7  
+## Win7 32bit, 64bit  
+## Win10 64bit  
 *The utility recommends to host on end point of LAN side*   
+
+## IxChariot via Tcl  
+[Working with IxChariot from TestShell Studio and Runner 04/24,2015](https://community.quali.com/articles/2555/working-with-ixchariot-from-testshell-studio-and-r)  
+### Set up  
+```  
+Best to avoid ActiveState TCL and instead get the TCL server from Ixia. 
+For this, you may need to download the IxOS which contains an installer for this. 
+In the download, there are two files which relate to TCL. 
+One is a CAB and another is a .msi installer for TCL 8.5. The latter is the one you need to run. 
+It should install under IxChariot so you should end up with "C:\Program Files (x86)\Ixia\Tcl\8.5.12.0" 
+(it may be the version changes over time since this article was posted).
+
+To run a test through TCL, you can try one of the samples that come with IxChariot. 
+The script I tried is called ChrPairsTest.tcl and is found under "C:\Program Files (x86)\Ixia\IxChariot\SDK\samples\tcl" typically.
+```  
+### Running a Chariot Test via TCL  
+```  
+Firstly, you should run the test from the IxChariot installation folder (this is critical). 
+Typically this is "C:\Program Files (x86)\Ixia\IxChariot" so cd here. 
+Next you will need to invoke the tclsh.exe which is located in "C:\Program Files (x86)\Ixia\Tcl\8.5.12.0\bin". 
+Either use the relative path to this, or add the path to the PATH environment variable 
+and use tclsh.exe. The single argument is the path to the sample test TCL script.
+
+The test should run and you should see some output. 
+At the end, a file (suffix tst) will be created. So for TCL script ChrPairsTest.tcl, 
+you will get chrpairstest.tst. This contains output from the test.
+```  
 
 # Setup Procedure  
 ## Installation version of Tcl/Tk is x86 not x64, even on Win 10.
