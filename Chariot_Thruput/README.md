@@ -44,7 +44,8 @@ Best to avoid ActiveState TCL and instead get the TCL server from Ixia.
 For this, you may need to download the IxOS which contains an installer for this. 
 In the download, there are two files which relate to TCL. 
 One is a CAB and another is a .msi installer for TCL 8.5. The latter is the one you need to run. 
-It should install under IxChariot so you should end up with "C:\Program Files (x86)\Ixia\Tcl\8.5.12.0" 
+It should install under IxChariot so you should end up with 
+"C:\Program Files (x86)\Ixia\Tcl\8.5.12.0" 
 (it may be the version changes over time since this article was posted).
 
 To run a test through TCL, you can try one of the samples that come with IxChariot. 
@@ -54,7 +55,8 @@ The script I tried is called ChrPairsTest.tcl and is found under "C:\Program Fil
 ```  
 Firstly, you should run the test from the IxChariot installation folder (this is critical). 
 Typically this is "C:\Program Files (x86)\Ixia\IxChariot" so cd here. 
-Next you will need to invoke the tclsh.exe which is located in "C:\Program Files (x86)\Ixia\Tcl\8.5.12.0\bin". 
+Next you will need to invoke the tclsh.exe which is located in 
+"C:\Program Files (x86)\Ixia\Tcl\8.5.12.0\bin". 
 Either use the relative path to this, or add the path to the PATH environment variable 
 and use tclsh.exe. The single argument is the path to the sample test TCL script.
 
