@@ -49,7 +49,8 @@ It should install under IxChariot so you should end up with
 (it may be the version changes over time since this article was posted).
 
 To run a test through TCL, you can try one of the samples that come with IxChariot. 
-The script I tried is called ChrPairsTest.tcl and is found under "C:\Program Files (x86)\Ixia\IxChariot\SDK\samples\tcl" typically.
+The script I tried is called ChrPairsTest.tcl and is found under 
+"C:\Program Files (x86)\Ixia\IxChariot\SDK\samples\tcl" typically.
 ```  
 ### Running a Chariot Test via TCL  
 ```  
