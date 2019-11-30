@@ -79,12 +79,15 @@ FF02::1:FF00:0/104 | 要請ノードマルチキャスト
 ```  
 This streaming server will use the very powerful and versatile Nginx web server
 ```  
+![alt tag](https://opensource.com/sites/default/files/uploads/stream-server_config.png)  
 
 ### Set up your streaming software---Broadcasting with OBS  
 [OBS Studio](https://obsproject.com/)  
+![alt tag](https://opensource.com/sites/default/files/uploads/stream-server_streamkey.png)  
 
 ### Viewing your stream  
 [VLC media player](https://www.videolan.org/vlc/index.html)  
+![alt tag](https://opensource.com/sites/default/files/uploads/stream-server_livevideo.png)  
 
 ## VLC media playerを使ったストリーミング配信と受信、ffmpegによる動画保存  
 [VLC media playerを使ったストリーミング配信と受信、ffmpegによる動画保存 ](https://qiita.com/subretu/items/0db769b506bcd0148077)  
