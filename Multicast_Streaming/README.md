@@ -5,6 +5,8 @@
 [IPv4 / IPv6 multicast address](#ipv4--ipv6-multicast-address)  
 
 [Reference](#reference)  
+[Create your own video streaming server with Linux](#create-your-own-video-streaming-server-with-linux)  
+
 [VLC media playerを使ったストリーミング配信と受信、ffmpegによる動画保存](#vlc-media-player%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%9F%E3%83%B3%E3%82%B0%E9%85%8D%E4%BF%A1%E3%81%A8%E5%8F%97%E4%BF%A1ffmpeg%E3%81%AB%E3%82%88%E3%82%8B%E5%8B%95%E7%94%BB%E4%BF%9D%E5%AD%98)  
 [[VLC]RTSPで配信する](#vlcrtsp%E3%81%A7%E9%85%8D%E4%BF%A1%E3%81%99%E3%82%8B)  
 [Dockerで運用しているMastodonのIPv6対応](#docker%E3%81%A7%E9%81%8B%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8Bmastodon%E3%81%AEipv6%E5%AF%BE%E5%BF%9C)  
@@ -69,6 +71,21 @@ FF02::1:FF00:0/104 | 要請ノードマルチキャスト
 
 
 # Reference  
+
+## Create your own video streaming server with Linux  
+[Create your own video streaming server with Linux Jan 8, 2019](https://opensource.com/article/19/1/basic-live-video-streaming-server) 
+
+### Setting up a Linux server  
+```  
+This streaming server will use the very powerful and versatile Nginx web server
+```  
+
+### Set up your streaming software---Broadcasting with OBS  
+[OBS Studio](https://obsproject.com/)  
+
+### Viewing your stream  
+[VLC media player](https://www.videolan.org/vlc/index.html)  
+
 ## VLC media playerを使ったストリーミング配信と受信、ffmpegによる動画保存  
 [VLC media playerを使ったストリーミング配信と受信、ffmpegによる動画保存 ](https://qiita.com/subretu/items/0db769b506bcd0148077)  
 ```  
