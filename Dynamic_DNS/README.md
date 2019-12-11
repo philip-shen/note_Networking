@@ -1,6 +1,9 @@
 # Purpose
 
 # Table of Contents  
+[Get Domain from DDNS setting](#get-domain-from-ddns-setting)  
+
+
 
 # Get Domain from DDNS setting  
 [ドメイン取得からDDNS設定まで May 08, 2015](https://qiita.com/mizuki_takahashi/items/b0c5adebea48b9f2f7a6)  
