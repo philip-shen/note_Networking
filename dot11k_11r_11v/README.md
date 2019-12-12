@@ -6,7 +6,8 @@ Take note of dot11k, 11r 11v
 
 # 
 [Wi-Fi seamless roaming – Keenetic Oct 30, 2019](https://help.keenetic.com/hc/en-us/articles/360000862539-Wi-Fi-seamless-roaming)  
-[]()  
+[802.11rとか802.11kとかとかローミングな話 - sidetech  2015-03-10](http://blog.sidetech.jp/2015/03/80211r80211k-e3.html)  
+
 
 # Troubleshooting
 
