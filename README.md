@@ -1,6 +1,8 @@
-# Purpose
+Table of Contents  
+=================
 
-# Table of Contents  
+
+# Purpose
 
 
 # Troubleshooting
@@ -9,8 +11,8 @@
 # Reference
 
 
-* []()
-![alt tag]()
+* []()  
+![alt tag]()  
 
 # h1 size
 
